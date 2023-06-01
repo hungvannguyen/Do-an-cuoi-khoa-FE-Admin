@@ -1,0 +1,121 @@
+
+
+.form__product-id,
+.form__product-cate-id,
+.form__product-name,
+.form__product-quantity,
+.form__product-price,
+.form__product-delete-id{
+     display: flex;
+     flex-direction: column;
+}
+.form__product-id-title,
+.form__product-cate-id-title,
+.form__product-name-title,
+.form__product-quantity-title,
+.form__product-price-title,
+.form__product-delete-id-title{
+     font-size: 1.6rem;
+     color: #8D8D8D;
+     font-weight: 600;
+}
+.form__product-id-title{
+     margin-top: 16px;
+}    
+.form__product-id-input,
+.form__product-nane-input,
+.form__product-quantity-input,
+.form__product-price-input,
+.form__delete-id-input{
+     margin-top: 12px;
+     height: 44px;
+     padding: 6px 12px;
+     font-size: 1.4rem;
+     outline: none;
+     border-radius: 12px;
+     border: 1px solid #7FACD6;
+     width: 360px;
+     color: #333;
+}
+.form__product-id-input:focus,
+.form__product-nane-input:focus,
+.form__product-quantity-input:focus,
+.form__product-price-input:focus,
+.form__delete-id-input:focus{
+     border: 2px solid #33539E;
+     background-color: #7facd634;
+}
+.form__product-cate-id{
+     /* margin-top: 16px; */
+}
+.form__product-name{
+
+}
+.form__product-name-title{
+     margin-top: 16px;
+}
+.form__product-nane-input{
+
+}
+.form__product-name-validate{
+
+}
+.form__product-quantity{
+
+}
+.form__product-quantity-title{
+     margin-top: 16px;
+}
+.form__product-quantity-input{
+
+}
+.form__product-price{
+
+}
+.form__product-price-title{
+     margin-top: 16px;
+}
+.form__product-price-input{
+
+}
+.form__product-check{
+     margin-top: 24px;
+}
+.form__product-btn{
+     outline: none;
+     border: none;
+     width: 120px;
+     height: 38px;
+     border-radius: 28px;
+     font-size: 1.4rem;
+     font-weight: 600;
+     color: white;
+     cursor: pointer;
+     background-color: #FE3464;
+}
+
+
+.form__product-delete-id{
+
+}
+.form__product-delete-id-title{
+     
+}
+.form__delete-id-input{
+
+}
+.form__category-check{
+
+}
+.form__category-btn{
+
+}
+.form__input-btn{
+     margin-top: 24px;
+}
+
+.admin-footer{
+     position: absolute;
+     width: calc(100% - 370px);
+     bottom: 0;
+}
