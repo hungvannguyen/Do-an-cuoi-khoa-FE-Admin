@@ -1,6 +1,10 @@
 import "../Styles/css/allCss.css"
 
+
+
 function Dashboard (){
+
+
     return(
         <div class="main">
           <div class="home__features">

@@ -1,6 +1,28 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 function AllCategory() {
+     const navigate = useNavigate();
+     const [category, setCategory] = useState([]);
+     const [loading, setLoading] = useState(true);
+
+     useEffect(() => {   
+          axios
+          .get("/category/all")
+          .then((response) => {
+               console.log(response.data);
+               setCategory(response.data);
+               
+          })
+          .catch((error) => {
+               console.log(error);
+          });
+     }, []);
+
+
     return(
         <div className="main">
         <div className="main__title">
@@ -33,30 +55,24 @@ function AllCategory() {
              <div className="datatable__table">
                   <table className="datatable__table-frame">
                        <thead className="table__head">
+                              <th className="table__head-item">Id</th>
                             <th className="table__head-item">Name</th>
-                            <th className="table__head-item">Position</th>
-                            <th className="table__head-item">Office</th>
-                            <th className="table__head-item">Age</th>
-                            <th className="table__head-item">Start date</th>
-                            <th className="table__head-item">Salary</th>
+                            <th className="table__head-item">Description</th>
+                            <th className="table__head-item">Action</th>
                        </thead>
                        <tbody className="table__body">
+                         {category.map((category) => (
                             <tr className="table__body-item">
-                                 <td className="table__body-data">Airi Satou</td>
-                                 <td className="table__body-data">Accountant</td>
-                                 <td className="table__body-data">Tokyo</td>
-                                 <td className="table__body-data">33</td>
-                                 <td className="table__body-data">2008/11/28</td>
-                                 <td className="table__body-data">$162,700</td>
+                                   <td className="table__body-data">{category.id}</td>
+                                 <td className="table__body-data">{category.cat_name}</td>
+                                 <td className="table__body-data">{category.cat_description}</td>
+                                 <td className="table__body-data">
+                                   <Link to={`/admin/category_details/${category.id}`} className="btn-details">
+                                        Details
+                                   </Link>
+                                 </td>
                             </tr>
-                            <tr className="table__body-item">
-                                 <td className="table__body-data">Angelica Ramos</td>
-                                 <td className="table__body-data">Chief Executive Officer (CEO)</td>
-                                 <td className="table__body-data">London</td>
-                                 <td className="table__body-data">47</td>
-                                 <td className="table__body-data">2009/10/20</td>
-                                 <td className="table__body-data">$1200,300</td>
-                            </tr>                        
+                         ))}                       
                        </tbody>
                   </table>
              </div>

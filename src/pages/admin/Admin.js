@@ -1,7 +1,9 @@
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import Dashboard from "./DashBord/dashbord";
-import Sidebar from "./SideBar/sidebar";
+import Sidebar from "./SideBar/SideBar";
+
+import Login from "../Login"
 
 import AllProduct from "../../components/adminComponents/Product/allproducts";
 import DetailsProduct from "../../components/adminComponents/Product/productdetails";
@@ -30,25 +32,29 @@ function Admin() {
         <Header />
         <Sidebar />
         <Routes>
-            <Route path="/" element={<Dashboard />} />
+            //login
+            <Route path="/login" element={<Login />} />
+
+            <Route path="/admin/dashboard" element={<Dashboard />} />
             //product
             <Route path="/admin/all_product" element={<AllProduct />} />
-            <Route path="/add_product" element={<AddProduct />} />
+            <Route path="/admin/add_product" element={<AddProduct />} />
             
             //category
-            <Route path="/all_category" element={<AllCategory />} />
-            <Route path="/add_category" element={<AddCategory />} />
+            <Route path="/admin/all_category" element={<AllCategory />} />
+            <Route path="/admin/add_category" element={<AddCategory />} />
+            <Route path="/admin/category_details/:cat_id" element={<DetailsCategory />} />
 
             //employee
-            <Route path="/all_employee" element={<AllEmployee />} />
-            <Route path="/add_employee" element={<AddEmployee />} />
+            <Route path="/admin/all_employee" element={<AllEmployee />} />
+            <Route path="/admin/add_employee" element={<AddEmployee />} />
 
             //Order
-            <Route path="/all_order" element={<AllOrder />} />
+            <Route path="/admin/all_order" element={<AllOrder />} />
 
             //Customer
-            <Route path="/all_customer" element={<AllCustomer />} />
-            <Route path="/reser_request" element={<ResetPass />} />
+            <Route path="/admin/all_customer" element={<AllCustomer />} />
+            <Route path="/admin/reser_request" element={<ResetPass />} />
         </Routes>
         <Footer />
         </div>

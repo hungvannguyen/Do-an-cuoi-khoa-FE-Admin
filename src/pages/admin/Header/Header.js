@@ -15,6 +15,12 @@ function Header () {
               </p>
           </div>
           <div className="header__account">
+                <div className="Logout">
+                    <span className="Logout-text">
+                        Đăng xuất
+                    </span>
+                </div>
+
               <div className="header__search">
                     <label htmlFor="header__search-input">
                         <i className="fas fa-search header__search-icon"></i>

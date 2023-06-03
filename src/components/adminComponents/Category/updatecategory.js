@@ -1,26 +1,41 @@
-import  "../../../pages/admin/Styles/css/allCss.css";
-import { useState,} from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import  "../../../pages/admin/Styles/css/allCss.css";
+import { useState, useEffect } from "react";
 
-function AddCategory() {
+
+function UpdateCategory(){
+    const [categoryId, setCategoryId] = useState("");
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
-    
 
+    useEffect(() => {
+        axios
+            .get(`/category/${id}`)
+            .then((response) => {
+                console.log(response.data);
+                setCategoryId(response.data.id);
+                setCategoryName(response.data.cat_name);
+                setCategoryDescription(response.data.cat_description);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [categoryId]);
 
-    const addCategory = () => {
+    const updateCategory = () => {
         const categoryData = {
             cat_name: categoryName,
             cat_description: categoryDescription,
         };
+        console.log(categoryData);
         axios
-            .post("/category/add", categoryData,{
+            .put(`/category/update/${id}`, categoryData,
+            {
                 headers: {
                     Authorization: "Bearer " + sessionStorage.getItem("token"),
-                },
-            })
+                        },
+            }
+            )
             .then((response) => {
                 console.log(response.data);
                 setCategoryName("");
@@ -34,11 +49,11 @@ function AddCategory() {
     };
 
     return(
-    <div>
+        <div>
         <div className="main">
             <div className="main__title">
                 <span className="main__title-text">
-                    Add Category
+                    Update Category
                 </span>
                 <span className="main__title-des">
                     DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -47,7 +62,7 @@ function AddCategory() {
             <div className="main__form">
                 <div className="form__product-id">
                     <label className="form__product-id-title">
-                        Category Name
+                        Category Name: {categoryName}
                     </label>
                     <input type="text" readonly className="form__product-id-input form__input--readonly" placeholder="Enter Category Name" 
                         value={categoryName}
@@ -56,8 +71,9 @@ function AddCategory() {
                 </div>
                 <div className="form__product-cate-id">
                     <label className="form__product-id-title">
-                        Category Description
+                        Category Description: {categoryDescription}
                     </label>
+
                     <input type="text" className="form__product-id-input" placeholder="Enter Category Description" 
                         value={categoryDescription}
                         onChange={(e) => setCategoryDescription(e.target.value)}
@@ -65,9 +81,9 @@ function AddCategory() {
                 </div> 
                 <div className="form__product-check">
                     <button className="form__product-btn form__input-btn"
-                            onClick={addCategory}
+                            onClick={updateCategory}
                     >
-                        Add Category
+                        Update Category
                     </button>
                 </div>
             </div>
@@ -84,7 +100,7 @@ function AddCategory() {
 
      </div>
     </div>
-    );
-}
 
-export default AddCategory;
+    );
+
+}

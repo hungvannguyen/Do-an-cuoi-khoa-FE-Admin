@@ -1,4 +1,4 @@
-import Log from "../../components/Login/Login.js";
+import Log from "../../components/adminComponents/Login/login";
 
 function Login() {
   return (

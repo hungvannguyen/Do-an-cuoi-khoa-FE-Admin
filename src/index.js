@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-
 import Admin from "./pages/admin/Admin";
 import axios from "axios";
 import API_BASE_URL from "./apiConfig";
 import reportWebVitals from "./reportWebVitals";
 import "jquery/dist/jquery.min.js";
 // React-router-dom imports
-import { BrowserRouter as Router } from "react-router-dom";
+
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 axios.defaults.baseURL = API_BASE_URL;
 
