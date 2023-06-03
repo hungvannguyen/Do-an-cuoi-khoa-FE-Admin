@@ -1,7 +1,7 @@
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import Dashboard from "./DashBord/dashbord";
-import Sidebar from "./SideBar/SideBar";
+import Sidebar from "./SideBar/sidebar";
 
 import Login from "../Login"
 
