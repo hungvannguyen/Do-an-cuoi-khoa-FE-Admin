@@ -38,7 +38,8 @@ function Admin() {
             <Route path="/admin/dashboard" element={<Dashboard />} />
             //product
             <Route path="/admin/all_product" element={<AllProduct />} />
-            <Route path="/admin/add_product" element={<AddProduct />} />
+            <Route path="/admin/add_product" element={<AddProduct />} />\
+            <Route path="/admin/product_details/:id" element={<DetailsProduct />} />
             
             //category
             <Route path="/admin/all_category" element={<AllCategory />} />

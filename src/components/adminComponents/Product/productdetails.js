@@ -1,6 +1,31 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 function ProductDetails(){
+     const { pro_id } = useParams();
+     const [product, setProduct] = useState([]);
+     const [productId, setProductId] = useState("");
+     const [productName, setProductName] = useState("");
+     const [productDescription, setProductDescription] = useState("");
+
+     useEffect(() => {
+          axios
+               .get(`/product/${pro_id}`)
+               .then((response) => {
+                    console.log(response.data);
+                    setProduct(response.data);
+                    setProductId(response.data.id);
+                    setProductName(response.data.pro_name);
+                    setProductDescription(response.data.pro_description);
+               })
+               .catch((error) => {
+                    console.log(error);
+               });
+     }, []);
+
+
     return(
         <div className="main">
         <div className="main__title">

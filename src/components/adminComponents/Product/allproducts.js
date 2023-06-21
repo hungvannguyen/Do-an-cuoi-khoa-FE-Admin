@@ -1,5 +1,6 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function AllProducts(){ 
@@ -11,7 +12,7 @@ function AllProducts(){
       
     useEffect(() => {
       axios
-      .get(`/product/all/${pages}`)
+      .get(`/product/all/?${pages}`)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data.data);
@@ -86,7 +87,9 @@ function AllProducts(){
                   <td className="table__body-data">{product.quantity}</td>
                   <td className="table__body-data">{product.price} VNĐ</td>
                   <td className="table__body-data"> 
-                    <button className="table__body-btn table__body-btn--edit">Details</button>
+                    <Link to={`/admin/product_details/${product.id}`} className="btn-details">
+                      Details
+                    </Link>
                   </td>
                 </tr>
                 ))}

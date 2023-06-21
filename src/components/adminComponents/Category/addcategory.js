@@ -1,41 +1,111 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
-import { useState,} from "react";
+import { useState, useEffect} from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { clear } from "@testing-library/user-event/dist/clear";
 
 function AddCategory() {
+    const [isValid, setIsValid] = useState(true);
+
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
+
+    const [categoryNameError, setCategoryNameError] = useState("");
+    const [categoryDescriptionError, setCategoryDescriptionError] = useState("");   
     
+    const hanldeInputClick = () => {
+        setCategoryNameError("");
+        setCategoryDescriptionError("");
+    }
+
+    const handleCategoryName = (event) => {
+        setCategoryName(event.target.value);
+        if(!isValid){
+            setIsValid(true);
+            setCategoryNameError("");
+        }
+    };
+
+    const handleCategoryDescription = (event) => {
+        setCategoryDescription(event.target.value);
+        if(!isValid){
+            setIsValid(true);
+            setCategoryDescriptionError("");
+        }
+    };
 
 
-    const addCategory = () => {
-        const categoryData = {
-            cat_name: categoryName,
-            cat_description: categoryDescription,
-        };
-        axios
-            .post("/category/add", categoryData,{
-                headers: {
-                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-                },
-            })
-            .then((response) => {
-                console.log(response.data);
-                setCategoryName("");
-                setCategoryDescription("");
-                window.location.href = "/admin/all_category";
-            })
-            .catch((error) => {
-                console.log(error);
-                toast.error(error.response.data.message);
+    const addCategory = (e) => {
+        e.preventDefault();
+        setIsValid(true);
+        if(!categoryName){
+            setCategoryNameError("Category Name is required");
+            setIsValid(true);
+        }
+        if(!categoryDescription){
+            setCategoryDescriptionError("Category Description is required");
+            setIsValid(true);
+        }
+
+        if(!isValid){
+            const categoryData = {
+                cat_name: categoryName,
+                cat_description: categoryDescription,
+            };
+            axios
+                .post("/category/add", categoryData,{
+                    headers: {
+                        Authorization: "Bearer " + sessionStorage.getItem("token"),
+                    },
+                })
+                .then((response) => {
+                    console.log(response.data);
+     
+                    toast.success("Add Category Success",{
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
+                    });
+                    const redirectInterval = setInterval(() => {
+                        clearInterval(redirectInterval);
+                    window.location.href = "/admin/all_category";
+                    },1500);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }else{
+            toast.error("Please enter all required fields",{
+                position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
             });
+            const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+            },1500);
+        };
     };
 
     return(
     <div>
         <div className="main">
+        <ToastContainer 
+            style={{
+                width: "400px",
+                fontSize: "18px",
+            }} 
+        />
             <div className="main__title">
                 <span className="main__title-text">
                     Add Category
@@ -49,19 +119,35 @@ function AddCategory() {
                     <label className="form__product-id-title">
                         Category Name
                     </label>
-                    <input type="text" readonly className="form__product-id-input form__input--readonly" placeholder="Enter Category Name" 
+                    <input type="text" 
+                        className="form__product-id-input " 
+                        placeholder="Enter Category Name" 
                         value={categoryName}
-                        onChange={(e) => setCategoryName(e.target.value)}
+                        onChange={handleCategoryName}
+                        onClick={hanldeInputClick}
                     />
+                    {categoryNameError && (
+                        <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                            {categoryNameError}
+                        </div>
+                    )}
                 </div>
                 <div className="form__product-cate-id">
                     <label className="form__product-id-title">
                         Category Description
                     </label>
-                    <input type="text" className="form__product-id-input" placeholder="Enter Category Description" 
+                    <input type="text" 
+                        className="form__product-id-input" 
+                        placeholder="Enter Category Description" 
                         value={categoryDescription}
-                        onChange={(e) => setCategoryDescription(e.target.value)}
+                        onChange={handleCategoryDescription}
+                        onClick={hanldeInputClick}
                     />
+                    {categoryDescriptionError && (
+                        <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                            {categoryDescriptionError}
+                        </div>
+                    )}
                 </div> 
                 <div className="form__product-check">
                     <button className="form__product-btn form__input-btn"

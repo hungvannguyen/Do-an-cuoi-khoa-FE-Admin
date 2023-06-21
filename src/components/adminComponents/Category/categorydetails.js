@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 
-function UpdateCategory(){
+function CategoryDetails(){
     const { cat_id } = useParams();
     const [category, setCategory] = useState([]);
     const [categoryId, setCategoryId] = useState("");
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
+    const [initialCategoryName, setInitialCategoryName] = useState("");
+    const [initiaCategoryDescription, setInitialCategoryDescription] = useState("");
 
     useEffect(() => {
         axios
@@ -20,6 +22,8 @@ function UpdateCategory(){
                 setCategoryId(response.data.id);
                 setCategoryName(response.data.cat_name);
                 setCategoryDescription(response.data.cat_description);
+                setInitialCategoryName(response.data.cat_name);
+                setInitialCategoryDescription(response.data.cat_description);
             })
             .catch((error) => {
                 console.log(error);
@@ -42,8 +46,9 @@ function UpdateCategory(){
             )
             .then((response) => {
                 console.log(response.data);
-                setCategoryName("");
-                setCategoryDescription("");
+                setCategory(response.data)
+                setCategoryName(response.data.cat_name); // Cập nhật giá trị mới
+                setCategoryDescription(response.data.cat_description); // Cập nhật giá trị mới
                 window.location.href = "/admin/all_category";
             })
             .catch((error) => {
@@ -76,7 +81,7 @@ function UpdateCategory(){
         <div className="main">
             <div className="main__title">
                 <span className="main__title-text">
-                    Update Category
+                    Category Details
                 </span>
                 <span className="main__title-des">
                     DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -85,16 +90,17 @@ function UpdateCategory(){
             <div className="main__form">
                 <div className="form__product-id">
                     <label className="form__product-id-title">
-                        Category Name
+                        Category Name: <span>{initialCategoryName}</span>
                     </label>
-                    <input type="text" readonly className="form__product-id-input form__input--readonly" placeholder="Enter Category Name" 
+                    <input type="text" readonly className="form__product-id-input " placeholder="Enter Category Name" 
                         value={categoryName}
                         onChange={(e) => setCategoryName(e.target.value)}
+                        onBlur={(e) => setCategoryName(e.target.value)}
                     />
                 </div>
                 <div className="form__product-cate-id">
                     <label className="form__product-id-title">
-                        Category Description
+                        Category Description : <span>{initiaCategoryDescription}</span>
                     </label>
 
                     <input type="text" className="form__product-id-input" placeholder="Enter Category Description" 
@@ -102,13 +108,13 @@ function UpdateCategory(){
                         onChange={(e) => setCategoryDescription(e.target.value)}
                     />
                 </div> 
-                <div className="form__product-check">
+                <div className="form__product-check d-flex">
                     <button className="form__product-btn form__input-btn"
                             onClick={updateCategory}
                     >
                         Update Category
                     </button>
-                    <button className="form__product-btn form__input-btn"
+                    <button className="form__product-btn form__input-btn ms-3"
                             onClick={deleteCategory}
                     >
                         Delete Category
@@ -133,4 +139,4 @@ function UpdateCategory(){
 
 }
 
-export default UpdateCategory;
+export default CategoryDetails;
