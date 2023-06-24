@@ -10,6 +10,7 @@ function CategoryDetails(){
     const [categoryId, setCategoryId] = useState("");
     const [categoryName, setCategoryName] = useState("");
     const [categoryDescription, setCategoryDescription] = useState("");
+    const [initCategoryId, setInitCategoryId] = useState("");
     const [initialCategoryName, setInitialCategoryName] = useState("");
     const [initiaCategoryDescription, setInitialCategoryDescription] = useState("");
 
@@ -19,11 +20,11 @@ function CategoryDetails(){
             .then((response) => {
                 console.log(response.data);
                 setCategory(response.data);
-                setCategoryId(response.data.id);
-                setCategoryName(response.data.cat_name);
-                setCategoryDescription(response.data.cat_description);
+                // setCategoryName(response.data.cat_name);
+                // setCategoryDescription(response.data.cat_description);
                 setInitialCategoryName(response.data.cat_name);
                 setInitialCategoryDescription(response.data.cat_description);
+                setInitCategoryId(response.data.id);
             })
             .catch((error) => {
                 console.log(error);
@@ -31,6 +32,8 @@ function CategoryDetails(){
     }, []);
 
     const updateCategory = () => {
+        console.log("categoryName: ", categoryName);
+        console.log("categoryDescription: ", categoryDescription);
         axios
         .put(
             `/category/update/${cat_id}`,
@@ -41,7 +44,7 @@ function CategoryDetails(){
             {
                 headers: {
                     Authorization: "Bearer " + sessionStorage.getItem("token"),
-                        },
+                },
             }
             )
             .then((response) => {
@@ -89,13 +92,16 @@ function CategoryDetails(){
             </div>
             <div className="main__form">
                 <div className="form__product-id">
+                <label className="form__product-id-title">
+                        Category ID: <span>{initCategoryId}</span>
+                    </label>
                     <label className="form__product-id-title">
                         Category Name: <span>{initialCategoryName}</span>
                     </label>
-                    <input type="text" readonly className="form__product-id-input " placeholder="Enter Category Name" 
+                    <input type="text" className="form__product-id-input " placeholder="Enter Category Name" 
                         value={categoryName}
                         onChange={(e) => setCategoryName(e.target.value)}
-                        onBlur={(e) => setCategoryName(e.target.value)}
+                        
                     />
                 </div>
                 <div className="form__product-cate-id">
