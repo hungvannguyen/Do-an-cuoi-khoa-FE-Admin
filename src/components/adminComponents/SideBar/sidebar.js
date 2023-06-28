@@ -151,15 +151,6 @@ function Sidebar  () {
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
-                    <div className="features__item-func">
-                         <ul className="features__item-func-list">
-                              <li className="features__item-func-list-item">
-                                   <Link to="/admin/reset_password">
-                                        Reset password request
-                                   </Link>
-                              </li>
-                         </ul>
-                    </div>
                </div>
           </div>
      </div>}

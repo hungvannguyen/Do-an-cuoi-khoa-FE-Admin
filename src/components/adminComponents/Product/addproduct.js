@@ -23,7 +23,8 @@ function AddProduct() {
      const [productIsSale, setProductIsSale] = useState("");
      const [importPrice, setImportPrice] = useState("");
      const [exportPrice, setExportPrice] = useState("");
-     const [productSalePercent, setProductSalePercent] = useState("");
+     const [productSalePercent, setProductSalePercent] = useState(0);
+     const [hasSalePercentChanged, setHasSalePercentChanged] = useState(false);
      const [productImage, setProductImage] = useState("");
      const [productImagePreview, setProductImagePreview] = useState("");
 
@@ -132,6 +133,7 @@ function AddProduct() {
 
      const handleProductSalePercent = (event) => {
           setProductSalePercent(event.target.value);
+          setHasSalePercentChanged(true);
           if (!isValid) {
                setIsValid(true);
                setPrdSalePercentError("");
@@ -236,8 +238,14 @@ function AddProduct() {
                setImportPriceError("Import price must be less than export price!");
                setIsValid(true);
           }
+          if (productSalePercent === 0) {
+               setIsValid(false);
+          }
           if (!productSalePercent) {
                setPrdSalePercentError("Please enter product sale percent!");
+               setIsValid(true);
+          }else if (productSalePercent > 100) {
+               setPrdSalePercentError("Sale percent must be less than 100%!");
                setIsValid(true);
           }
           if (!productImage) {
@@ -439,14 +447,25 @@ function AddProduct() {
               <label for="form__product-name-input" className="form__product-name-title">
                    Sale Percent
               </label>
-              <input type="number" 
+              {productIsSale !== "99" && (
+                    <input type="number" 
                     id="form__product-name-input" 
-                    className="form__product-nane-input" 
+                    className={`form__product-id-input ${productIsSale === "99" ? "readonly": ""}`} 
                     placeholder="Enter Sale Percent" 
+                    min={0}
                     value={productSalePercent}
                     onChange={handleProductSalePercent}
                     onClick={hanldeInputClick}
-               />
+               />)}
+              
+               {productIsSale === "99" && (
+                    <input className="form__product-id-input" 
+                    type="number" value="0" 
+                    min={0}
+                    onChange={handleProductSalePercent} 
+                    readOnly
+                    />
+               )}
                {prdSalePercentError && (
                     <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
                          {prdSalePercentError}

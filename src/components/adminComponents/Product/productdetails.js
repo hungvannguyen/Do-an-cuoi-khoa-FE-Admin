@@ -32,6 +32,9 @@ function ProductDetails(){
      const [crCategoryId, setCrCategoryId] = useState("");
      const [crWareHouseId, setCrWareHouseId] = useState("");
      const [crProductId, setCrProductId] = useState("");
+     const [crCity, setCrCity] = useState("");
+     const [crDistrict, setCrDistrict] = useState("");
+     const [crWard, setCrWard] = useState("");
 
      //update
      const [product, setProduct] = useState([]);
@@ -167,7 +170,7 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
-     //api get warehouse info
+     //Api get warehouse all
      useEffect(() => {
           axios
           .get("/warehouse/info",{
@@ -183,13 +186,6 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
-     //So sánh id warehouse
-     useEffect(() => {
-          if(Array.isArray(warehouse)){
-               const matchedWarehouse = warehouse.find(item => item.id === crWareHouseId);
-               setWarehouseInfo(matchedWarehouse);
-          }
-     }, [crWareHouseId, warehouse]);
      //api get product by id
      useEffect(() => {
           axios
@@ -197,6 +193,7 @@ function ProductDetails(){
                .then((response) => {
                     console.log(response.data);
                     setProduct(response.data);
+                    //current data
                     setCrCategoryId(response.data.cat_id);
                     setCrProductName(response.data.name);
                     setCrProductDescription(response.data.description);
@@ -209,6 +206,20 @@ function ProductDetails(){
                     setCrProductIsSale(response.data.is_sale);
                     setCrWareHouseId(response.data.warehouse_id);
                     setCrProductId(response.data.id);
+                    //save data
+                    setCategoryId(response.data.cat_id);
+                    setProductName(response.data.name);
+                    setProductDescription(response.data.description);
+                    setProductQuantity(response.data.quantity);
+                    setImportPrice(response.data.import_price);
+                    setExportPrice(response.data.price);
+                    setProductSalePercent(response.data.sale_percent);
+                    setProductImage(response.data.img_url);
+                    setProductStatus(response.data.status);
+                    setProductIsSale(response.data.is_sale);
+                    setWareHouseId(response.data.warehouse_id);
+
+                    //api get image product
                     axios
                     .get(`/file/img/${response.data.img_url}`, { responseType: "blob" })
                     .then((response) => {
@@ -216,6 +227,29 @@ function ProductDetails(){
                          setImageProduct([imageUrl]);
                          setCrProductImage(imageUrl);
                          setShowCrProductImage(!productImagePreview);
+                    })
+                    .catch((error) => {
+                         console.log(error);
+                    });
+                    //api warehouse info
+                    axios
+                    .get(`/warehouse/info`,{
+                         headers: {
+                              Authorization: "Bearer " + sessionStorage.getItem("token"),
+                         },
+                    })
+                    .then((warehouseresponse) => {
+                         console.log(warehouseresponse.data);
+                         const warehouseInfo = warehouseresponse.data;
+                         if (warehouseInfo.id = response.data.warehouse_id) {
+                              const city = warehouseresponse.data.city;
+                              const district = warehouseresponse.data.district;
+                              const ward = warehouseresponse.data.ward;
+
+                              setCrCity(city);
+                              setCrDistrict(district);
+                              setCrWard(ward);
+                         }
                     })
                     .catch((error) => {
                     console.log(error);
@@ -286,6 +320,11 @@ function ProductDetails(){
           }
           if (!productSalePercent) {
                setPrdSalePercentError("Please enter product sale percent!");
+               setIsValid(true);
+          }else if(productIsSale === 0){
+               setIsValid(true);
+          }else if(productSalePercent > 100){
+               setPrdSalePercentError("Sale percent must be less than 100%!");
                setIsValid(true);
           }
           if (!productImage) {
@@ -551,7 +590,7 @@ function ProductDetails(){
                        Is Sale: <span>{crProductIsSale === 1 ? "Đang sale" : "Không sale"}</span>
                   </label>
                   <select 
-                         className="form__product-id-input" 
+                         className="form__product-price-input" 
                          placeholder="1 is Sale - 0 is Not Sale" 
                          value={productIsSale}
                          onChange={handleProductIsSale}
@@ -570,15 +609,25 @@ function ProductDetails(){
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Sale Percent: <span>{crProductSalePercent}%</span>
-                  </label>
-                  <input type="number" 
-                    id="form__product-name-input" 
-                    className="form__product-nane-input" 
-                    placeholder="Enter Sale Percent" 
-                    value={productSalePercent}
-                    onChange={handleProductSalePercent}
-                    onClick={hanldeInputClick}
-                    />
+                    </label>
+                    {productIsSale !== "99" && (
+                         <input type="number" 
+                         id="form__product-name-input" 
+                         className={`form__product-id-input ${productIsSale === "99" ? "readonly": ""}`} 
+                         placeholder="Enter Sale Percent" 
+                         value={productSalePercent}
+                         onChange={handleProductSalePercent}
+                         onClick={hanldeInputClick}
+                         />
+                    )}
+                    {productIsSale === "99" && (
+                         <input className="form__product-id-input" 
+                         type="number" value="0" 
+                         min={0}
+                         onChange={handleProductSalePercent} 
+                         readOnly
+                         />
+                    )}
                      {prdSalePercentError && (
                          <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
                               {prdSalePercentError}
@@ -587,12 +636,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Warehouse{""}: {crWareHouseId}
-                       <span>
-                         {warehouseInfo &&(
-                              <span>{warehouseInfo.city}</span>
-                         )}
-                       </span>
+                       Warehouse: {crCity},{crDistrict},{crWard}
                   </label>
                   {warehouse && (
                          <select 

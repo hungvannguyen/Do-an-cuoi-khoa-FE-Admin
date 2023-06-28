@@ -1,3 +1,5 @@
+import React from "react";
+import requireAuth from "../../components/adminComponents/CheckLogin/requireAuth";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import Dashboard from "./DashBord/dashbord";
@@ -35,26 +37,26 @@ function Admin() {
             //login
             <Route path="/login" element={<Login />} />
 
-            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/dashboard" element={requireAuth(Dashboard)} />
             //product
-            <Route path="/admin/all_product" element={<AllProduct />} />
-            <Route path="/admin/add_product" element={<AddProduct />} />\
-            <Route path="/admin/product_details/:id" element={<DetailsProduct />} />
+            <Route path="/admin/all_product" element={requireAuth(AllProduct)} />
+            <Route path="/admin/add_product" element={requireAuth(AddProduct )} />\
+            <Route path="/admin/product_details/:id" element={requireAuth(DetailsProduct)} />
             
             //category
-            <Route path="/admin/all_category" element={<AllCategory />} />
-            <Route path="/admin/add_category" element={<AddCategory />} />
-            <Route path="/admin/category_details/:cat_id" element={<DetailsCategory />} />
+            <Route path="/admin/all_category" element={requireAuth(AllCategory)} />
+            <Route path="/admin/add_category" element={requireAuth(AddCategory)} />
+            <Route path="/admin/category_details/:cat_id" element={requireAuth(DetailsCategory)} />
 
             //employee
-            <Route path="/admin/all_employee" element={<AllEmployee />} />
-            <Route path="/admin/add_employee" element={<AddEmployee />} />
+            <Route path="/admin/all_employee" element={requireAuth(AllEmployee)} />
+            <Route path="/admin/add_employee" element={requireAuth(AddEmployee)} />
 
             //Order
-            <Route path="/admin/all_order" element={<AllOrder />} />
+            <Route path="/admin/all_order" element={requireAuth(AllOrder)} />
 
             //Customer
-            <Route path="/admin/all_customer" element={<AllCustomer />} />
+            <Route path="/admin/all_customer" element={requireAuth(AllCustomer)} />
             <Route path="/admin/reser_request" element={<ResetPass />} />
         </Routes>
         <Footer />
