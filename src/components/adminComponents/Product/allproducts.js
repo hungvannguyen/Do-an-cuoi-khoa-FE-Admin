@@ -12,7 +12,7 @@ function AllProducts(){
       
     useEffect(() => {
       axios
-      .get(`/product/all/?${pages}`)
+      .get(`/product/all/?page=${pages}`)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data.data);
@@ -66,26 +66,32 @@ function AllProducts(){
             <table className="datatable__table-frame">
               <thead className="table__head">
                 <tr>
+                  <th className="table__head-item">ID</th>
                   <th className="table__head-item">Name</th>
                   <th className="table__head-item">Description</th>
-                  <th className="table__head-item">image</th>
-                  <th className="table__head-item">is sale</th>
-                  <th className="table__head-item">sale percent</th>
-                  <th className="table__head-item">quantity</th>
-                  <th className="table__head-item">price</th>
+                  <th className="table__head-item">Image</th>
+                  <th className="table__head-item">Is sale</th>
+                  <th className="table__head-item">Sale percent</th>
+                  <th className="table__head-item">Quantity</th>
+                  <th className="table__head-item">Import price</th>
+                  <th className="table__head-item">Price</th>
+                  <th className="table__head-item">Is Sell</th>
                   <th className="table__head-item">Action</th>
                 </tr>
               </thead>
               <tbody className="table__body">
                 {products.map((product) => (
                 <tr className="table__body-item">
+                  <td className="table__body-data">{product.id}</td>
                   <td className="table__body-data">{product.name}</td>
                   <td className="table__body-data">{product.description}</td>
                   <td className="table__body-data">{product.img_url}</td>
-                  <td className="table__body-data">{product.is_sale}</td>
-                  <td className="table__body-data">{product.sale_percent}</td>
+                  <td className="table__body-data">{product.is_sale === 1 ? "Sale" : "Not Sale"}</td>
+                  <td className="table__body-data">{product.sale_percent}%</td>
                   <td className="table__body-data">{product.quantity}</td>
+                  <td className="table__body-data">{product.import_price} VNĐ</td>
                   <td className="table__body-data">{product.price} VNĐ</td>
+                  <td className="table__body-data">{product.status === 1 ? "Sell" : "Not Sell"}</td>
                   <td className="table__body-data"> 
                     <Link to={`/admin/product_details/${product.id}`} className="btn-details">
                       Details

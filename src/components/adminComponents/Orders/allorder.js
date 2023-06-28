@@ -1,10 +1,34 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 function AllOders(){
+
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("/order/admin/all",{
+          headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+            console.log(response.data);
+            setOrders(response.data.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+
     return(
         <div className="main">
         <div className="main__title">
-          <span className="main__title-text">All Category</span>
+          <span className="main__title-text">All Order</span>
           <span className="main__title-des">
             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
           </span>
@@ -25,31 +49,41 @@ function AllOders(){
             <table className="datatable__table-frame">
               <thead className="table__head">
                 <tr>
+                  <th className="table__head-item">Id</th>
                   <th className="table__head-item">Name</th>
-                  <th className="table__head-item">Position</th>
-                  <th className="table__head-item">Office</th>
-                  <th className="table__head-item">Age</th>
-                  <th className="table__head-item">Start date</th>
-                  <th className="table__head-item">Salary</th>
+                  <th className="table__head-item">Phone</th>
+                  <th className="table__head-item">Address</th>
+                  <th className="table__head-item">Note</th>
+                  <th className="table__head-item">Status</th>
+                  <th className="table__head-item">Total Price</th>
+                  <th className="table__head-item">Payment Status</th>
+                  <th className="table__head-item">Payment Type</th>
+                  <th className="table__head-item">Action</th>
                 </tr>
               </thead>
               <tbody className="table__body">
-                <tr className="table__body-item">
-                  <td className="table__body-data">Airi Satou</td>
-                  <td className="table__body-data">Accountant</td>
-                  <td className="table__body-data">Tokyo</td>
-                  <td className="table__body-data">33</td>
-                  <td className="table__body-data">2008/11/28</td>
-                  <td className="table__body-data">$162,700</td>
+                {orders.map((order) => (
+                  <tr className="table__body-item">
+                    <td className="table__body-data">{order.id}</td>
+                    <td className="table__body-data">{order.name}</td>
+                    <td className="table__body-data">{order.phone_number}</td>
+                    <td className="table__body-data">{order.address}</td>
+                    <td className="table__body-data">{order.note}</td>
+                    <td className="table__body-data">{order.status}</td>
+                    <td className="table__body-data">
+                        {order.products.map((product) => (
+                          <span key={product.prd_id}>{product.total_price}</span>
+                        ))}
+                    </td>
+                    <td className="table__body-data">{order.payment_status}</td>
+                    <td className="table__body-data">{order.payment_type}</td>
+                    <td className="table__body-data">
+                      <Link to={`/order/info/${order.id}`} className="table__body-link">
+                        Details
+                      </Link>
+                    </td>
                 </tr>
-                <tr className="table__body-item">
-                  <td className="table__body-data">Angelica Ramos</td>
-                  <td className="table__body-data">Chief Executive Officer (CEO)</td>
-                  <td className="table__body-data">London</td>
-                  <td className="table__body-data">47</td>
-                  <td className="table__body-data">2009/10/20</td>
-                  <td className="table__body-data">$1,200,300</td>
-                </tr>
+                ))}
               </tbody>
             </table>
           </div>

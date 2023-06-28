@@ -180,7 +180,7 @@ function AddProduct() {
 
      const addProduct = (e) => {
           e.preventDefault();
-          setIsValid(true);
+          setIsValid(false);
           console.log("categoryId:", categoryId);
           console.log("productName:", productName);
           console.log("productStatus:", productStatus);
@@ -249,7 +249,7 @@ function AddProduct() {
                setIsValid(true);
           }
 
-          if(!isValid) {
+          if(isValid) {
                
 
                const productData = {
@@ -327,7 +327,6 @@ function AddProduct() {
                const fileName = response.data.filename;
                console.log(fileName);
                setProductImage(fileName);
-
                setProductImagePreview(URL.createObjectURL(file));
                setImgFileName(fileName);
           }
@@ -402,12 +401,12 @@ function AddProduct() {
               </label>
               <select type="number" 
                     className="form__product-id-input" 
-                    placeholder="1 is Sell - 0 is Not Sell" 
                     value={productStatus}
                     onChange={handleProductStatus}
                     onClick={hanldeInputClick}
                >
-                    <option value="0">Not Sell</option>
+                    <option value="">Choose Product Status</option>
+                    <option value="99">Not Sell</option>
                     <option value="1">Sell</option>
                </select>
                {prdStatusError && (
@@ -422,12 +421,12 @@ function AddProduct() {
               </label>
               <select 
                     className="form__product-id-input" 
-                    placeholder="1 is Sale - 0 is Not Sale" 
                     value={productIsSale}
                     onChange={handleProductIsSale}
                     onClick={hanldeInputClick}
                >
-                    <option value="0">Not Sale</option>
+                    <option value="">Choose Is Sale</option>
+                    <option value="99">Not Sale</option>
                     <option value="1">Sale</option>
                </select>
                {prdIsSaleError && (
@@ -482,6 +481,7 @@ function AddProduct() {
                     id="form__product-quantity-input" 
                     className="form__product-quantity-input" 
                     placeholder="Enter Product Quantity" 
+                    min={0}
                     value={productQuantity}
                     onChange={handleProductQuantity}
                     onClick={hanldeInputClick}
@@ -519,6 +519,7 @@ function AddProduct() {
                          id="form__product-price-input" 
                          className="form__product-price-input" 
                          placeholder="Enter Product Import Price" 
+                         min={0}
                          value={importPrice}
                          onChange={handleImportPrice}
                          onClick={hanldeInputClick}
@@ -543,6 +544,7 @@ function AddProduct() {
                          id="form__product-price-input" 
                          className="form__product-price-input" 
                          placeholder="Enter Product Export Price" 
+                         min={0}
                          value={exportPrice}
                          onChange={handleExportPrice}
                          onClick={hanldeInputClick}

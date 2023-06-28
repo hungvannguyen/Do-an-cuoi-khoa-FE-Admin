@@ -2,12 +2,18 @@ import  "../../../pages/admin/Styles/css/allCss.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 function ProductDetails(){
      const { id } = useParams();
-     const [imgFileName, setImgFileName] = useState("");
+
      const [importExportError, setImportExportError] = useState(""); 
      const [isValid, setIsValid] = useState(true);
+     const [imageProduct, setImageProduct] = useState([]);
+                               // Đường dẫn hình ảnh hiện tại
+     const [showCrProductImage, setShowCrProductImage] = useState(true);
+
+
      //getcategory
      const [category, setCategory] = useState([]);
      //getwarehouse
@@ -55,6 +61,7 @@ function ProductDetails(){
      const [prdSalePercentError, setPrdSalePercentError] = useState("");
      const [prdImageError, setPrdImageError] = useState("");
      
+     const [imgFileName, setImgFileName] = useState("");
 
      const hanldeInputClick = () => {
           setCatIdError("");
@@ -147,7 +154,7 @@ function ProductDetails(){
                setPrdImageError("");
           }
      };
-
+     //Api get category all
      useEffect(() => {   
           axios
           .get("/category/all")
@@ -160,7 +167,7 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
-
+     //api get warehouse info
      useEffect(() => {
           axios
           .get("/warehouse/info",{
@@ -176,14 +183,14 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
-
+     //So sánh id warehouse
      useEffect(() => {
           if(Array.isArray(warehouse)){
                const matchedWarehouse = warehouse.find(item => item.id === crWareHouseId);
                setWarehouseInfo(matchedWarehouse);
           }
      }, [crWareHouseId, warehouse]);
-
+     //api get product by id
      useEffect(() => {
           axios
                .get(`/product/${id}`)
@@ -202,15 +209,39 @@ function ProductDetails(){
                     setCrProductIsSale(response.data.is_sale);
                     setCrWareHouseId(response.data.warehouse_id);
                     setCrProductId(response.data.id);
+                    axios
+                    .get(`/file/img/${response.data.img_url}`, { responseType: "blob" })
+                    .then((response) => {
+                         const imageUrl = URL.createObjectURL(response.data);
+                         setImageProduct([imageUrl]);
+                         setCrProductImage(imageUrl);
+                         setShowCrProductImage(!productImagePreview);
+                    })
+                    .catch((error) => {
+                    console.log(error);
+                    });
                })
                .catch((error) => {
                     console.log(error);
                });
      }, []);
-
+     //api update product
      const updateProduct = (e) => {
           e.preventDefault();
-          setIsValid(true);
+          setIsValid(false);
+          console.log("categoryId:", categoryId);
+          console.log("productName:", productName);
+          console.log("productStatus:", productStatus);
+          console.log("wareHouseId:", wareHouseId);
+          console.log("productDescription:", productDescription);
+          console.log("productQuantity:", productQuantity);
+          console.log("productIsSale:", productIsSale);
+          console.log("importPrice:", importPrice);
+          console.log("exportPrice:", exportPrice);
+          console.log("productSalePercent:", productSalePercent);
+          console.log("productImage:", productImage);
+          console.log("imgFileName:", imgFileName);
+          console.log("-----------------------");
           if (!categoryId) {
                setCatIdError("Please choose category!");
                setIsValid(true);
@@ -242,38 +273,86 @@ function ProductDetails(){
           if (!importPrice) {
                setImportPriceError("Please enter import price!");
                setIsValid(true);
+          }else if(importPrice > exportPrice){
+               setImportPriceError("Import price must be less than export price!");
+               setIsValid(true);
+          }
+          if (!exportPrice) {
+               setExportPriceError("Please enter export price!");
+               setIsValid(true);
+          }else if(importPrice > exportPrice){
+               setImportPriceError("Import price must be less than export price!");
+               setIsValid(true);
+          }
+          if (!productSalePercent) {
+               setPrdSalePercentError("Please enter product sale percent!");
+               setIsValid(true);
           }
           if (!productImage) {
                setPrdImageError("Please choose product image!");
                setIsValid(true);
           }
-          axios
-          .put(`/product/update/${id}`, {
-               name: productName,
-               description: productDescription,
-               quantity: productQuantity,
-               import_price: importPrice,
-               price: exportPrice,
-               sale_percent: productSalePercent,
-               img_url: productImage,
-               status: productStatus,
-               is_sale: productIsSale,
-               cat_id: categoryId,
-               warehouse_id: wareHouseId,
-          },{
-               headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-               },
-          })
-          .then((response) => {
-               console.log(response.data);
-               window.location.href = "/admin/product";
-          })
-          .catch((error) => {
-               console.log(error);
-          });
-     };
+          if(importPrice > exportPrice) {
+               setImportPriceError("Import price must be less than export price!");
+               setIsValid(true);
+          }
 
+          if(isValid){
+               axios
+               .put(`/product/update/${id}`, {
+                    name: productName,
+                    description: productDescription,
+                    quantity: productQuantity,
+                    import_price: importPrice,
+                    price: exportPrice,
+                    sale_percent: productSalePercent,
+                    img_url: productImage,
+                    status: productStatus,
+                    is_sale: productIsSale,
+                    cat_id: categoryId,
+                    warehouse_id: wareHouseId,
+               },{
+                    headers: {
+                         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                    },
+               })
+               .then((response) => {
+                    console.log(response.data);
+                    toast.success("Update product successfully!",{
+                         position: "bottom-right",
+                         autoClose: 2000,
+                         hideProgressBar: true,
+                         closeOnClick: true,
+                         pauseOnHover: true,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "colored"
+                    });
+                    const redirectInterval = setInterval(() => {
+                         clearInterval(redirectInterval);
+                         window.location.href = "/admin/all_product";
+                    },1500);     
+               })
+               .catch((error) => {
+                    console.log(error);
+               });
+          }else{
+               toast.error("Please enter all required fields!",{
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+               });
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+               },1500);
+          };
+     };
+     //api upload image
      const handleImageUpload = (event) => {
           const file = event.target.files[0];
           const formData = new FormData();
@@ -287,17 +366,43 @@ function ProductDetails(){
                const fileName = response.data.filename;
                console.log(fileName);
                setProductImage(fileName);
-
+               setCrProductImage(fileName);
                setProductImagePreview(URL.createObjectURL(file));
                setImgFileName(fileName);
+               setShowCrProductImage(!productImagePreview);
           }
           ).catch((error) => {
                console.log(error);
           });
      };
+     //api delete product
+     const deleteProduct = () => {
+          const confirmBox = window.confirm("Do you really want to delete this product?");
+          if(confirmBox === true){
+               axios
+               .delete(`/product/delete/${id}`,{
+                    headers: {
+                         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                    },
+               })
+               .then((response) => {
+                    console.log(response.data);
+                    window.location.href = "/admin/product";
+               })
+               .catch((error) => {
+                    console.log(error);
+               });
+          }
+     };
 
     return(
         <div className="main">
+          <ToastContainer 
+               style={{
+                    width: "400px",
+                    fontSize: "18px",
+               }} 
+          />
         <div className="main__title">
              <span className="main__title-text">
                    Product Details
@@ -316,106 +421,242 @@ function ProductDetails(){
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Product Name: <span>{crProductName}</span>
-                  </label>
-                  <input type="text" className="form__delete-id-input" placeholder="Enter Product ID" />
+                    </label>
+                    <input type="text" 
+                         id="form__product-name-input" 
+                         className="form__product-nane-input" 
+                         placeholder="Enter Product Name" 
+                         value={productName}
+                         onChange={handleProductName}
+                         onClick={hanldeInputClick}
+                    />
+                    {prdNameError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {prdNameError}
+                         </div>
+                    )}
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Product Discription: <span>{crProductDescription}</span>
-                  </label>
-                  <input type="text" className="form__delete-id-input" placeholder="Enter Product ID" />
+                    </label>
+                    <input type="text" 
+                         id="form__product-quantity-input" 
+                         className="form__product-quantity-input" 
+                         placeholder="Enter Product Description" 
+                         value={productDescription}
+                         onChange={handleProductDescription}
+                         onClick={hanldeInputClick}
+                    />
+                    {prdDesError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {prdDesError}
+                         </div>
+                    )}
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Product Quantity: <span>{crProductQuantity}</span>
                   </label>
-                  <input type="number" className="form__delete-id-input" placeholder="Enter Product ID" />
+                  <input type="number" 
+                    id="form__product-quantity-input" 
+                    className="form__product-quantity-input" 
+                    placeholder="Enter Product Quantity" 
+                    min={0}
+                    value={productQuantity}
+                    onChange={handleProductQuantity}
+                    onClick={hanldeInputClick}
+              />
+               {prdQuantityError && (
+                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                         {prdQuantityError}
+                    </div>
+               )}
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Product status: <span>{crProductStatus === 1 ? "Đang bán" : "Không bán"}</span>
-                  </label>
-                  <input type="text" className="form__delete-id-input" placeholder="Enter Product ID" />
+                    </label>
+                    <select type="number" 
+                         className="form__product-id-input" 
+                         placeholder="1 is Sell - 0 is Not Sell" 
+                         value={productStatus}
+                         onChange={handleProductStatus}
+                         onClick={hanldeInputClick}
+                    >
+                         <option value="">Choose Status</option>
+                         <option value="99">Not Sell</option>
+                         <option value="1">Sell</option>
+                    </select>
+                    {prdStatusError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>     
+                              {prdStatusError}
+                         </div>
+                    )}
                </div>
-          </div>
-          <div className="col-lg-4">
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product price export: <span>{crExportPrice}</span>
+                       Product Import price: <span>{crImportPrice} VND</span>
                     </label>
-                    <input type="text" className="form__delete-id-input" placeholder="Enter Product ID" />
+                    <input type="number" 
+                         id="form__product-price-input" 
+                         className="form__product-price-input" 
+                         placeholder="Enter Product Import Price" 
+                         min={0}
+                         value={importPrice}
+                         onChange={handleImportPrice}
+                         onClick={hanldeInputClick}
+                    />  
+                    {importPriceError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {importPriceError}
+                         </div>
+                    )}
+                    {importExportError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {importExportError}
+                         </div>
+                    )}
+               </div>
+               
+          </div>
+          <div className="col-lg-4">
+          <div className="form__product-price">
+                    <label for="form__product-price-input" className="form__product-price-title">
+                         Product Export Price: <span>{crExportPrice} VND</span>
+                    </label>
+                    <input type="number" 
+                         id="form__product-price-input" 
+                         className="form__product-price-input" 
+                         placeholder="Enter Product Export Price" 
+                         min={0}
+                         value={exportPrice}
+                         onChange={handleExportPrice}
+                         onClick={hanldeInputClick}
+                    />    
+                    {exportPriceError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {exportPriceError}
+                         </div>
+                    )}
+                    {importExportError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {importExportError}
+                         </div>
+                    )}
+
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Is Sale: <span>{crProductIsSale === 1 ? "Đang sale" : "Không sale"}</span>
                   </label>
-                  <input type="text" className="form__delete-id-input" placeholder="Enter Product ID" />
+                  <select 
+                         className="form__product-id-input" 
+                         placeholder="1 is Sale - 0 is Not Sale" 
+                         value={productIsSale}
+                         onChange={handleProductIsSale}
+                         onClick={hanldeInputClick}
+                    >
+                         <option value="">Choose Sale</option>
+                         <option value="99">Not Sale</option>
+                         <option value="1">Sale</option>
+                    </select>
+                    {prdIsSaleError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {prdIsSaleError}
+                         </div>
+                    )}
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Sale Percent: <span>{crProductSalePercent}%</span>
                   </label>
-                  <input type="text" className="form__delete-id-input" placeholder="Enter Product ID" />
+                  <input type="number" 
+                    id="form__product-name-input" 
+                    className="form__product-nane-input" 
+                    placeholder="Enter Sale Percent" 
+                    value={productSalePercent}
+                    onChange={handleProductSalePercent}
+                    onClick={hanldeInputClick}
+                    />
+                     {prdSalePercentError && (
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              {prdSalePercentError}
+                         </div>
+                    )}
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Warehouse{""}: {crWareHouseId}
                        <span>
                          {warehouseInfo &&(
-                              <span>{warehouseInfo.city},{warehouseInfo.district},{warehouseInfo.ward}</span>
+                              <span>{warehouseInfo.city}</span>
                          )}
                        </span>
                   </label>
                   {warehouse && (
-              <select 
-                    readonly className="form__product-id-input" 
-                    value={wareHouseId}
-                    onChange={handleWareHouseId}
-                    onClick={hanldeInputClick}
-              >
-                    <option value="">Choose Warehouse</option>
-                    <option value={warehouse.id}>
-                         {warehouse.city},{warehouse.district},{warehouse.ward}
-                    </option>
-                 </select>
+                         <select 
+                              readonly className="form__product-id-input" 
+                              value={wareHouseId}
+                              onChange={handleWareHouseId}
+                              onClick={hanldeInputClick}
+                         >
+                              <option value="">Choose Warehouse</option>
+                              <option value={warehouse.id}>
+                                   {warehouse.city},{warehouse.district},{warehouse.ward}
+                              </option>
+                         </select>
+                    )}
+                    {whIdError && (
+                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                         {whIdError}
+                    </div>
                )}
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Category <span>{crWareHouseId}</span>
+                       Category <span>{crCategoryId}</span>
                   </label>
-                  <select value={categoryId} onChange={handleCategoryId} className="form__product-id-input">
-                    <option value="">Choose Category</option>
-                         {category.map((category) => (
-                              <option key={category.id} value={category.id}>
-                                   {category.cat_name}
-                              </option>
-                         ))}
-               </select>
+                    <select value={categoryId} onChange={handleCategoryId} className="form__product-id-input">
+                         <option value="">Choose Category</option>
+                              {category.map((category) => (
+                                   <option key={category.id} value={category.id}>
+                                        {category.cat_name}
+                                   </option>
+                              ))}
+                    </select>
+               {catIdError && (
+                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                         {catIdError}
+                    </div>
+               )}
                </div>
           </div>
-          <div className="col-lg-4">
+          <div className="col-lg-4 d-flex flex-column">
                <label className="form__product-id-title">
                     Product Image
                </label>
                <input type="file" onChange={handleImageUpload}/>
                <input type="text" value={imgFileName} onChange={handleProductImage} style={{display:"none"}} />
+               {showCrProductImage && crProductImage && (
+                    <img src={crProductImage} width="80%" alt="" />
+               )}
                {productImagePreview && (
-               <img src={productImagePreview} width="80%" alt="Preview_image" />)}
-               {prdImageError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {prdImageError}
-                    </div>
-               )}             
+                    <img src={productImagePreview} width="80%" alt="Preview_image" />
+               )}          
           </div>
           <div className="form__category-check col-lg-12 d-flex">
                <div className="form__category-check">
-                    <button className="form__category-btn form__input-btn">
+                    <button className="form__category-btn form__input-btn"
+                         onClick={updateProduct}
+                    >
                          Update
                     </button>
                </div>
                <div className="form__category-check ms-3">
-                    <button className="form__category-btn form__input-btn">
+                    <button className="form__category-btn form__input-btn"
+                         onClick={deleteProduct}
+                    >
                          Delete
                     </button>
                </div>

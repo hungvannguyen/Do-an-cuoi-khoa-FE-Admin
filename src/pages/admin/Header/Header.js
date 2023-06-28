@@ -1,7 +1,19 @@
 import  "../Styles/css/allCss.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 
 function Header () {
+    let hasSessionData = sessionStorage.getItem("token") !== null;
+
+    //Logout    
+    const handleLogout = () => {
+        sessionStorage.removeItem("token");
+        hasSessionData = false;
+        window.location.href = "http://localhost:3000/";
+    };
+
+
     return(
         <header className="admin-header">
           <div className="header__welcome">
@@ -15,8 +27,8 @@ function Header () {
               </p>
           </div>
           <div className="header__account">
-                <div className="Logout">
-                    <span className="Logout-text">
+                <div className="Logout me-3" >
+                    <span className="Logout-text" onClick={handleLogout} style={{cursor:"pointer"}}>
                         Đăng xuất
                     </span>
                 </div>

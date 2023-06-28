@@ -128,17 +128,6 @@ function CategoryDetails(){
                 </div>
             </div>
         </div>
-        <div className="action">
-          <div className="action__main">
-               <div className="action__title">
-                    <i className="action__title-icon"></i>
-                    <span className="action__title-text">
-                         
-                    </span>
-               </div>
-          </div>
-
-     </div>
     </div>
 
     );

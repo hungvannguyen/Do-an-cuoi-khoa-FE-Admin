@@ -113,7 +113,7 @@ function Sidebar  () {
                     <div className="features__item-func">
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
-                                   <Link to="/admin/all_bill">
+                                   <Link to="/admin/all_order">
                                         All Order
                                    </Link>
                               </li>
