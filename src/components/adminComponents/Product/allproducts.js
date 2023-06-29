@@ -2,13 +2,16 @@ import  "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReactModal from 'react-modal';
 
 function AllProducts(){ 
   const [products, setProducts] = useState([]);
   const [pages, setPages] = useState(1);
   const [currentPage, setCurrentPage] = useState();
   const [totalPages, setTotalPages] = useState();
- 
+  const [quantityValue, setQuantityValue] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [idSave, setIdSave] = useState("");
       
     useEffect(() => {
       axios
@@ -42,8 +45,42 @@ function AllProducts(){
       return number.toLocaleString("vi-VN");
     };
 
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    const closeModal = () => {
+      setIsModalOpen(false);
+      setQuantityValue("");
+    };
+
+    const handleIdSave = (e) => {
+      setIdSave(e.target.value);
+    };
+
+    const handleQuantityAdd = () => {
+      const confirmAdd = window.confirm("Are you sure to add quantity?");
+      console.log(idSave);
+      console.log(quantityValue);
+      if (confirmAdd) {
+      axios
+      .put(`/product/add_quantity?prd_id=${idSave}&quantity=${quantityValue}`,{
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        closeModal();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      }
+    };
+
     return(   
-       <div className="main">
+      <div className="main">
         <div className="main__title">
           <span className="main__title-text">All Category</span>
           <span className="main__title-des">
@@ -81,7 +118,7 @@ function AllProducts(){
               </thead>
               <tbody className="table__body">
                 {products.map((product) => (
-                <tr className="table__body-item">
+                <tr className="table__body-item" key={product.id}>
                   <td className="table__body-data">{product.id}</td>
                   <td className="table__body-data">{product.name}</td>
                   <td className="table__body-data">{product.description}</td>
@@ -93,9 +130,21 @@ function AllProducts(){
                   <td className="table__body-data">{product.price} VNĐ</td>
                   <td className="table__body-data">{product.status === 1 ? "Sell" : "Not Sell"}</td>
                   <td className="table__body-data"> 
-                    <Link to={`/admin/product_details/${product.id}`} className="btn-details">
-                      Details
-                    </Link>
+                    <button className="btn-edit ">                    
+                      <Link to={`/admin/product_details/${product.id}`} className="btn-text">
+                        Details
+                      </Link>
+                    </button>
+                    <button
+                      className="btn-edit ms-3"
+                      value={product.id}
+                      onClick={(e) => {
+                        handleIdSave(e);
+                        openModal();
+                      }}
+                    >
+                      Add Quantity
+                    </button>
                   </td>
                 </tr>
                 ))}
@@ -123,9 +172,33 @@ function AllProducts(){
               </ul>
             </div>
           </div>
+          <div> 
+        <ReactModal isOpen={isModalOpen} onRequestClose={closeModal}
+            className="react_modal ReactModal__Content"
+        >
+        <h3 className="d-lex justify-content-center form__product-id-title text-center">Enter Quantity</h3>
+        <div className="d-flex flex-column ">
+          <input type="number" 
+            value={quantityValue} 
+            onChange={(e) => setQuantityValue(e.target.value)} 
+            className="form__input-reactmodal"
+            min={0}
+            max={50}
+            />  
+          <div className="d-flex justify-content-around mt-4">
+            <button onClick={handleQuantityAdd} className="form__input-btn">Add</button>
+            <button onClick={closeModal} className="form__input-btn">Cancel</button>
+          </div>
         </div>
+        
+        
+          </ReactModal>
+        </div>
+        </div>
+        
       </div>
+      
     );
-}
+  };
 
 export default AllProducts;

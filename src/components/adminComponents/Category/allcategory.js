@@ -67,9 +67,11 @@ function AllCategory() {
                                  <td className="table__body-data">{category.cat_name}</td>
                                  <td className="table__body-data">{category.cat_description}</td>
                                  <td className="table__body-data">
-                                   <Link to={`/admin/category_details/${category.id}`} className="btn-details">
-                                        Details
-                                   </Link>
+                                   <button className="btn-edit">
+                                        <Link to={`/admin/category_details/${category.id}`} className="btn-text">
+                                             Details
+                                        </Link>
+                                   </button>
                                  </td>
                             </tr>
                          ))}                       
@@ -77,7 +79,7 @@ function AllCategory() {
                   </table>
              </div>
              <div className="datatable__footer">
-                  <div className="datatable__footer-description">
+                  {/* <div className="datatable__footer-description">
                        <span className="datatable__footer-description-text">
                             Showing 1 to 10 of 57 entries
                        </span>
@@ -93,7 +95,7 @@ function AllCategory() {
                             <li className="datatable__footer-list-item">6</li>
                             <li className="datatable__footer-list-item">Next</li>
                        </ul>
-                  </div>
+                  </div> */}
              </div>
         </div>
    </div>

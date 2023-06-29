@@ -279,3 +279,35 @@ body{
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+.react_modal{
+    width: 400px;
+    height: 250px;
+    position: absolute;
+    top:40%;
+    left: 45%;
+    border: 2px solid rgb(204, 204, 204);
+    background: rgb(255, 255, 255);
+    overflow: auto;
+    border-radius: 4px;
+    outline: none;
+    padding: 20px;
+    z-index: 2;
+    
+}
+
+.ReactModal__Overlay{
+    z-index: 12;
+}
+
+.form__input-reactmodal{
+    margin-top: 12px;
+    height: 44px;
+    padding: 6px 12px;
+    font-size: 1.4rem;
+    outline: none;
+    border-radius: 12px;
+    border: 1px solid #7FACD6;
+    width: 360px;
+    color: #333;
+}
