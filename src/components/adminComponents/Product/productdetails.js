@@ -13,6 +13,8 @@ function ProductDetails(){
                                // Đường dẫn hình ảnh hiện tại
      const [showCrProductImage, setShowCrProductImage] = useState(true);
 
+     const [importPriceInput, setImportPriceInput] = useState("");
+
 
      //getcategory
      const [category, setCategory] = useState([]);
@@ -65,6 +67,11 @@ function ProductDetails(){
      const [prdImageError, setPrdImageError] = useState("");
      
      const [imgFileName, setImgFileName] = useState("");
+
+     // Format number
+     const formatNumber = (number) => {
+                    return number.toLocaleString("vi-VN");
+     };
 
      const hanldeInputClick = () => {
           setCatIdError("");
@@ -186,6 +193,7 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
+
      //api get product by id
      useEffect(() => {
           axios
@@ -414,25 +422,6 @@ function ProductDetails(){
                console.log(error);
           });
      };
-     //api delete product
-     const deleteProduct = () => {
-          const confirmBox = window.confirm("Do you really want to delete this product?");
-          if(confirmBox === true){
-               axios
-               .delete(`/product/delete/${id}`,{
-                    headers: {
-                         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-                    },
-               })
-               .then((response) => {
-                    console.log(response.data);
-                    window.location.href = "/admin/product";
-               })
-               .catch((error) => {
-                    console.log(error);
-               });
-          }
-     };
 
     return(
         <div className="main">
@@ -535,7 +524,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product Import price: <span>{crImportPrice} VND</span>
+                       Product Import price: <span>{formatNumber(crImportPrice)} VND</span>
                     </label>
                     <input type="number" 
                          id="form__product-price-input" 
@@ -562,7 +551,7 @@ function ProductDetails(){
           <div className="col-lg-4">
           <div className="form__product-price">
                     <label for="form__product-price-input" className="form__product-price-title">
-                         Product Export Price: <span>{crExportPrice} VND</span>
+                         Product Export Price: <span>{formatNumber(crExportPrice)} VND</span>
                     </label>
                     <input type="number" 
                          id="form__product-price-input" 
@@ -695,13 +684,6 @@ function ProductDetails(){
                          onClick={updateProduct}
                     >
                          Update
-                    </button>
-               </div>
-               <div className="form__category-check ms-3">
-                    <button className="form__category-btn form__input-btn"
-                         onClick={deleteProduct}
-                    >
-                         Delete
                     </button>
                </div>
           </div>

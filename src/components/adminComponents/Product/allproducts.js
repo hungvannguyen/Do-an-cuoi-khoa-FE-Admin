@@ -28,8 +28,19 @@ function AllProducts(){
       .catch((error) => {
         console.log(error);
       });
-    }, [pages]);
+    }, [pages, quantityValue]);
 
+    const handlePreviousPage = () => {
+      if (pages > 1) {
+        setCurrentPage(pages - 1);
+        setPages(pages - 1);
+      } 
+    };
+    
+    const handleNextPage = () => {
+      setCurrentPage(pages + 1);
+      setPages(pages + 1);
+      }
 
     const handleFirstPage = () => {
       setCurrentPage(1);
@@ -40,6 +51,36 @@ function AllProducts(){
       setCurrentPage(totalPages);
       setPages(totalPages);
     };
+
+    const handlePageChange = (pages) => {
+      // setLoading(true);
+      setPages(pages);
+      setCurrentPage(pages);
+    };
+
+    // Hàm render phân trang
+const renderPagination = () => {
+  const pageNumbers = [];
+
+  // Tạo một mảng chứa các số trang từ 1 đến totalPages
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <>
+      {pageNumbers.map((pageNumber) => (
+        <li
+          className={`datatable__footer-list-item ${currentPage === pageNumber ? 'active' : ''}`}
+          key={pageNumber}
+          onClick={() => handlePageChange(pageNumber)}
+        >
+          {pageNumber}
+        </li>
+      ))}
+    </>
+  );
+};
 
     const formatNumber = (number) => {
       return number.toLocaleString("vi-VN");
@@ -64,10 +105,10 @@ function AllProducts(){
       console.log(quantityValue);
       if (confirmAdd) {
       axios
-      .put(`/product/add_quantity?prd_id=${idSave}&quantity=${quantityValue}`,{
+      .post(`/product/add_quantity?prd_id=${idSave}&quantity=${quantityValue}`,{
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
+      },
       })
       .then((response) => {
         console.log(response.data);
@@ -123,12 +164,36 @@ function AllProducts(){
                   <td className="table__body-data">{product.name}</td>
                   <td className="table__body-data">{product.description}</td>
                   <td className="table__body-data">{product.img_url}</td>
-                  <td className="table__body-data">{product.is_sale === 1 ? "Sale" : "Not Sale"}</td>
+                  <td className="table__body-data">
+                    {(() =>{
+                      if(product.is_sale === 1){
+                        return <span style={{color: 'green'}}>Sale</span>
+                      }else if (product.is_sale === 99){
+                        return <span style={{color: 'red'}}>Not Sale</span>
+                      }else{
+                        return <span ></span>
+                      }
+                    })()}
+                  </td>
                   <td className="table__body-data">{product.sale_percent}%</td>
                   <td className="table__body-data">{product.quantity}</td>
-                  <td className="table__body-data">{product.import_price} VNĐ</td>
-                  <td className="table__body-data">{product.price} VNĐ</td>
-                  <td className="table__body-data">{product.status === 1 ? "Sell" : "Not Sell"}</td>
+                  <td className="table__body-data">
+                    {formatNumber(product.import_price)} VNĐ
+                  </td>
+                  <td className="table__body-data">
+                    {formatNumber(product.price)} VNĐ
+                  </td>
+                  <td className="table__body-data">
+                    {(() =>{
+                      if(product.status === 1){
+                        return <span style={{color: 'green'}}>Sell</span>
+                      }else if (product.status === 99){
+                        return <span style={{color: 'red'}}>Not Sell</span>
+                      }else{
+                        return <span ></span>
+                      }
+                    })()}
+                  </td>
                   <td className="table__body-data"> 
                     <button className="btn-edit ">                    
                       <Link to={`/admin/product_details/${product.id}`} className="btn-text">
@@ -156,23 +221,25 @@ function AllProducts(){
               <span className="datatable__footer-description-text">Showing {currentPage} to {currentPage + products.length - 1} of {totalPages} entries</span>
             </div>
             <div className="datatable__footer-page">
-              <ul className="datatable__footer-page-list">
-                <li className="datatable__footer-list-item datatable__footer-list-item--disabled">Previous</li>
-                {Array.from({ length: totalPages }, (_, i) => (
-                <li
-                  key={i + 1}
-                  className={`datatable__footer-list-item ${
-                    i + 1 === currentPage ? "datatable__footer-list-item--enabled" : ""
-                  }`}
-                >
-                  {i + 1}
-                </li>
-              ))}
-                <li className="datatable__footer-list-item">Next</li>
+             <ul className="datatable__footer-page-list">
+              <li
+                className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`}
+                onClick={handlePreviousPage}
+              >
+                Previous
+              </li>
+                {renderPagination()}
+              <li
+                className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`}
+                onClick={handleNextPage}
+              >
+                Next
+              </li>
               </ul>
             </div>
           </div>
-          <div> 
+          
+        </div>
         <ReactModal isOpen={isModalOpen} onRequestClose={closeModal}
             className="react_modal ReactModal__Content"
         >
@@ -193,9 +260,6 @@ function AllProducts(){
         
         
           </ReactModal>
-        </div>
-        </div>
-        
       </div>
       
     );

@@ -229,13 +229,13 @@ function AddProduct() {
                setIsValid(true);
           }else if(importPrice > exportPrice){
                setImportPriceError("Import price must be less than export price!");
-               setIsValid(true);
+               setIsValid(false);
           }
-          if (!exportPrice) {
-               setExportPriceError("Please enter export price!");
-               setIsValid(true);
-          }else if(importPrice > exportPrice){
+          if(importPrice > exportPrice){
                setImportPriceError("Import price must be less than export price!");
+               setIsValid(false);
+          }else if (!exportPrice) {
+               setExportPriceError("Please enter export price!");
                setIsValid(true);
           }
           if (productSalePercent === 0) {
@@ -246,7 +246,7 @@ function AddProduct() {
                setIsValid(true);
           }else if (productSalePercent > 100) {
                setPrdSalePercentError("Sale percent must be less than 100%!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productImage) {
                setPrdImageError("Please choose product image!");

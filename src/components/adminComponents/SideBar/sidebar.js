@@ -118,6 +118,13 @@ function Sidebar  () {
                                    </Link>
                               </li>
                          </ul>
+                         <ul className="features__item-func-list">
+                              <li className="features__item-func-list-item">
+                                   <Link to="/admin/add_order">
+                                        Add Order
+                                   </Link>
+                              </li>
+                         </ul>
                     </div>
                </div>
                <div className="features__item">
@@ -150,6 +157,15 @@ function Sidebar  () {
                               Customer
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
+                    </div>
+                    <div className="features__item-func">
+                         <ul className="features__item-func-list">
+                              <li className="features__item-func-list-item">
+                                   <Link to="/admin/all_customer">
+                                        Customer List
+                                   </Link>
+                              </li>
+                         </ul>
                     </div>
                </div>
           </div>

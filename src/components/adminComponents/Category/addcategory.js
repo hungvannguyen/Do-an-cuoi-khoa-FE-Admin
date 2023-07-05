@@ -36,9 +36,10 @@ function AddCategory() {
     };
 
 
+
     const addCategory = (e) => {
         e.preventDefault();
-        setIsValid(true);
+        setIsValid(false);
         if(!categoryName){
             setCategoryNameError("Category Name is required");
             setIsValid(true);
@@ -48,17 +49,13 @@ function AddCategory() {
             setIsValid(true);
         }
 
-        if(!isValid){
+        if(isValid){
             const categoryData = {
                 cat_name: categoryName,
                 cat_description: categoryDescription,
             };
             axios
-                .post("/category/add", categoryData,{
-                    headers: {
-                        Authorization: "Bearer " + sessionStorage.getItem("token"),
-                    },
-                })
+                .post("/category/add", categoryData)
                 .then((response) => {
                     console.log(response.data);
      
