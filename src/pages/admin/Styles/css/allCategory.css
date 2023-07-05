@@ -125,6 +125,8 @@ body{
 }
 
 .table__body-data{
+    max-width: 250px;
+    overflow: auto;
     font-size: 1.6rem;
     padding: 16px 10px;
     color: rgba(0, 0, 0, 0.6);

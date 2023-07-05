@@ -20,8 +20,8 @@ function CategoryDetails(){
             .then((response) => {
                 console.log(response.data);
                 setCategory(response.data);
-                // setCategoryName(response.data.cat_name);
-                // setCategoryDescription(response.data.cat_description);
+                setCategoryName(response.data.cat_name);
+                setCategoryDescription(response.data.cat_description);
                 setInitialCategoryName(response.data.cat_name);
                 setInitialCategoryDescription(response.data.cat_description);
                 setInitCategoryId(response.data.id);

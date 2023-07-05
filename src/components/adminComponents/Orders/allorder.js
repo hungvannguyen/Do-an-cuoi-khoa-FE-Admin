@@ -5,12 +5,15 @@ import axios from "axios";
 
 
 function AllOders(){
+  const [pages, setPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState();
+  const [totalPages, setTotalPages] = useState();
 
-    const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         axios
-        .get("/order/admin/all",{
+        .get(`/order/admin/all?page=${pages}`,{
           headers: {
             Authorization: "Bearer " + sessionStorage.getItem("token"),
           },
@@ -24,6 +27,53 @@ function AllOders(){
         });
     }, []);
 
+    const handlePreviousPage = () => {
+      if (pages > 1) {
+        setCurrentPage(pages - 1);
+        setPages(pages - 1);
+      } 
+    };
+    
+    const handleNextPage = () => {
+      setCurrentPage(pages + 1);
+      setPages(pages + 1);
+      }
+
+    const handlePageChange = (page) => {
+      // setLoading(true);
+      setPages(page);
+      setCurrentPage(page);
+    };
+  
+
+   // Hàm render phân trang
+const renderPagination = () => {
+  const pageNumbers = [];
+
+  // Tạo một mảng chứa các số trang từ 1 đến totalPages
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <>
+      {pageNumbers.map((pageNumber) => (
+        <li
+          className={`datatable__footer-list-item ${currentPage === pageNumber ? 'active' : ''}`}
+          key={pageNumber}
+          onClick={() => handlePageChange(pageNumber)}
+        >
+          {pageNumber}
+        </li>
+      ))}
+    </>
+  );
+};
+
+      // Format number
+    const formatNumber = (number) => {
+      return number.toLocaleString("vi-VN");
+    };
 
     return(
         <div className="main">
@@ -53,7 +103,7 @@ function AllOders(){
                   <th className="table__head-item">Name</th>
                   <th className="table__head-item">Phone</th>
                   <th className="table__head-item">Address</th>
-                  <th className="table__head-item">Note</th>
+                
                   <th className="table__head-item">Status</th>
                   <th className="table__head-item">Total Price</th>
                   <th className="table__head-item">Payment Status</th>
@@ -68,17 +118,50 @@ function AllOders(){
                     <td className="table__body-data">{order.name}</td>
                     <td className="table__body-data">{order.phone_number}</td>
                     <td className="table__body-data">{order.address}</td>
-                    <td className="table__body-data">{order.note}</td>
-                    <td className="table__body-data">{order.status}</td>
+             
                     <td className="table__body-data">
-                        {order.products.map((product) => (
-                          <span key={product.prd_id}>{product.total_price}</span>
-                        ))}
+                      {(() => {
+                        if (order.status === 0) {
+                          return <span style={{ color: 'gray' }}>Ordered</span>;
+                        } else if (order.status === 1) {
+                          return <span style={{ color: 'green' }}>Confirmed</span>;
+                        } else if (order.status === 2) {
+                          return <span style={{ color: 'blue' }}>Being Transported</span>;
+                        } else if (order.status === 10) {
+                          return <span style={{ color: 'purple' }}>Delivered</span>;
+                        } else if (order.status === 100) {
+                          return <span style={{ color: 'orange' }}>Completed</span>;
+                        } else if (order.status === 99) {
+                          return <span style={{ color: 'red' }}>Cancelled</span>;
+                        } else {
+                          return <span />;
+                        }
+                      })()}
+                      </td>
+                    <td className="table__body-data">
+                      {formatNumber(order.total_price)} VNĐ
                     </td>
-                    <td className="table__body-data">{order.payment_status}</td>
-                    <td className="table__body-data">{order.payment_type}</td>
+                    <td className="table__body-data">{(() => {
+                      if(order.payment_status === 99){
+                        return <span style={{ color: 'red' }}>unpaid</span>;
+                      }else if (order.payment_status === 0){
+                        return <span style={{ color: 'green' }}>paid</span>;
+                      }
+                    })()}  
+                    </td>
                     <td className="table__body-data">
-                      <Link to={`/order/info/${order.id}`} className="table__body-link">
+                    {(() => {
+                      if (order.payment_type_id === 1) {
+                        return <span style={{ color: 'green' }}><i className="fa-solid fa-credit-card"></i></span>;
+                      } else if (order.payment_type_id === 2) {
+                        return <span style={{ color: 'blue' }}><i className="fa-regular fa-money-bill-1"></i></span>;
+                      }else{
+                        return <span />;
+                      }
+                    })()}
+                    </td>
+                    <td className="table__body-data">
+                      <Link to={`/admin/order_details/${order.id}`} className="table__body-link">
                         Details
                       </Link>
                     </td>
@@ -87,20 +170,27 @@ function AllOders(){
               </tbody>
             </table>
           </div>
+
           <div className="datatable__footer">
             <div className="datatable__footer-description">
               <span className="datatable__footer-description-text">Showing 1 to 10 of 57 entries</span>
             </div>
             <div className="datatable__footer-page">
+
               <ul className="datatable__footer-page-list">
-                <li className="datatable__footer-list-item datatable__footer-list-item--disabled">Previous</li>
-                <li className="datatable__footer-list-item datatable__footer-list-item--enabled">1</li>
-                <li className="datatable__footer-list-item">2</li>
-                <li className="datatable__footer-list-item">3</li>
-                <li className="datatable__footer-list-item">4</li>
-                <li className="datatable__footer-list-item">5</li>
-                <li className="datatable__footer-list-item">6</li>
-                <li className="datatable__footer-list-item">Next</li>
+              <li
+                className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`}
+                onClick={handlePreviousPage}
+              >
+                Previous
+              </li>
+                {renderPagination()}
+                <li
+                className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`}
+                onClick={handleNextPage}
+              >
+                Next
+              </li>
               </ul>
             </div>
           </div>

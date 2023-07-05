@@ -1,13 +1,17 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
+import Authorized from "../Authorized/authorized"
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 
 function AllCategory() {
      const navigate = useNavigate();
      const [category, setCategory] = useState([]);
      const [loading, setLoading] = useState(true);
+
+     const user = sessionStorage.getItem("role_id");
+     const allowedRoles = ["1","10"];
+
 
      useEffect(() => {   
           axios
@@ -67,11 +71,13 @@ function AllCategory() {
                                  <td className="table__body-data">{category.cat_name}</td>
                                  <td className="table__body-data">{category.cat_description}</td>
                                  <td className="table__body-data">
+                                   <Authorized user={user} allowedRoles={allowedRoles}>
                                    <button className="btn-edit">
                                         <Link to={`/admin/category_details/${category.id}`} className="btn-text">
                                              Details
                                         </Link>
                                    </button>
+                                   </Authorized>
                                  </td>
                             </tr>
                          ))}                       
@@ -79,23 +85,6 @@ function AllCategory() {
                   </table>
              </div>
              <div className="datatable__footer">
-                  {/* <div className="datatable__footer-description">
-                       <span className="datatable__footer-description-text">
-                            Showing 1 to 10 of 57 entries
-                       </span>
-                  </div>
-                  <div className="datatable__footer-page">
-                       <ul className="datatable__footer-page-list">
-                            <li className="datatable__footer-list-item datatable__footer-list-item--disabled">Previous</li>
-                            <li className="datatable__footer-list-item datatable__footer-list-item--enabled">1</li>
-                            <li className="datatable__footer-list-item">2</li>
-                            <li className="datatable__footer-list-item">3</li>
-                            <li className="datatable__footer-list-item">4</li>
-                            <li className="datatable__footer-list-item">5</li>
-                            <li className="datatable__footer-list-item">6</li>
-                            <li className="datatable__footer-list-item">Next</li>
-                       </ul>
-                  </div> */}
              </div>
         </div>
    </div>

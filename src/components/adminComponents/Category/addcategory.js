@@ -36,6 +36,7 @@ function AddCategory() {
     };
 
 
+
     const addCategory = (e) => {
         e.preventDefault();
         setIsValid(false);
@@ -54,11 +55,7 @@ function AddCategory() {
                 cat_description: categoryDescription,
             };
             axios
-                .post("/category/add", categoryData,{
-                    headers: {
-                        Authorization: "Bearer " + sessionStorage.getItem("token"),
-                    },
-                })
+                .post("/category/add", categoryData)
                 .then((response) => {
                     console.log(response.data);
      
