@@ -14,7 +14,7 @@ function AddCategory() {
     const [categoryNameError, setCategoryNameError] = useState("");
     const [categoryDescriptionError, setCategoryDescriptionError] = useState("");   
     
-    const hanldeInputClick = () => {
+    const handleInputClick = () => {
         setCategoryNameError("");
         setCategoryDescriptionError("");
     }
@@ -38,7 +38,7 @@ function AddCategory() {
 
     const addCategory = (e) => {
         e.preventDefault();
-        setIsValid(true);
+        setIsValid(false);
         if(!categoryName){
             setCategoryNameError("Category Name is required");
             setIsValid(true);
@@ -48,7 +48,7 @@ function AddCategory() {
             setIsValid(true);
         }
 
-        if(!isValid){
+        if(isValid){
             const categoryData = {
                 cat_name: categoryName,
                 cat_description: categoryDescription,
@@ -124,7 +124,7 @@ function AddCategory() {
                         placeholder="Enter Category Name" 
                         value={categoryName}
                         onChange={handleCategoryName}
-                        onClick={hanldeInputClick}
+                        onClick={handleInputClick}
                     />
                     {categoryNameError && (
                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
@@ -141,7 +141,7 @@ function AddCategory() {
                         placeholder="Enter Category Description" 
                         value={categoryDescription}
                         onChange={handleCategoryDescription}
-                        onClick={hanldeInputClick}
+                        onClick={handleInputClick}
                     />
                     {categoryDescriptionError && (
                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
