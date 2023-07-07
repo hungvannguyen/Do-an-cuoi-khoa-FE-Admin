@@ -90,3 +90,11 @@ body{
 .footer__info{
 
 }
+
+.mb-6{
+    margin-bottom: 40px;
+}
+
+.me-6{
+    margin-right: 40px;
+}

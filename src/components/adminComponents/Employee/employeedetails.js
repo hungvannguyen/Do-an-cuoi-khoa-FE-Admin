@@ -187,13 +187,15 @@ function EmployeeDetails(){
                          <label className="form__product-delete-id-title">
                               User Name: {initUserName === null ? "Not Set" : initUserName}
                          </label>
-                         <input type="text" 
+                         {userRoleId !== 99 && (
+                              <input type="text" 
                                    className="form__delete-id-input" 
                                    placeholder="Enter UserName for update" 
                                    value={userName}
                                    onChange={handelUserName}
                                    onClick={handleInputClick}
                               />
+                              )}
                               {userNameError && (
                                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
                                         {userNameError}

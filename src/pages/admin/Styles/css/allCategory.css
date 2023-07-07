@@ -269,3 +269,6 @@ body{
     color: white;
     text-decoration: none;
 }
+.btn-text:hover{
+    color: #ffffff88;
+}

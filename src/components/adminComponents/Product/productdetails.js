@@ -1,7 +1,7 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 function ProductDetails(){
@@ -682,6 +682,14 @@ function ProductDetails(){
                )}          
           </div>
           <div className="form__category-check col-lg-12 d-flex">
+               <div class="form__category-check me-3">
+                    <Link to="/admin/all_product" >
+                        <button class="form__category-btn form__input-btn">
+                        <i className="fas fa-angle-left features__item-main-arrow me-3"></i>
+                                Back
+                        </button>
+                    </Link>
+                </div>
                <div className="form__category-check">
                     <button className="form__category-btn form__input-btn"
                          onClick={updateProduct}
