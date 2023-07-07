@@ -8,7 +8,7 @@ function OrderDetail() {
     const {order_id} = useParams();
 
     const [products, setProducts] = useState("");
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState(null);
     const [imageProduct, setImageProduct] = useState([]);
 
 
@@ -23,26 +23,26 @@ function OrderDetail() {
             },
         })
         .then((response) => {
+            console.log(response.data.data);
             console.log(response.data);
-            setOrders(response.data.data);
+            setOrders(response.data);
+            console.log("order" + orders);
             console.log(response.data.products);
-            setProducts(response.data.products);
-            console.log(orders);
             // api get image product
            
-                const imagePromises = response.data.products.map((product) =>
-                  axios.get(`/file/img/${product.img_url}`, { responseType: "blob" })
-                );
-                Promise.all(imagePromises)
-                  .then((responses) => {
-                    const imageUrls = responses.map((response) =>
-                      URL.createObjectURL(response.data)
-                    );
-                    setImageProduct(imageUrls);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
+                // const imagePromises = response.data.products.map((product) =>
+                //   axios.get(`/file/img/${product.img_url}`, { responseType: "blob" })
+                // );
+                // Promise.all(imagePromises)
+                //   .then((responses) => {
+                //     const imageUrls = responses.map((response) =>
+                //       URL.createObjectURL(response.data)
+                //     );
+                //     setImageProduct(imageUrls);
+                //   })
+                //   .catch((error) => {
+                //     console.log(error);
+                //   });
             })
         .catch((error) => {
             console.log(error);
@@ -62,11 +62,10 @@ function OrderDetail() {
             </span>
         </div>
         <div class="main__form row">
-            {order_id.length >0 ? (
-                <>
-            {orders.map((item, index) => (
+            
+            {orders.products.map((item) => (
                 
-            <div class="col-lg-4" key={index}>
+            <div class="col-lg-4" key={item}>
                 <label class="form__category-id-title fs-1 mb-2">
                         Customer Infor
                 </label>
@@ -122,12 +121,6 @@ function OrderDetail() {
                 </div>
             </div>
             ))}
-            </>
-            ) : (
-                <div className="col-lg-9 col-md-9 text-center">
-                  <p>Không có sản phẩm</p>
-                </div>
-              )}
             <div class="col-lg-7">
                 <label class="form__category-id-title fs-1 mb-2">
                         Product Infor
@@ -169,6 +162,7 @@ function OrderDetail() {
                 </div>
             </div> 
         </div>
+
     </div>
     );
 }

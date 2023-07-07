@@ -218,7 +218,7 @@ const renderPagination = () => {
           </div>
           <div className="datatable__footer">
             <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing {currentPage} to {currentPage + products.length - 1} of {totalPages} entries</span>
+              <span className="datatable__footer-description-text"></span>
             </div>
             <div className="datatable__footer-page">
              <ul className="datatable__footer-page-list">

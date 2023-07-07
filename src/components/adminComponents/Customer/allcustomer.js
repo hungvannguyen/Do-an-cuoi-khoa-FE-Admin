@@ -1,6 +1,24 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import ReactModal from 'react-modal';
 
 function AllCustomer(){
+  const [customers, setCustomers] = useState([]);
+
+    useEffect(() => {
+      axios
+      .get(`user/all_user?role_id=99`)
+      .then((response) => {
+        console.log(response.data);
+        setCustomers(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }, []);
+
     return(
         <div className="main">
         <div className="main__title">
@@ -25,31 +43,31 @@ function AllCustomer(){
             <table className="datatable__table-frame">
               <thead className="table__head">
                 <tr>
+                  <th className="table__head-item">ID</th>
                   <th className="table__head-item">Name</th>
-                  <th className="table__head-item">Position</th>
-                  <th className="table__head-item">Office</th>
-                  <th className="table__head-item">Age</th>
-                  <th className="table__head-item">Start date</th>
-                  <th className="table__head-item">Salary</th>
+                  <th className="table__head-item">Phone number</th>
+                  <th className="table__head-item">Account</th>
+                  <th className="table__head-item">Email</th>
+                  <th className="table__head-item">Action</th>
                 </tr>
               </thead>
               <tbody className="table__body">
+                {customers.map((customer) => (
                 <tr className="table__body-item">
-                  <td className="table__body-data">Airi Satou</td>
-                  <td className="table__body-data">Accountant</td>
-                  <td className="table__body-data">Tokyo</td>
-                  <td className="table__body-data">33</td>
-                  <td className="table__body-data">2008/11/28</td>
-                  <td className="table__body-data">$162,700</td>
+                  <td className="table__body-data">{customer.id}</td>
+                  <td className="table__body-data">{customer.name === null ? <span style={{ color: 'red' }}>Not Set</span> : customer.name}</td>
+                  <td className="table__body-data">{customer.phone_number === null ? <span style={{ color: 'red' }}>Not Set</span> : customer.phone_number }</td>
+                  <td className="table__body-data">{customer.account}</td>
+                  <td className="table__body-data">{customer.email}</td>
+                  <td className="table__body-data">
+                    <button className="btn-edit">
+                      <Link to={`/admin/user_details/${customer.id}`} className="btn-text">
+                        Details
+                      </Link>
+                    </button>
+                  </td>
                 </tr>
-                <tr className="table__body-item">
-                  <td className="table__body-data">Angelica Ramos</td>
-                  <td className="table__body-data">Chief Executive Officer (CEO)</td>
-                  <td className="table__body-data">London</td>
-                  <td className="table__body-data">47</td>
-                  <td className="table__body-data">2009/10/20</td>
-                  <td className="table__body-data">$1,200,300</td>
-                </tr>
+                ))}
               </tbody>
             </table>
           </div>

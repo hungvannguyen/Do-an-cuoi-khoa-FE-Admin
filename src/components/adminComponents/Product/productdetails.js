@@ -8,7 +8,7 @@ function ProductDetails(){
      const { id } = useParams();
 
      const [importExportError, setImportExportError] = useState(""); 
-     const [isValid, setIsValid] = useState(true);
+     const [isValid, setIsValid] = useState("");
      const [imageProduct, setImageProduct] = useState([]);
                                // Đường dẫn hình ảnh hiện tại
      const [showCrProductImage, setShowCrProductImage] = useState(true);
@@ -90,77 +90,77 @@ function ProductDetails(){
      const handleCategoryId = (e) => {
           setCategoryId(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setCatIdError("");
           }
      };
      const handleProductName = (e) => {
           setProductName(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdNameError("");
           }
      };
      const handleProductStatus = (e) => {
           setProductStatus(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdStatusError("");
           }
      };
      const handleWareHouseId = (e) => {
           setWareHouseId(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setWhIdError("");
           }
      };
      const handleProductDescription = (e) => {
           setProductDescription(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdDesError("");
           }
      };
      const handleProductQuantity = (e) => {
           setProductQuantity(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdQuantityError("");
           }
      };
      const handleProductIsSale = (e) => {
           setProductIsSale(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdIsSaleError("");
           }
      };
      const handleImportPrice = (e) => {
           setImportPrice(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setImportPriceError("");
           }
      };
      const handleExportPrice = (e) => {
           setExportPrice(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setExportPriceError("");
           }
      };
      const handleProductSalePercent = (e) => {
           setProductSalePercent(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdSalePercentError("");
           }
      };
      const handleProductImage = (e) => {
           setProductImage(e.target.value);
           if(!isValid){
-               setIsValid(true);
+               setIsValid(false);
                setPrdImageError("");
           }
      };
@@ -270,7 +270,7 @@ function ProductDetails(){
      //api update product
      const updateProduct = (e) => {
           e.preventDefault();
-          setIsValid(false);
+          setIsValid(true);
           console.log("categoryId:", categoryId);
           console.log("productName:", productName);
           console.log("productStatus:", productStatus);
@@ -286,62 +286,60 @@ function ProductDetails(){
           console.log("-----------------------");
           if (!categoryId) {
                setCatIdError("Please choose category!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productName) {
                setPrdNameError("Please enter product name!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productStatus) {
                setPrdStatusError("Please choose product status!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!wareHouseId) {
                setWhIdError("Please choose warehouse!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productDescription) {
                setPrdDesError("Please enter product description!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productQuantity) {
                setPrdQuantityError("Please enter product quantity!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productIsSale) {
                setPrdIsSaleError("Please choose product is sale!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!importPrice) {
                setImportPriceError("Please enter import price!");
-               setIsValid(true);
+               setIsValid(false);
           }else if(importPrice > exportPrice){
                setImportPriceError("Import price must be less than export price!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!exportPrice) {
                setExportPriceError("Please enter export price!");
-               setIsValid(true);
+               setIsValid(false);
           }else if(importPrice > exportPrice){
                setImportPriceError("Import price must be less than export price!");
-               setIsValid(true);
+               setIsValid(false);
           }
-          if (!productSalePercent) {
+          if (productIsSale === 1 && productSalePercent  < 1) {
                setPrdSalePercentError("Please enter product sale percent!");
-               setIsValid(true);
-          }else if(productIsSale === 0){
-               setIsValid(true);
+               setIsValid(false);
           }else if(productSalePercent > 100){
                setPrdSalePercentError("Sale percent must be less than 100%!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if (!productImage) {
                setPrdImageError("Please choose product image!");
-               setIsValid(true);
+               setIsValid(false);
           }
           if(importPrice > exportPrice) {
                setImportPriceError("Import price must be less than export price!");
-               setIsValid(true);
+               setIsValid(false);
           }
 
           if(isValid){
@@ -616,6 +614,11 @@ function ProductDetails(){
                          onChange={handleProductSalePercent} 
                          readOnly
                          />
+                    )}
+                    {productIsSale === "1" && productSalePercent < 1 &&(
+                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                              Sale Percent must be greater than 0
+                         </div>
                     )}
                      {prdSalePercentError && (
                          <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>

@@ -10,7 +10,7 @@ function AllCategory() {
      const [loading, setLoading] = useState(true);
 
      const user = sessionStorage.getItem("role_id");
-     const allowedRoles = ["1","10"];
+     const allowedRoles = ["1",];
 
 
      useEffect(() => {   
@@ -29,6 +29,7 @@ function AllCategory() {
 
     return(
         <div className="main">
+           <Authorized user={user} allowedRoles={allowedRoles}>
         <div className="main__title">
              <span className="main__title-text">
                   All Employee
@@ -71,13 +72,13 @@ function AllCategory() {
                                  <td className="table__body-data">{category.cat_name}</td>
                                  <td className="table__body-data">{category.cat_description}</td>
                                  <td className="table__body-data">
-                                   <Authorized user={user} allowedRoles={allowedRoles}>
+                                  
                                    <button className="btn-edit">
                                         <Link to={`/admin/category_details/${category.id}`} className="btn-text">
                                              Details
                                         </Link>
                                    </button>
-                                   </Authorized>
+                                   
                                  </td>
                             </tr>
                          ))}                       
@@ -87,6 +88,7 @@ function AllCategory() {
              <div className="datatable__footer">
              </div>
         </div>
+        </Authorized>
    </div>
 
     );
