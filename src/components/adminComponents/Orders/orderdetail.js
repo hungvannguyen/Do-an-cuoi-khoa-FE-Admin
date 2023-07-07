@@ -8,8 +8,9 @@ function OrderDetail() {
     const {order_id} = useParams();
 
     const [products, setProducts] = useState("");
-    const [orders, setOrders] = useState(null);
+    const [orders, setOrders] = useState([]);
     const [imageProduct, setImageProduct] = useState([]);
+    const [test, setTest] = useState("");
 
 
 
@@ -24,10 +25,13 @@ function OrderDetail() {
         })
         .then((response) => {
             console.log(response.data.data);
-            console.log(response.data);
-            setOrders(response.data);
-            console.log("order" + orders);
-            console.log(response.data.products);
+            setProducts(response.data.products);
+            // console.log("product: "+products);
+            // setOrders(response.data.products);
+            // console.log("order: "+orders);
+            // setTest(response.data.id)
+            // console.log("test: "+test);
+            
             // api get image product
            
                 // const imagePromises = response.data.products.map((product) =>
@@ -63,64 +67,64 @@ function OrderDetail() {
         </div>
         <div class="main__form row">
             
-            {orders.products.map((item) => (
-                
-            <div class="col-lg-4" key={item}>
+          
+            {console.log("product: "+products)}
+            <div class="col-lg-4" >
                 <label class="form__category-id-title fs-1 mb-2">
                         Customer Infor
                 </label>
                 <div class="form__category-des">
                     <label class="form__category-id-title">
-                            Order ID: {item.prd_id}
+                            Order ID: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Status: {item.status}
+                        Status: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label class="form__category-name-title">
-                        Name: {item.name}
+                        Name: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-name-input" class="form__category-name-title">
-                        Phone Number: {item.phone_number}
+                        Phone Number: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Email: {item.email}
+                        Email: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Address: {item.address}
+                        Address: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Note: {item.note}
+                        Note: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Payment Type: {item.payment_type}
+                        Payment Type: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Payment Status: {item.payment_status}
+                        Payment Status: 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        item Date: {item.inserted_at}
+                        item Date: 
                     </label>
                 </div>
             </div>
-            ))}
+
             <div class="col-lg-7">
                 <label class="form__category-id-title fs-1 mb-2">
                         Product Infor

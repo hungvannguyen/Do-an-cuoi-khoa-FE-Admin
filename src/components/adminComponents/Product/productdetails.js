@@ -600,7 +600,7 @@ function ProductDetails(){
                     {productIsSale !== "99" && (
                          <input type="number" 
                          id="form__product-name-input" 
-                         className={`form__product-id-input ${productIsSale === "99" ? "readonly": ""}`} 
+                         className={`form__product-id-input  ${productIsSale === "99" ? "readonly form__input--readonly:focus": ""}`} 
                          placeholder="Enter Sale Percent" 
                          value={productSalePercent}
                          onChange={handleProductSalePercent}
