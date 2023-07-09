@@ -103,7 +103,7 @@ function OrderDetail() {
         2: {color: "#00bcdd", text: "Shipping"},
         10: {color: "#001bc6", text: "Delivered"},
         100: {color: "#00dd00", text: "Completed"},
-        50: {color: "#dd0000", text: "Refund"},
+        50: {color: "#af3a94", text: "Refund"},
         99:{color: "red", text: "Cancelled"},
     };
     const statusInfo = statusMapping[orderStatus] || { color: "black", text: "" };
@@ -352,7 +352,7 @@ function OrderDetail() {
                         </button>
                     </div>
                 )}
-                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 1 && (
+                { orderStatus === 1 && (
                      <div class="form__category-check">
                      <button class="form__category-btn form__input-btn me-6 " 
                         value={2}
@@ -362,7 +362,7 @@ function OrderDetail() {
                      </button>
                  </div>
                 )}
-                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 2 && (
+                { orderStatus === 2 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6"
                         value={10} 
@@ -372,7 +372,7 @@ function OrderDetail() {
                         </button>
                     </div>
                 )}
-                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 2 && (
+                { orderStatus === 2 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6"
                         style={{backgroundColor: "blue"}}
@@ -383,7 +383,7 @@ function OrderDetail() {
                         </button>
                     </div>
                 )}
-                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 10 && (
+                { orderStatus === 10 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6" 
                         value={0}
