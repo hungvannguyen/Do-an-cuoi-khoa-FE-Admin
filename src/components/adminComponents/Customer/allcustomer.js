@@ -3,9 +3,13 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactModal from 'react-modal';
+import Authorized from "../Authorized/authorized"
 
 function AllCustomer(){
   const [customers, setCustomers] = useState([]);
+
+  const user = sessionStorage.getItem("role_id");
+  const allowedRoles = ["1",];
 
     useEffect(() => {
       axios
@@ -21,8 +25,9 @@ function AllCustomer(){
 
     return(
         <div className="main">
+           <Authorized user={user} allowedRoles={allowedRoles}>
         <div className="main__title">
-          <span className="main__title-text">All Category</span>
+          <span className="main__title-text">All Customer</span>
           <span className="main__title-des">
             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
           </span>
@@ -89,6 +94,7 @@ function AllCustomer(){
             </div>
           </div>
         </div>
+        </Authorized>
       </div>
 
     );

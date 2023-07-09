@@ -8,7 +8,7 @@ function ProductDetails(){
      const { id } = useParams();
 
      const [importExportError, setImportExportError] = useState(""); 
-     const [isValid, setIsValid] = useState("");
+     const [isValid, setIsValid] = useState(true);
      const [imageProduct, setImageProduct] = useState([]);
                                // Đường dẫn hình ảnh hiện tại
      const [showCrProductImage, setShowCrProductImage] = useState(true);
@@ -329,8 +329,8 @@ function ProductDetails(){
           if (productIsSale === 1 && productSalePercent  < 1) {
                setPrdSalePercentError("Please enter product sale percent!");
                setIsValid(false);
-          }else if(productSalePercent > 100){
-               setPrdSalePercentError("Sale percent must be less than 100%!");
+          }else if(productSalePercent > 80){
+               setPrdSalePercentError("Sale percent must be less than 80%!");
                setIsValid(false);
           }
           if (!productImage) {
@@ -382,6 +382,7 @@ function ProductDetails(){
                     console.log(error);
                });
           }else{
+               console.log(isValid);
                toast.error("Please enter all required fields!",{
                     position: "bottom-right",
                     autoClose: 2000,

@@ -144,8 +144,8 @@ function AddProduct() {
                if (productSalePercent < 1) {
                  setPrdSalePercentError("Sale percent must be greater than 1%!");
                  setIsValid(false);
-               }else if (productSalePercent > 100) {
-                    setPrdSalePercentError("Sale percent must be less than 100%!");
+               }else if (productSalePercent > 80) {
+                    setPrdSalePercentError("Sale percent must be less than 80%!");
                     setIsValid(false);
                }
              }

@@ -20,6 +20,7 @@ function EmployeeDetails(){
 
      //modal
      const [isModalOpen, setIsModalOpen] = useState(false);
+     const [isModalOpen2, setIsModalOpen2] = useState(false);
 
      //user init data
      const [initUserName, setInitUserName] = useState("");
@@ -36,6 +37,14 @@ function EmployeeDetails(){
  
      const closeModal = () => {
      setIsModalOpen(false);
+     };
+
+     const openModal2 = () => {
+          setIsModalOpen2(true);
+     };
+      
+     const closeModal2 = () => {
+          setIsModalOpen2(false);
      };
 
      const handleInputClick = () => {
@@ -147,6 +156,50 @@ function EmployeeDetails(){
           }
      }
                
+     //block user
+     const blockUser = () => {
+          axios
+          .put(`/user/lock?user_id=${user_id}`,{
+               headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token"),
+               },
+          })
+          .then((response) => {
+               console.log(response.data);
+               toast.success("User account has been locked!",{
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+               });
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+                    window.location.href = "/admin/all_employee";
+               }, 1500);
+          })
+          .catch((error) => {
+               console.log(error);
+               toast.error("Something went wrong",{
+                    position: "bottom-right",
+                         autoClose: 2000,
+                         hideProgressBar: true,
+                         closeOnClick: true,
+                         pauseOnHover: true,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "colored"
+               });
+               
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+               },1500);
+          });
+     }
+
 
 
     return(
@@ -222,15 +275,25 @@ function EmployeeDetails(){
                               )}
                     </div>
                </div>
-               <div className="form__category-check">
-                    <button className="form__category-btn form__input-btn"
-                         onClick={openModal}
-                    >
-                         Update
-                    </button>
+
+               <div className="col-lg-12 d-flex align-items-center">
+                    <div className="form__category-check me-6">
+                         <button className="form__category-btn form__input-btn"
+                              onClick={openModal}
+                         >
+                              Update
+                         </button>
+                    </div>
+                    <div className="form__category-check">
+                         <button className="form__category-btn form__input-btn"
+                              onClick={openModal2}
+                         >
+                              Block User
+                         </button>
+                    </div>
                </div>
         </div>
-        <ReactModal isOpen={isModalOpen} onRequestClose={closeModal} className="react_modal ReactModal_Content">
+          <ReactModal isOpen={isModalOpen} onRequestClose={closeModal} className="react_modal ReactModal_Content">
                 <div className="d-flex flex-column justify-content-center align-items-center"
                  style={
                     {height: "175px",
@@ -245,6 +308,26 @@ function EmployeeDetails(){
                          Yes
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal}>
+                         No
+                    </button>
+                </div>
+                </div>
+          </ReactModal>
+          <ReactModal isOpen={isModalOpen2} onRequestClose={closeModal2} className="react_modal ReactModal_Content">
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                 style={
+                    {height: "175px",
+                    width: "356px",
+                    }
+                }>
+                <h2 className="d-lex justify-content-center form__product-id-title text-center">
+                    Are you sure you want to block this user?    
+                </h2>
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="form__input-btn me-3" onClick={blockUser}>
+                         Yes
+                    </button>
+                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
                          No
                     </button>
                 </div>

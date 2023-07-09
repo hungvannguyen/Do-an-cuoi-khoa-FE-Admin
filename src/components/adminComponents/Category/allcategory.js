@@ -10,7 +10,7 @@ function AllCategory() {
      const [loading, setLoading] = useState(true);
 
      const user = sessionStorage.getItem("role_id");
-     const allowedRoles = ["1",];
+     const allowedRoles = ["1","10"];
 
 
      useEffect(() => {   
