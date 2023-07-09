@@ -98,3 +98,7 @@ body{
 .me-6{
     margin-right: 40px;
 }
+
+.Max-Width-248px{
+    max-width: 248px !important;
+}

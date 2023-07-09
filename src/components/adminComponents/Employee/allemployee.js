@@ -69,11 +69,13 @@ function AllEmployee(){
                                  <td className="table__body-data">{item.account}</td>
                                  <td className="table__body-data">{item.email}</td>
                                  <td className="table__body-data">
+                                   <div className="d-flex justify-content-around align-items-center">
                                    <button className="btn-edit">
                                         <Link to={`/admin/user_details/${item.id}`} className="btn-text">
                                              Details
                                         </Link>
                                    </button>
+                                   </div>
                                  </td>
                             </tr>
                          ))}

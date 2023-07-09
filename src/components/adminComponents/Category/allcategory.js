@@ -72,12 +72,13 @@ function AllCategory() {
                                  <td className="table__body-data">{category.cat_name}</td>
                                  <td className="table__body-data">{category.cat_description}</td>
                                  <td className="table__body-data">
-                                  
+                                  <div className="d-flex justify-content-around align-items-center">
                                    <button className="btn-edit">
                                         <Link to={`/admin/category_details/${category.id}`} className="btn-text">
                                              Details
                                         </Link>
                                    </button>
+                                   </div>
                                    
                                  </td>
                             </tr>

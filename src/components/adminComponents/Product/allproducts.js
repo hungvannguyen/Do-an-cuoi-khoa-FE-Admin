@@ -208,8 +208,8 @@ const renderPagination = () => {
                 <tr className="table__body-item" key={product.id}>
                   <td className="table__body-data">{product.id}</td>
                   <td className="table__body-data">{product.name}</td>
-                  <td className="table__body-data">{product.description}</td>
-                  <td className="table__body-data">{product.img_url}</td>
+                  <td className="table__body-data Max-Width-248px">{product.description}</td>
+                  <td className="table__body-data Max-Width-248px">{product.img_url}</td>
                   <td className="table__body-data">
                     {(() =>{
                       if(product.is_sale === 1){
