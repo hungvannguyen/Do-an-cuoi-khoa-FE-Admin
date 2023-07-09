@@ -10,7 +10,7 @@ function OrderDetail() {
 
     const [products, setProducts] = useState("");
     const [imageProduct, setImageProduct] = useState([]);
-    const [test, setTest] = useState("");
+
     //data order
     const [orderId, setOrderId] = useState("");
     const [orderTotalPrice, setOderTotalPrice] = useState("");
@@ -28,14 +28,20 @@ function OrderDetail() {
     const [orderDate, setOrderDate] = useState("");
 
     //update order status
-    const [orderstatus, setOrderStatusUpdate] = useState("");
+    const [orderStatusUpdate, setOrderStatusUpdate] = useState("");
+
+
 
     //modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [isModalOpen2, setIsModalOpen2] = useState(false)
     
     const handleStatusChange = (e) => {
         setOrderStatusUpdate(e.target.value);
     };
+
+
 
     const formatNumber = (number) => {
         return number.toLocaleString("vi-VN");
@@ -50,9 +56,8 @@ function OrderDetail() {
             },
         })
         .then((response) => {
-            console.log(response.data.data);
+            console.log(response.data);
             setProducts(response.data.products);
-            console.log(products);
             setOrderId(response.data.id);
             setOderTotalPrice(response.data.total_price);
             setUserName(response.data.name);
@@ -93,44 +98,128 @@ function OrderDetail() {
     }, []);
 
     const statusMapping = {
-        0: {color: "#8D8D8D", text: "Chờ xác nhận"},
-        1: {color: "#c69600", text: "Đã xác nhận"},
-        2: {color: "#00bcdd", text: "Đang giao hàng"},
-        10: {color: "#001bc6", text: "Đã giao hàng"},
-        100: {color: "#00dd00", text: "Hoàn Tất"},
-        99:{color: "red", text: "Đã hủy"},
+        0: {color: "#8D8D8D", text: "Waiting for confirmation"},
+        1: {color: "#c69600", text: "Confirmed"},
+        2: {color: "#00bcdd", text: "Shipping"},
+        10: {color: "#001bc6", text: "Delivered"},
+        100: {color: "#00dd00", text: "Completed"},
+        99:{color: "red", text: "Cancelled"},
     };
-    const statusInfo = statusMapping[orderPaymentStatus] || { color: "black", text: "" };
+    const statusInfo = statusMapping[orderStatus] || { color: "black", text: "" };
 
     //update order status
     const updateOrderStatus = () => {
         axios
-        .get(`/order/update?order_status=${orderstatus}&order_id=${order_id}`,{
+        .get(`/order/update?order_status=${orderStatusUpdate}&order_id=${order_id}`,{
             headers: {
                 Authorization: "Bearer " + sessionStorage.getItem("token"),
             },
         })
         .then((response) => {
             console.log(response.data.data);
+            toast.success("Update order status successfully!",{
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+           });
+           const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+                window.location.href = "/admin/all_order";
+           }, 1500);
         })
         .catch((error) => {
             console.log(error);
+            toast.error("Something went wrong!",{
+                position: "bottom-right",
+                     autoClose: 2000,
+                     hideProgressBar: true,
+                     closeOnClick: true,
+                     pauseOnHover: true,
+                     draggable: true,
+                     progress: undefined,
+                     theme: "colored"
+           });
+           
+           const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+           },1500);
         });
     };
 
     const openModal = () => {
         setIsModalOpen(true);
-      };
+    };
     
-      const closeModal = () => {
+    const closeModal = () => {
         setIsModalOpen(false);
         setOrderStatusUpdate("");
-      };
+    };
 
+    const openModal2 =() => {
+        setIsModalOpen2(true)
+    }
+
+    const closeModal2 = () => {
+        setIsModalOpen2(false);
+    }
+
+    const updatePaymentStatus = () => {
+        axios
+        .get(`/payment/update/cod?payment_id=${orderPaymentId}`,{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+            },
+        })
+        .then((response) => {
+            console.log(response.data.data);
+            toast.success("Update order status successfully!",{
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+           });
+           const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+                window.location.href = "/admin/all_order";
+           }, 1500);
+        })
+        .catch((error) => {
+            console.log(error);
+            toast.error("Something went wrong!",{
+                position: "bottom-right",
+                     autoClose: 2000,
+                     hideProgressBar: true,
+                     closeOnClick: true,
+                     pauseOnHover: true,
+                     draggable: true,
+                     progress: undefined,
+                     theme: "colored"
+           });
+           
+           const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+           },1500);
+        });
+    };
  
 
     return(
     <div class="main">
+          <ToastContainer 
+          style={{
+               width: "400px",
+               fontSize: "18px",
+          }} 
+          />
         <div class="main__title">
             <span class="main__title-text">
                 Order Detail
@@ -154,7 +243,7 @@ function OrderDetail() {
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Status: {orderStatus}
+                        Status: <span style={{color: statusInfo.color}}> {statusInfo.text}</span> 
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -169,7 +258,7 @@ function OrderDetail() {
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Email: {email}
+                        Email: {email === "" ? "(Customers don't have email)" : email}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -179,7 +268,7 @@ function OrderDetail() {
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Note: {orderNote}
+                        Note: {orderNote === "" ? "(Customers do not leave notes)" : orderNote}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -192,7 +281,7 @@ function OrderDetail() {
                         class="form__category-des-title"
                           
                     >
-                        Payment Status:<span style={{color: statusInfo.color}}> {statusInfo.text}</span> 
+                        Payment Status: {orderPaymentStatus === 0 ? "Paid" : "Unpaid"}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -252,51 +341,51 @@ function OrderDetail() {
                         </button>
                     </Link>
                 </div>
-                {orderPaymentId === 1 && orderStatus === 0 (
+                {orderPaymentTypeId === 2 && orderStatus === 0 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6"
                         value={1} 
-                        onClick={(e) =>{ updateOrderStatus(e); openModal();}}
+                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
                                 Confirm
                         </button>
                     </div>
                 )}
-                {orderPaymentId === 1 && orderPaymentId === 2 && orderStatus === 1 (
+                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 1 && (
                      <div class="form__category-check">
                      <button class="form__category-btn form__input-btn me-6 " 
                         value={2}
-                        onClick={(e) =>{ updateOrderStatus(e); openModal();}}
+                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
                      >
-                             Being Transported
+                             Shipping
                      </button>
                  </div>
                 )}
-                {orderPaymentId === 1 && orderPaymentId === 2 && orderStatus === 2 (
+                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 2 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6"
                         value={10} 
-                        onClick={(e) =>{ updateOrderStatus(e); openModal();}}
+                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
                                 Delivered
                         </button>
                     </div>
                 )}
-                {orderPaymentId === 1 && orderPaymentId === 2 && orderStatus === 10 (
+                {orderPaymentTypeId === 1 || orderPaymentTypeId === 2 && orderStatus === 10 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6" 
-                        value={100}
-                        onClick={(e) =>{ updateOrderStatus(e); openModal();}}
+                        value={0}
+                        onClick={openModal2}
                         >
-                                Done
+                                Cofirm Payment
                         </button>
                     </div>
                 )}
-                {orderStatus !== 99 && (
+                {orderStatus === 0 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6" 
                         value={99}
-                        onClick={(e) =>{ updateOrderStatus(e); openModal();}}
+                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
                                 Cancel the Order
                         </button>
@@ -312,10 +401,10 @@ function OrderDetail() {
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Are you sure you want to update this user?    
+                    Are you sure you want to update the order?    
                 </h2>
                 <div className="d-flex align-items-center justify-content-between">
-                    <button className="form__input-btn me-3" value={setOrderStatusUpdate} onClick={handleStatusChange}>
+                    <button className="form__input-btn me-3" value={setOrderStatusUpdate} onClick={updateOrderStatus}>
                          Yes
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal}>
@@ -323,7 +412,27 @@ function OrderDetail() {
                     </button>
                 </div>
                 </div>
-            </ReactModal>
+        </ReactModal>
+        <ReactModal isOpen={isModalOpen2} onRequestClose={closeModal2} className="react_modal ReactModal_Content">
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                 style={
+                    {height: "175px",
+                    width: "356px",
+                    }
+                }>
+                <h2 className="d-lex justify-content-center form__product-id-title text-center">
+                    Are you sure you want to update the order?    
+                </h2>
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="form__input-btn me-3" onClick={updatePaymentStatus}>
+                         Yes
+                    </button>
+                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
+                         No
+                    </button>
+                </div>
+                </div>
+        </ReactModal>
     </div>
     );
 }

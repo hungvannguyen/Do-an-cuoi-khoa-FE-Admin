@@ -122,15 +122,15 @@ const renderPagination = () => {
                     <td className="table__body-data">
                       {(() => {
                         if (order.status === 0) {
-                          return <span style={{ color: 'gray' }}>Ordered</span>;
+                          return <span style={{ color: '#8D8D8D' }}>Waiting for comfirmation</span>;
                         } else if (order.status === 1) {
-                          return <span style={{ color: 'green' }}>Confirmed</span>;
+                          return <span style={{ color: '#c69600' }}>Confirmed</span>;
                         } else if (order.status === 2) {
-                          return <span style={{ color: 'blue' }}>Being Transported</span>;
+                          return <span style={{ color: '#00bcdd' }}>Shipping</span>;
                         } else if (order.status === 10) {
-                          return <span style={{ color: 'purple' }}>Delivered</span>;
+                          return <span style={{ color: '#001bc6' }}>Delivered</span>;
                         } else if (order.status === 100) {
-                          return <span style={{ color: 'orange' }}>Completed</span>;
+                          return <span style={{ color: '#00dd00' }}>Completed</span>;
                         } else if (order.status === 99) {
                           return <span style={{ color: 'red' }}>Cancelled</span>;
                         } else {

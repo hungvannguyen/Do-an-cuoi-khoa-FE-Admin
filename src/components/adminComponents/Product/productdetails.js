@@ -529,7 +529,7 @@ function ProductDetails(){
                          className="form__product-price-input" 
                          placeholder="Enter Product Import Price" 
                          min={0}
-                         value={importPrice}
+                         value={formatNumber(importPrice)}
                          onChange={handleImportPrice}
                          onClick={hanldeInputClick}
                     />  
