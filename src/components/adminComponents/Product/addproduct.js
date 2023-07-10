@@ -4,12 +4,25 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 function AddProduct() {
-     const [isValid, setIsValid] = useState(true);
+     
+     const [isValid, setIsValid] = useState("");
 
      //getcategory
      const [category, setCategory] = useState([]);
      //getwarehouse
      const [warehouse, setWarehouse] = useState([]);
+     //setErrorMessage
+     const [catIdError, setCatIdError] = useState("");
+     const [prdNameError, setPrdNameError] = useState("");
+     const [prdStatusError, setPrdStatusError] = useState("");
+     const [whIdError, setWhIdError] = useState("");
+     const [prdDesError, setPrdDesError] = useState("");
+     const [prdQuantityError, setPrdQuantityError] = useState("");
+     const [prdIsSaleError, setPrdIsSaleError] = useState("");
+     const [importPriceError, setImportPriceError] = useState("");
+     const [exportPriceError, setExportPriceError] = useState("");
+     const [prdSalePercentError, setPrdSalePercentError] = useState("");
+     const [prdImageError, setPrdImageError] = useState("");
 
      const [imgFileName, setImgFileName] = useState("");
      const [importExportError, setImportExportError] = useState(""); 
@@ -28,18 +41,6 @@ function AddProduct() {
      const [productImage, setProductImage] = useState("");
      const [productImagePreview, setProductImagePreview] = useState("");
 
-     //setErrorMessage
-     const [catIdError, setCatIdError] = useState("");
-     const [prdNameError, setPrdNameError] = useState("");
-     const [prdStatusError, setPrdStatusError] = useState("");
-     const [whIdError, setWhIdError] = useState("");
-     const [prdDesError, setPrdDesError] = useState("");
-     const [prdQuantityError, setPrdQuantityError] = useState("");
-     const [prdIsSaleError, setPrdIsSaleError] = useState("");
-     const [importPriceError, setImportPriceError] = useState("");
-     const [exportPriceError, setExportPriceError] = useState("");
-     const [prdSalePercentError, setPrdSalePercentError] = useState("");
-     const [prdImageError, setPrdImageError] = useState("");
 
      const hanldeInputClick = () => {
           setCatIdError("");
@@ -55,98 +56,6 @@ function AddProduct() {
           setPrdImageError("");
      };
 
-     const handleCategoryId = (event) => {
-          setCategoryId(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setCatIdError("");
-          }
-     };
-
-     const handleProductName = (event) => {
-          setProductName(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdNameError("");
-          }
-     };
-
-     const handleProductStatus = (event) => {
-          setProductStatus(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdStatusError("");
-          }
-     };
-
-     const handleWareHouseId = (event) => {
-          setWareHouseId(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setWhIdError("");
-          
-          }
-     };
-
-     const handleProductDescription = (event) => {
-          setProductDescription(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdDesError("");
-          }
-     };
-
-     const handleProductQuantity = (event) => {
-          setProductQuantity(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdQuantityError("");
-          }
-     };
-
-     const handleProductIsSale = (event) => {
-          setProductIsSale(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdIsSaleError("");
-          }
-     };
-
-     const handleImportPrice = (event) => {
-          const price = parseFloat(event.target.value);
-          setImportPrice(price);
-
-          if (!isValid) {
-               setIsValid(true);
-               setImportPriceError("");
-          }
-     };
-
-     const handleExportPrice = (event) => {
-          const price = parseFloat(event.target.value);
-          setExportPrice(price);
-          if (!isValid) {
-               setIsValid(true);
-               setExportPriceError("");
-          }
-     };
-
-     const handleProductSalePercent = (event) => {
-          setProductSalePercent(event.target.value);
-          setHasSalePercentChanged(true);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdSalePercentError("");
-          }
-     };
-
-     const handleProductImage = (event) => {
-          setProductImage(event.target.value);
-          if (!isValid) {
-               setIsValid(true);
-               setPrdImageError("");
-          }
-     };
 
      useEffect(() => {   
           axios
@@ -182,7 +91,7 @@ function AddProduct() {
 
      const addProduct = (e) => {
           e.preventDefault();
-          setIsValid(false);
+          setIsValid(true);
           console.log("categoryId:", categoryId);
           console.log("productName:", productName);
           console.log("productStatus:", productStatus);
@@ -196,70 +105,56 @@ function AddProduct() {
           console.log("productImage:", productImage);
           console.log("imgFileName:", imgFileName);
           console.log("-----------------------");
-          if (!categoryId) {
+             if (!categoryId) {
                setCatIdError("Please choose category!");
-               setIsValid(true);
-          }
-          if (!productName) {
+               setIsValid(false);
+             }
+             if (!productName) {
                setPrdNameError("Please enter product name!");
-               setIsValid(true);
-          }
-          if (!productStatus) {
+               setIsValid(false);
+             }
+             if (!productStatus) {
                setPrdStatusError("Please choose product status!");
-               setIsValid(true);
-          }
-          if (!wareHouseId) {
+               setIsValid(false);
+             }
+             if (!wareHouseId) {
                setWhIdError("Please choose warehouse!");
-               setIsValid(true);
-          }
-          if (!productDescription) {
+               setIsValid(false);
+             }
+             if (!productDescription) {
                setPrdDesError("Please enter product description!");
-               setIsValid(true);
-          }
-          if (!productQuantity) {
+               setIsValid(false);
+             }
+             if (!productQuantity) {
                setPrdQuantityError("Please enter product quantity!");
-               setIsValid(true);
-          }
-          if (!productIsSale) {
+               setIsValid(false);
+             }
+             if (!productIsSale) {
                setPrdIsSaleError("Please choose product is sale!");
-               setIsValid(true);
-          }
-          if (!importPrice) {
-               setImportPriceError("Please enter import price!");
-               setIsValid(true);
-          }else if(importPrice > exportPrice){
+               setIsValid(false);
+             }
+             if (!importPrice && !exportPrice) {
+               setImportPriceError("Please enter price!");
+               setIsValid(false);
+             } else if (importPrice > exportPrice) {
                setImportPriceError("Import price must be less than export price!");
                setIsValid(false);
-          }
-          if(importPrice > exportPrice){
-               setImportPriceError("Import price must be less than export price!");
-               setIsValid(false);
-          }else if (!exportPrice) {
-               setExportPriceError("Please enter export price!");
-               setIsValid(true);
-          }
-          if (productSalePercent === 0) {
-               setIsValid(false);
-          }
-          if (!productSalePercent) {
-               setPrdSalePercentError("Please enter product sale percent!");
-               setIsValid(true);
-          }else if (productSalePercent > 100) {
-               setPrdSalePercentError("Sale percent must be less than 100%!");
-               setIsValid(false);
-          }
-          if (!productImage) {
+             }
+             if (productIsSale !== 99) {
+               if (productSalePercent < 1) {
+                 setPrdSalePercentError("Sale percent must be greater than 1%!");
+                 setIsValid(false);
+               }else if (productSalePercent > 80) {
+                    setPrdSalePercentError("Sale percent must be less than 80%!");
+                    setIsValid(false);
+               }
+             }
+             if (!productImage) {
                setPrdImageError("Please choose product image!");
-               setIsValid(true);
-          }
-          if(importPrice > exportPrice) {
-               setImportPriceError("Import price must be less than export price!");
-               setIsValid(true);
-          }
-
+               setIsValid(false);
+             }
+           
           if(isValid) {
-               
-
                const productData = {
                     cat_id: categoryId,
                     status: productStatus,
@@ -274,8 +169,6 @@ function AddProduct() {
                     img_url: productImage,
                
                };
-               console.log("productData:", productData);
-
                axios
                     .post("/product/add", productData, {
                          headers: {
@@ -315,10 +208,104 @@ function AddProduct() {
                          progress: undefined,
                          theme: "colored"
                });
+               
                const redirectInterval = setInterval(() => {
                     clearInterval(redirectInterval);
                },1500);
           };
+     };
+
+     const handleCategoryId = (event) => {
+          setCategoryId(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setCatIdError("");
+          }
+     };
+
+     const handleProductName = (event) => {
+          setProductName(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdNameError("");
+          }
+     };
+
+     const handleProductStatus = (event) => {
+          setProductStatus(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdStatusError("");
+          }
+     };
+
+     const handleWareHouseId = (event) => {
+          setWareHouseId(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setWhIdError("");
+          
+          }
+     };
+
+     const handleProductDescription = (event) => {
+          setProductDescription(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdDesError("");
+          }
+     };
+
+     const handleProductQuantity = (event) => {
+          setProductQuantity(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdQuantityError("");
+          }
+     };
+
+     const handleProductIsSale = (event) => {
+          setProductIsSale(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdIsSaleError("");
+          }
+     };
+
+     const handleImportPrice = (event) => {
+          const price = parseFloat(event.target.value);
+          setImportPrice(price);
+
+          if (!isValid) {
+               setIsValid(false);
+               setImportPriceError("");
+          }
+     };
+
+     const handleExportPrice = (event) => {
+          const price = parseFloat(event.target.value);
+          setExportPrice(price);
+          if (!isValid) {
+               setIsValid(false);
+               setExportPriceError("");
+          }
+     };
+
+     const handleProductSalePercent = (event) => {
+          setProductSalePercent(event.target.value);
+          setHasSalePercentChanged(true);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdSalePercentError("");
+          }
+     };
+
+     const handleProductImage = (event) => {
+          setProductImage(event.target.value);
+          if (!isValid) {
+               setIsValid(false);
+               setPrdImageError("");
+          }
      };
 
 

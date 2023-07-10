@@ -16,7 +16,7 @@ import DetailsCategory from "../../components/adminComponents/Category/categoryd
 import AddCategory from "../../components/adminComponents/Category/addcategory";
 
 import AllEmployee from "../../components/adminComponents/Employee/allemployee";
-import DetailsEmployee from "../../components/adminComponents/Employee/employeedetails";
+import DetailsUser from "../../components/adminComponents/Employee/employeedetails";
 import AddEmployee from "../../components/adminComponents/Employee/addemployee";
 
 import AllOrder from "../../components/adminComponents/Orders/allorder";
@@ -25,6 +25,7 @@ import DetailsOrder from "../../components/adminComponents/Orders/orderdetail";
 
 import AllCustomer from "../../components/adminComponents/Customer/allcustomer";
 import ResetPass from "../../components/adminComponents/Customer/resetpass";
+
 
 
 
@@ -63,6 +64,7 @@ function Admin() {
 
             //Customer
             <Route path="/admin/all_customer" element={requireAuth(AllCustomer)} />
+            <Route path="/admin/user_details/:user_id" element={requireAuth(DetailsUser)} />
             <Route path="/admin/reser_request" element={<ResetPass />} />
         </Routes>
         <Footer />

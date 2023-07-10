@@ -37,6 +37,14 @@ function Sidebar  () {
 //     });
 //   }, []);
 
+     let hasSessionData = sessionStorage.getItem("token") !== null;
+    //Logout    
+    const handleLogout = () => {
+     sessionStorage.removeItem("token");
+     hasSessionData = false;
+     window.location.href = "http://localhost:3000/";
+ };
+
   return (
     <div className="sidebar">
             <div className="sidebar">
@@ -166,6 +174,15 @@ function Sidebar  () {
                                    </Link>
                               </li>
                          </ul>
+                    </div>
+               </div>
+               <div className="features__item">
+               <div className="features__item-main">
+                    <i className="fa-solid fa-right-from-bracket features__item-main-icon"></i>
+                         <span className="features__item-main-text" onClick={handleLogout}>
+                              Log Out
+                         </span>
+                         <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
                </div>
           </div>

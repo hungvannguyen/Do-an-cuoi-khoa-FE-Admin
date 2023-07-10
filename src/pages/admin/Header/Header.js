@@ -4,15 +4,6 @@ import axios from "axios";
 
 
 function Header () {
-    let hasSessionData = sessionStorage.getItem("token") !== null;
-
-    //Logout    
-    const handleLogout = () => {
-        sessionStorage.removeItem("token");
-        hasSessionData = false;
-        window.location.href = "http://localhost:3000/";
-    };
-
 
     return(
         <header className="admin-header">
@@ -27,11 +18,6 @@ function Header () {
               </p>
           </div>
           <div className="header__account">
-                <div className="Logout me-3" >
-                    <span className="Logout-text" onClick={handleLogout} style={{cursor:"pointer"}}>
-                        Đăng xuất
-                    </span>
-                </div>
 
               <div className="header__search">
                     <label htmlFor="header__search-input">

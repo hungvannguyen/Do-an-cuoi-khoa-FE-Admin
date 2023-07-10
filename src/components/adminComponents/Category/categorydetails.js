@@ -1,7 +1,7 @@
 import axios from "axios";
 import  "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 
 function CategoryDetails(){
@@ -114,17 +114,29 @@ function CategoryDetails(){
                         onChange={(e) => setCategoryDescription(e.target.value)}
                     />
                 </div> 
-                <div className="form__product-check d-flex">
+                <div className="form__product-check d-flex align-items-center">
+                <div class="form__category-check me-3">
+                    <Link to="/admin/all_category" >
+                        <button class="form__category-btn form__input-btn">
+                        <i className="fas fa-angle-left features__item-main-arrow me-3"></i>
+                                Back
+                        </button>
+                    </Link>
+                </div>
+                <div class="form__category-check me-3">
                     <button className="form__product-btn form__input-btn"
                             onClick={updateCategory}
                     >
                         Update Category
                     </button>
-                    <button className="form__product-btn form__input-btn ms-3"
+                </div>
+                <div class="form__category-check me-3">
+                    <button className="form__product-btn form__input-btn "
                             onClick={deleteCategory}
                     >
                         Delete Category
                     </button>
+                </div>
                 </div>
             </div>
         </div>

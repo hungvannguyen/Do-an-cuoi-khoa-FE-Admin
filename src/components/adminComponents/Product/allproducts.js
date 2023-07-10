@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactModal from 'react-modal';
+import { ToastContainer, toast } from "react-toastify";
 
 function AllProducts(){ 
   const [products, setProducts] = useState([]);
@@ -11,7 +12,12 @@ function AllProducts(){
   const [totalPages, setTotalPages] = useState();
   const [quantityValue, setQuantityValue] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [idSave, setIdSave] = useState("");
+  const [isValid, setIsValid] = useState("");
+
+  //error
+  const [quantityError, setQuantityError] = useState("");
       
     useEffect(() => {
       axios
@@ -95,33 +101,73 @@ const renderPagination = () => {
       setQuantityValue("");
     };
 
-    const handleIdSave = (e) => {
-      setIdSave(e.target.value);
+    
+    const openModal2 = () => {
+      setIsModalOpen2(true);
+    };
+  
+    const closeModal2 = () => {
+      setIsModalOpen2(false);
     };
 
-    const handleQuantityAdd = () => {
-      const confirmAdd = window.confirm("Are you sure to add quantity?");
-      console.log(idSave);
-      console.log(quantityValue);
-      if (confirmAdd) {
-      axios
-      .post(`/product/add_quantity?prd_id=${idSave}&quantity=${quantityValue}`,{
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-      },
-      })
-      .then((response) => {
-        console.log(response.data);
-        closeModal();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const handleIdSave = (e) => {
+      setIdSave(e.target.value);
+      if(!isValid){
+        setIsValid(false);
+        setQuantityError("");
       }
     };
 
+    const handleQuantityAdd = (e) => {
+      e.preventDefault();
+      setIsValid(true);
+      if (quantityValue === "") {
+        setQuantityError("Quantity is required");
+        setIsValid(false);
+      }else if(quantityValue <= 0){
+        setQuantityError("Quantity must be greater than 0");
+        setIsValid(false);
+      }
+      console.log(idSave);
+      console.log(quantityValue);
+      if(isValid){
+        axios
+        .post(`/product/add_quantity?prd_id=${idSave}&quantity=${quantityValue}`,{
+          headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+        })
+        .then((response) => {
+          console.log(response.data);
+          closeModal2();
+          toast.success("Update quantity successfully!",{
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+       });
+       const redirectInterval = setInterval(() => {
+            clearInterval(redirectInterval);
+            window.location.href = "/admin/all_product";
+       }, 1500);
+  
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }else{
+        console.log("error");
+      }
+    };
+
+
     return(   
       <div className="main">
+
         <div className="main__title">
           <span className="main__title-text">All Category</span>
           <span className="main__title-des">
@@ -162,8 +208,8 @@ const renderPagination = () => {
                 <tr className="table__body-item" key={product.id}>
                   <td className="table__body-data">{product.id}</td>
                   <td className="table__body-data">{product.name}</td>
-                  <td className="table__body-data">{product.description}</td>
-                  <td className="table__body-data">{product.img_url}</td>
+                  <td className="table__body-data Max-Width-248px">{product.description}</td>
+                  <td className="table__body-data Max-Width-248px">{product.img_url}</td>
                   <td className="table__body-data">
                     {(() =>{
                       if(product.is_sale === 1){
@@ -201,7 +247,7 @@ const renderPagination = () => {
                       </Link>
                     </button>
                     <button
-                      className="btn-edit ms-3"
+                      className="form__product-btn ms-3"
                       value={product.id}
                       onClick={(e) => {
                         handleIdSave(e);
@@ -218,7 +264,7 @@ const renderPagination = () => {
           </div>
           <div className="datatable__footer">
             <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing {currentPage} to {currentPage + products.length - 1} of {totalPages} entries</span>
+              <span className="datatable__footer-description-text"></span>
             </div>
             <div className="datatable__footer-page">
              <ul className="datatable__footer-page-list">
@@ -243,23 +289,48 @@ const renderPagination = () => {
         <ReactModal isOpen={isModalOpen} onRequestClose={closeModal}
             className="react_modal ReactModal__Content"
         >
+          <ToastContainer 
+          style={{
+               width: "400px",
+               fontSize: "18px",
+          }} 
+          />
         <h3 className="d-lex justify-content-center form__product-id-title text-center">Enter Quantity</h3>
         <div className="d-flex flex-column ">
           <input type="number" 
             value={quantityValue} 
             onChange={(e) => setQuantityValue(e.target.value)} 
             className="form__input-reactmodal"
-            min={0}
-            max={50}
+            min={1}
             />  
           <div className="d-flex justify-content-around mt-4">
-            <button onClick={handleQuantityAdd} className="form__input-btn">Add</button>
+            <button onClick={openModal2} className="form__input-btn" >Add</button>
             <button onClick={closeModal} className="form__input-btn">Cancel</button>
           </div>
         </div>
-        
-        
           </ReactModal>
+          <ReactModal isOpen={isModalOpen2} onRequestClose={closeModal2} className="react_modal ReactModal_Content">
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                 style={
+                    {height: "175px",
+                    width: "356px",
+                    }
+                }>
+                <h2 className="d-lex justify-content-center form__product-id-title text-center">
+                    Are you sure you want to add product quantity?    
+                </h2>
+                {quantityError && <span className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>{quantityError}</span>
+                }
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="form__input-btn me-3" onClick={handleQuantityAdd}>
+                         Yes
+                    </button>
+                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
+                         No
+                    </button>
+                </div>
+                </div>
+        </ReactModal>
       </div>
       
     );

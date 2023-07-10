@@ -1,9 +1,151 @@
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import Authorized from "../Authorized/authorized"
 import  "../../../pages/admin/Styles/css/allCss.css";
 
 function AddEmployee(){
+
+    const [isValid, setIsValid] = useState("");
+    const [role, setRole] = useState(10);
+    const [account, setAccount] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPass, setConfirmPass] = useState("");
+
+    //Error
+    const [accountError, setAccountError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [confirmPassError, setConfirmPassError] = useState("");
+
+    //authorized
+    const user = sessionStorage.getItem("role_id");
+    const allowedRoles = ["1",];
+
+
+    const handleInputClick = () => {
+        setAccountError("");
+        setEmailError("");
+        setPasswordError("");
+        setConfirmPassError("");
+    }
+
+    const handleAccount = (event) => {
+        setAccount(event.target.value);
+        if(!isValid){
+            setIsValid(false);
+            setAccountError("");
+        }
+    };
+
+    const handleEmail = (event) => {
+        setEmail(event.target.value);
+        if(!isValid){
+            setIsValid(false);
+            setEmailError("");
+        }
+    };
+
+    const handlePassword = (event) => {
+        setPassword(event.target.value);
+        if(!isValid){
+            setIsValid(false);
+            setPasswordError("");
+        }
+    };
+
+    const handleConfirmPass = (event) => {
+        setConfirmPass(event.target.value);
+        if(!isValid){
+            setIsValid(false);
+            setConfirmPassError("");
+        }
+    };
+
+
+    const addEmployee = (e) => {
+        e.preventDefault();
+        setIsValid(true);
+        if(!account){
+            setAccountError("Account is required");
+            setIsValid(false);
+        }
+        if(!email){
+            setEmailError("Email is required");
+            setIsValid(false);
+        }
+        if(!password){
+            setPasswordError("Password is required");
+            setIsValid(false);
+        }
+        if(!confirmPass){
+            setConfirmPassError("Confirm Password is required");
+            setIsValid(false);
+        }
+        if(password !== confirmPass){
+            setConfirmPassError("Confirm Password is not match");
+            setIsValid(false);
+        }
+        if(isValid){
+            const employeeData = {
+                account: account,
+                email: email,
+                password: password,
+                confirm_password: confirmPass,
+            };
+            axios
+                .post(`/user/admin/${role}`, employeeData)
+                .then((response) => {
+                    console.log(response.data);
+                    toast.success("Add Employee Success",{
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
+                    });
+                    const redirectInterval = setInterval(() => {
+                        clearInterval(redirectInterval);
+                    window.location.href = "/admin/all_category";
+                    },1500);
+                })
+                .catch((error) => {
+                    console.log(error);
+                }
+            );
+        }else{
+            toast.error("Please enter all required fields",{
+                position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
+            });
+            const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+            },1500);
+        }
+    };
+
     return(
         <div>
-                 <div className="main">
+            <Authorized user={user} allowedRoles={allowedRoles}>
+            <div className="main">
+                <ToastContainer 
+                    style={{
+                        width: "400px",
+                        fontSize: "18px",
+                    }} 
+                />
+                
                 <div className="main__title">
                     <span className="main__title-text">
                             Add Employee
@@ -15,45 +157,80 @@ function AddEmployee(){
                 <div className="main__form">
                     <div className="form__product-id">
                             <label className="form__product-id-title">
-                                Employee ID
+                                Account 
                             </label>
-                            <input type="text" readonly className="form__product-id-input form__input--readonly" placeholder="15" />
+                            <input type="text" 
+                                    readonly className="form__product-id-input " 
+                                    placeholder="Enter User Name"
+                                    value={account}
+                                    onChange={handleAccount}
+                                    onClick={handleInputClick}
+                            />
+                            {accountError && (
+                                <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                                    {accountError}
+                                </div>
+                            )}
                     </div>
                      <div className="form__product-cate-id">
                             <label className="form__product-id-title">
-                                Category ID
+                                Email
                             </label>
-                            <input type="text" className="form__product-id-input" placeholder="Enter Category ID" />
+                            <input type="text" 
+                                    className="form__product-id-input" 
+                                    placeholder="Enter Email" 
+                                    value={email}
+                                    onChange={handleEmail}
+                                    onClick={handleInputClick}
+                            />
+                            {emailError && (
+                                <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                                    {emailError}
+                                </div>
+                            )}
                     </div> 
                     <div className="form__product-name">
                             <label for="form__product-name-input" className="form__product-name-title">
-                                Employee Name
+                                Password
                             </label>
-                            <input type="text" name="" id="form__product-input" className="form__product-nane-input" placeholder="Enter Employee Name" />
-                            <span className="form__product-validate text__validate--failed">
-
-                            </span>
+                            <input type="password" id="form__product-input" 
+                                    className="form__product-nane-input" 
+                                    placeholder="Enter Password" 
+                                    value={password}
+                                    onChange={handlePassword}
+                                    onClick={handleInputClick}
+                            />
+                            {passwordError && (
+                                <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                                    {passwordError}
+                                </div>
+                            )}
                     </div>
                     <div className="form__product-quantity">
                             <label for="form__product-quantity-input" className="form__product-quantity-title">
-                                Phone Number
+                                Confirm Password
                             </label>
-                            <input type="text" name="" id="form__product-quantity-input" className="form__product-quantity-input" placeholder="Enter Phone Number" /> 
-                    </div>
-                    <div className="form__product-price">
-                            <label for="form__product-price-input" className="form__product-price-title">
-                                Email
-                            </label>
-                            <input type="text" name="" id="form__product-price-input" className="form__product-price-input" placeholder="Enter Email" />
-                            <span className="form__mail-validate text__validate--failed">
-
-                            </span>
+                            <input type="password" 
+                                id="form__product-quantity-input" 
+                                className="form__product-quantity-input" 
+                                placeholder="Enter Confirm Password" 
+                                value={confirmPass}
+                                onChange={handleConfirmPass}
+                                onClick={handleInputClick}
+                            /> 
+                            {confirmPassError && (
+                                <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                                    {confirmPassError}
+                                </div>
+                            )}
                     </div>
                     <div className="form__product-check">
-                            <button className="form__product-btn form__input-btn">
-                                Import
-                            </button>
-                    </div>
+                    <button className="form__product-btn form__input-btn"
+                            onClick={addEmployee}
+                    >
+                        Add
+                    </button>
+                </div>
                 </div>
             </div>
             <div className="action">
@@ -61,11 +238,11 @@ function AddEmployee(){
                     <div className="action__title">
                             <i className="action__title-icon"></i>
                             <span className="action__title-text">
-                                
                             </span>
                     </div>
                 </div>
             </div>
+            </Authorized>
         </div>
     );
 }
