@@ -69,23 +69,23 @@ function AddEmployee(){
         e.preventDefault();
         setIsValid(true);
         if(!account){
-            setAccountError("Account is required");
+            setAccountError("Hãy nhập vào Tài Khoản");
             setIsValid(false);
         }
         if(!email){
-            setEmailError("Email is required");
+            setEmailError("Hãy Nhập Vào Email");
             setIsValid(false);
         }
         if(!password){
-            setPasswordError("Password is required");
+            setPasswordError("Hãy Nhập Vào Mật Khẩu");
             setIsValid(false);
         }
         if(!confirmPass){
-            setConfirmPassError("Confirm Password is required");
+            setConfirmPassError("Hãy Nhập Vào Xác Nhận Mật Khẩu");
             setIsValid(false);
         }
         if(password !== confirmPass){
-            setConfirmPassError("Confirm Password is not match");
+            setConfirmPassError("Mật Khẩu Không Trùng Khớp");
             setIsValid(false);
         }
         if(isValid){
@@ -99,7 +99,7 @@ function AddEmployee(){
                 .post(`/user/admin/${role}`, employeeData)
                 .then((response) => {
                     console.log(response.data);
-                    toast.success("Add Employee Success",{
+                    toast.success("Thêm Nhân Viên Thành Công",{
                         position: "bottom-right",
                         autoClose: 2000,
                         hideProgressBar: true,
@@ -111,7 +111,7 @@ function AddEmployee(){
                     });
                     const redirectInterval = setInterval(() => {
                         clearInterval(redirectInterval);
-                    window.location.href = "/admin/all_category";
+                    window.location.href = "/admin/all_employee";
                     },1500);
                 })
                 .catch((error) => {
@@ -119,7 +119,7 @@ function AddEmployee(){
                 }
             );
         }else{
-            toast.error("Please enter all required fields",{
+            toast.error("Hãy Đảm Bảo Rằng Đã Nhập Đủ",{
                 position: "bottom-right",
                         autoClose: 2000,
                         hideProgressBar: true,
@@ -148,7 +148,7 @@ function AddEmployee(){
                 
                 <div className="main__title">
                     <span className="main__title-text">
-                            Add Employee
+                            Thêm Mới Nhân Viên
                     </span>
                     <span className="main__title-des">
                             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -157,7 +157,7 @@ function AddEmployee(){
                 <div className="main__form">
                     <div className="form__product-id">
                             <label className="form__product-id-title">
-                                Account 
+                                Tài Khoản
                             </label>
                             <input type="text" 
                                     readonly className="form__product-id-input " 
@@ -191,7 +191,7 @@ function AddEmployee(){
                     </div> 
                     <div className="form__product-name">
                             <label for="form__product-name-input" className="form__product-name-title">
-                                Password
+                                Mật Khẩu
                             </label>
                             <input type="password" id="form__product-input" 
                                     className="form__product-nane-input" 
@@ -208,7 +208,7 @@ function AddEmployee(){
                     </div>
                     <div className="form__product-quantity">
                             <label for="form__product-quantity-input" className="form__product-quantity-title">
-                                Confirm Password
+                                Xác Nhận Mật Khẩu
                             </label>
                             <input type="password" 
                                 id="form__product-quantity-input" 
@@ -228,7 +228,7 @@ function AddEmployee(){
                     <button className="form__product-btn form__input-btn"
                             onClick={addEmployee}
                     >
-                        Add
+                        Thêm Mới
                     </button>
                 </div>
                 </div>

@@ -15,6 +15,8 @@ function AllProducts(){
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [idSave, setIdSave] = useState("");
   const [isValid, setIsValid] = useState("");
+  const [isNextPageEnabled, setNextPageEnabled] = useState(true);
+  const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
 
   //error
   const [quantityError, setQuantityError] = useState("");
@@ -25,8 +27,8 @@ function AllProducts(){
       .then((response) => {
         console.log(response.data);
         setProducts(response.data.data);
-        setCurrentPage(response.data.currentPage);
-        setTotalPages(response.data.totalPages);
+        setCurrentPage(response.data.current_page);
+        setTotalPages(response.data.total_page);
         console.log("P" + response.data.current_page);
         console.log(response.data);
         console.log(typeof response.data);
@@ -87,6 +89,22 @@ const renderPagination = () => {
     </>
   );
 };
+
+useEffect(() => {
+  if (currentPage === totalPages) {
+    setNextPageEnabled(false);
+  } else {
+    setNextPageEnabled(true);
+  }
+}, [currentPage, totalPages]);
+
+useEffect(() => {
+  if (currentPage === 1) {
+    setPreviousPageEnabled(false);
+  } else {
+    setPreviousPageEnabled(true);
+  }
+}, [currentPage]);
 
     const formatNumber = (number) => {
       return number.toLocaleString("vi-VN");
@@ -169,7 +187,7 @@ const renderPagination = () => {
       <div className="main">
 
         <div className="main__title">
-          <span className="main__title-text">All Category</span>
+          <span className="main__title-text">All Product</span>
           <span className="main__title-des">
             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
           </span>
@@ -191,16 +209,16 @@ const renderPagination = () => {
               <thead className="table__head">
                 <tr>
                   <th className="table__head-item">ID</th>
-                  <th className="table__head-item">Name</th>
-                  <th className="table__head-item">Description</th>
-                  <th className="table__head-item">Image</th>
-                  <th className="table__head-item">Is sale</th>
-                  <th className="table__head-item">Sale percent</th>
-                  <th className="table__head-item">Quantity</th>
-                  <th className="table__head-item">Import price</th>
-                  <th className="table__head-item">Price</th>
-                  <th className="table__head-item">Is Sell</th>
-                  <th className="table__head-item">Action</th>
+                  <th className="table__head-item">Tên</th>
+                  <th className="table__head-item">Mô tả</th>
+                  <th className="table__head-item">Hình Ảnh</th>
+                  <th className="table__head-item">Giảm giá</th>
+                  <th className="table__head-item">% Giảm Giá</th>
+                  <th className="table__head-item">Số Lượng</th>
+                  <th className="table__head-item">Giá Nhập</th>
+                  <th className="table__head-item">Giá Bán</th>
+                  <th className="table__head-item">Tình Trạng</th>
+                  <th className="table__head-item">Hành Động</th>
                 </tr>
               </thead>
               <tbody className="table__body">
@@ -213,9 +231,9 @@ const renderPagination = () => {
                   <td className="table__body-data">
                     {(() =>{
                       if(product.is_sale === 1){
-                        return <span style={{color: 'green'}}>Sale</span>
+                        return <span style={{color: 'green'}}>Giảm Giá</span>
                       }else if (product.is_sale === 99){
-                        return <span style={{color: 'red'}}>Not Sale</span>
+                        return <span style={{color: 'red'}}>Không Giảm Giá</span>
                       }else{
                         return <span ></span>
                       }
@@ -232,21 +250,21 @@ const renderPagination = () => {
                   <td className="table__body-data">
                     {(() =>{
                       if(product.status === 1){
-                        return <span style={{color: 'green'}}>Sell</span>
+                        return <span style={{color: 'green'}}>Đang Bán</span>
                       }else if (product.status === 99){
-                        return <span style={{color: 'red'}}>Not Sell</span>
+                        return <span style={{color: 'red'}}>Không Bán</span>
                       }else{
                         return <span ></span>
                       }
                     })()}
                   </td>
-                  <td className="table__body-data"> 
+                  <td className="table__body-data d-flex justify-content-around align-items-center"> 
                     <button className="btn-edit ">                    
                       <Link to={`/admin/product_details/${product.id}`} className="btn-text">
-                        Details
+                        Chi Tiết
                       </Link>
                     </button>
-                    <button
+                    {/* <button
                       className="form__product-btn ms-3"
                       value={product.id}
                       onClick={(e) => {
@@ -255,7 +273,7 @@ const renderPagination = () => {
                       }}
                     >
                       Add Quantity
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
                 ))}
@@ -268,16 +286,16 @@ const renderPagination = () => {
             </div>
             <div className="datatable__footer-page">
              <ul className="datatable__footer-page-list">
-              <li
-                className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`}
-                onClick={handlePreviousPage}
+             <li
+                className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
+                onClick={isPreviousPageEnabled ? handlePreviousPage : null}
               >
                 Previous
               </li>
-                {renderPagination()}
+              {renderPagination()}
               <li
-                className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`}
-                onClick={handleNextPage}
+                className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
+                onClick={isNextPageEnabled ? handleNextPage : null}
               >
                 Next
               </li>

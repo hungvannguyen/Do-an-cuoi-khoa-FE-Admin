@@ -20,7 +20,7 @@ function ProductDetails(){
      const [category, setCategory] = useState([]);
      //getwarehouse
      const [warehouse, setWarehouse] = useState([]);
-     const [warehouseInfo, setWarehouseInfo] = useState(null);
+
      //currentdata
      const [crProductName, setCrProductName] = useState("");
      const [crProductDescription, setCrProductDescription] = useState("");
@@ -32,7 +32,7 @@ function ProductDetails(){
      const [crProductStatus, setCrProductStatus] = useState("");
      const [crProductIsSale, setCrProductIsSale] = useState("");
      const [crCategoryId, setCrCategoryId] = useState("");
-     const [crWareHouseId, setCrWareHouseId] = useState("");
+
      const [crProductId, setCrProductId] = useState("");
      const [crCity, setCrCity] = useState("");
      const [crDistrict, setCrDistrict] = useState("");
@@ -43,7 +43,7 @@ function ProductDetails(){
      const [categoryId, setCategoryId] = useState("");
      const [productName, setProductName] = useState("");
      const [productStatus, setProductStatus] = useState("");
-     const [wareHouseId, setWareHouseId] = useState("");
+
      const [productDescription, setProductDescription] = useState("");
      const [productQuantity, setProductQuantity] = useState("");
      const [productIsSale, setProductIsSale] = useState("");
@@ -57,7 +57,7 @@ function ProductDetails(){
      const [catIdError, setCatIdError] = useState("");
      const [prdNameError, setPrdNameError] = useState("");
      const [prdStatusError, setPrdStatusError] = useState("");
-     const [whIdError, setWhIdError] = useState("");
+
      const [prdDesError, setPrdDesError] = useState("");
      const [prdQuantityError, setPrdQuantityError] = useState("");
      const [prdIsSaleError, setPrdIsSaleError] = useState("");
@@ -77,7 +77,6 @@ function ProductDetails(){
           setCatIdError("");
           setPrdNameError("");
           setPrdStatusError("");
-          setWhIdError("");
           setPrdDesError("");
           setPrdQuantityError("");
           setPrdIsSaleError("");
@@ -106,13 +105,6 @@ function ProductDetails(){
           if(!isValid){
                setIsValid(false);
                setPrdStatusError("");
-          }
-     };
-     const handleWareHouseId = (e) => {
-          setWareHouseId(e.target.value);
-          if(!isValid){
-               setIsValid(false);
-               setWhIdError("");
           }
      };
      const handleProductDescription = (e) => {
@@ -177,22 +169,7 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
-     //Api get warehouse all
-     useEffect(() => {
-          axios
-          .get("/warehouse/info",{
-               headers: {
-                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-               },
-          })
-          .then((response) => {
-               console.log(response.data);
-               setWarehouse(response.data);
-          })
-          .catch((error) => {
-               console.log(error);
-          });
-     }, []);
+
 
      //api get product by id
      useEffect(() => {
@@ -212,7 +189,6 @@ function ProductDetails(){
                     setCrProductImage(response.data.img_url);
                     setCrProductStatus(response.data.status);
                     setCrProductIsSale(response.data.is_sale);
-                    setCrWareHouseId(response.data.warehouse_id);
                     setCrProductId(response.data.id);
                     //save data
                     setCategoryId(response.data.cat_id);
@@ -225,8 +201,6 @@ function ProductDetails(){
                     setProductImage(response.data.img_url);
                     setProductStatus(response.data.status);
                     setProductIsSale(response.data.is_sale);
-                    setWareHouseId(response.data.warehouse_id);
-
                     //api get image product
                     axios
                     .get(`/file/img/${response.data.img_url}`, { responseType: "blob" })
@@ -274,7 +248,6 @@ function ProductDetails(){
           console.log("categoryId:", categoryId);
           console.log("productName:", productName);
           console.log("productStatus:", productStatus);
-          console.log("wareHouseId:", wareHouseId);
           console.log("productDescription:", productDescription);
           console.log("productQuantity:", productQuantity);
           console.log("productIsSale:", productIsSale);
@@ -285,60 +258,57 @@ function ProductDetails(){
           console.log("imgFileName:", imgFileName);
           console.log("-----------------------");
           if (!categoryId) {
-               setCatIdError("Please choose category!");
+               setCatIdError("Hãy Chọn Danh Mục Sản Phẩm!");
                setIsValid(false);
           }
           if (!productName) {
-               setPrdNameError("Please enter product name!");
+               setPrdNameError("Hãy Nhập Vào Tên Sản Phẩm!");
                setIsValid(false);
           }
           if (!productStatus) {
-               setPrdStatusError("Please choose product status!");
+               setPrdStatusError("Hãy Chọn Trạng Thái Cho Sản Phẩm!");
                setIsValid(false);
           }
-          if (!wareHouseId) {
-               setWhIdError("Please choose warehouse!");
-               setIsValid(false);
-          }
+
           if (!productDescription) {
-               setPrdDesError("Please enter product description!");
+               setPrdDesError("Hãy Nhập Mô Tả Cho Sản Phẩm!");
                setIsValid(false);
           }
           if (!productQuantity) {
-               setPrdQuantityError("Please enter product quantity!");
+               setPrdQuantityError("Hãy Nhập Số Lượng Cho Sản Phẩm!");
                setIsValid(false);
           }
           if (!productIsSale) {
-               setPrdIsSaleError("Please choose product is sale!");
+               setPrdIsSaleError("Hãy Chọn Sản Phẩm Có Giảm Giá Hay Không!");
                setIsValid(false);
           }
           if (!importPrice) {
-               setImportPriceError("Please enter import price!");
+               setImportPriceError("Hãy Nhập Vào Giá Nhập Hàng!");
                setIsValid(false);
           }else if(importPrice > exportPrice){
-               setImportPriceError("Import price must be less than export price!");
+               setImportPriceError("Giá Nhập Phải Thấp Hơn Giá Bán Ra!");
                setIsValid(false);
           }
           if (!exportPrice) {
-               setExportPriceError("Please enter export price!");
+               setExportPriceError("Hãy Nhập Vào Giá Bán Ra!");
                setIsValid(false);
           }else if(importPrice > exportPrice){
-               setImportPriceError("Import price must be less than export price!");
+               setImportPriceError("Giá Nhập Phải Thấp Hơn Giá Bán Ra!");
                setIsValid(false);
           }
           if (productIsSale === 1 && productSalePercent  < 1) {
-               setPrdSalePercentError("Please enter product sale percent!");
+               setPrdSalePercentError("Hãy Nhập Vào Phần Trăm Giảm Giá!");
                setIsValid(false);
           }else if(productSalePercent > 80){
-               setPrdSalePercentError("Sale percent must be less than 80%!");
+               setPrdSalePercentError("Phần Trăm Giảm Giá Phải Bé Hơn 80%!");
                setIsValid(false);
           }
           if (!productImage) {
-               setPrdImageError("Please choose product image!");
+               setPrdImageError("Hãy Thêm Hình Ảnh Cho Sản Phẩm!");
                setIsValid(false);
           }
           if(importPrice > exportPrice) {
-               setImportPriceError("Import price must be less than export price!");
+               setImportPriceError("Giá Nhập Phải Thấp Hơn Giá Bán Ra!");
                setIsValid(false);
           }
 
@@ -355,7 +325,7 @@ function ProductDetails(){
                     status: productStatus,
                     is_sale: productIsSale,
                     cat_id: categoryId,
-                    warehouse_id: wareHouseId,
+
                },{
                     headers: {
                          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -363,7 +333,7 @@ function ProductDetails(){
                })
                .then((response) => {
                     console.log(response.data);
-                    toast.success("Update product successfully!",{
+                    toast.success("Cập Nhật Sản Phẩm Thành Công!",{
                          position: "bottom-right",
                          autoClose: 2000,
                          hideProgressBar: true,
@@ -383,7 +353,7 @@ function ProductDetails(){
                });
           }else{
                console.log(isValid);
-               toast.error("Please enter all required fields!",{
+               toast.error("Hãy Đảm Bảo Rằng Đã Nhập Đủ Các Mục!",{
                     position: "bottom-right",
                     autoClose: 2000,
                     hideProgressBar: true,
@@ -432,7 +402,7 @@ function ProductDetails(){
           />
         <div className="main__title">
              <span className="main__title-text">
-                   Product Details
+                   Chi Tiết Sản Phẩm
              </span>
              <span className="main__title-des">
                   DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -442,12 +412,12 @@ function ProductDetails(){
           <div className="col-lg-4">
           <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product ID: <span>{crProductId}</span>
+                       ID Sản Phẩm: <span>{crProductId}</span>
                   </label>
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product Name: <span>{crProductName}</span>
+                       Tên Sản Phẩm: <span>{crProductName}</span>
                     </label>
                     <input type="text" 
                          id="form__product-name-input" 
@@ -465,7 +435,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product Discription: <span>{crProductDescription}</span>
+                       Mô Tả Sản Phẩm: <span>{crProductDescription}</span>
                     </label>
                     <input type="text" 
                          id="form__product-quantity-input" 
@@ -483,7 +453,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product Quantity: <span>{crProductQuantity}</span>
+                       Số Lượng: <span>{crProductQuantity}</span>
                   </label>
                   <input type="number" 
                     id="form__product-quantity-input" 
@@ -502,7 +472,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product status: <span>{crProductStatus === 1 ? "Đang bán" : "Không bán"}</span>
+                       Trạng Thái Sản Phẩm: <span>{crProductStatus === 1 ? "Đang bán" : "Không bán"}</span>
                     </label>
                     <select type="number" 
                          className="form__product-id-input" 
@@ -523,7 +493,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Product Import price: <span>{formatNumber(crImportPrice)} VND</span>
+                       Giá Nhập: <span>{formatNumber(crImportPrice)} VND</span>
                     </label>
                     <input type="number" 
                          id="form__product-price-input" 
@@ -550,7 +520,7 @@ function ProductDetails(){
           <div className="col-lg-4">
           <div className="form__product-price">
                     <label for="form__product-price-input" className="form__product-price-title">
-                         Product Export Price: <span>{formatNumber(crExportPrice)} VND</span>
+                         Giá Bán: <span>{formatNumber(crExportPrice)} VND</span>
                     </label>
                     <input type="number" 
                          id="form__product-price-input" 
@@ -575,7 +545,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Is Sale: <span>{crProductIsSale === 1 ? "Đang sale" : "Không sale"}</span>
+                       Giảm Giá: <span>{crProductIsSale === 1 ? "Đang Giảm Giá" : "Không Giảm Giá"}</span>
                   </label>
                   <select 
                          className="form__product-price-input" 
@@ -584,9 +554,9 @@ function ProductDetails(){
                          onChange={handleProductIsSale}
                          onClick={hanldeInputClick}
                     >
-                         <option value="">Choose Sale</option>
-                         <option value="99">Not Sale</option>
-                         <option value="1">Sale</option>
+                         <option value="">Chọn Giảm Giá</option>
+                         <option value="99">Không Giảm Giá</option>
+                         <option value="1">Giảm Giá</option>
                     </select>
                     {prdIsSaleError && (
                          <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
@@ -596,7 +566,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Sale Percent: <span>{crProductSalePercent}%</span>
+                       Phần Trăm Giảm Giá: <span>{crProductSalePercent}%</span>
                     </label>
                     {productIsSale !== "99" && (
                          <input type="number" 
@@ -629,30 +599,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Warehouse: {crCity},{crDistrict},{crWard}
-                  </label>
-                  {warehouse && (
-                         <select 
-                              readonly className="form__product-id-input" 
-                              value={wareHouseId}
-                              onChange={handleWareHouseId}
-                              onClick={hanldeInputClick}
-                         >
-                              <option value="">Choose Warehouse</option>
-                              <option value={warehouse.id}>
-                                   {warehouse.city},{warehouse.district},{warehouse.ward}
-                              </option>
-                         </select>
-                    )}
-                    {whIdError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {whIdError}
-                    </div>
-               )}
-               </div>
-               <div className="form__product-delete-id">
-                    <label className="form__product-delete-id-title">
-                       Category <span>{crCategoryId}</span>
+                       Danh Mục <span>{crCategoryId}</span>
                   </label>
                     <select value={categoryId} onChange={handleCategoryId} className="form__product-id-input">
                          <option value="">Choose Category</option>
@@ -671,7 +618,7 @@ function ProductDetails(){
           </div>
           <div className="col-lg-4 d-flex flex-column">
                <label className="form__product-id-title">
-                    Product Image
+                    Hình Ảnh Sản Phẩm
                </label>
                <input type="file" onChange={handleImageUpload}/>
                <input type="text" value={imgFileName} onChange={handleProductImage} style={{display:"none"}} />
@@ -687,7 +634,7 @@ function ProductDetails(){
                     <Link to="/admin/all_product" >
                         <button class="form__category-btn form__input-btn">
                         <i className="fas fa-angle-left features__item-main-arrow me-3"></i>
-                                Back
+                                Trở về
                         </button>
                     </Link>
                 </div>
@@ -695,7 +642,7 @@ function ProductDetails(){
                     <button className="form__category-btn form__input-btn"
                          onClick={updateProduct}
                     >
-                         Update
+                         Cập Nhật
                     </button>
                </div>
           </div>

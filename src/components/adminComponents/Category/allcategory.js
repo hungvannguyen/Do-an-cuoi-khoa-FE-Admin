@@ -60,10 +60,10 @@ function AllCategory() {
              <div className="datatable__table">
                   <table className="datatable__table-frame">
                        <thead className="table__head">
-                              <th className="table__head-item">Id</th>
-                            <th className="table__head-item">Name</th>
-                            <th className="table__head-item">Description</th>
-                            <th className="table__head-item">Action</th>
+                              <th className="table__head-item">ID</th>
+                            <th className="table__head-item">Tên</th>
+                            <th className="table__head-item">Mô Tả</th>
+                            <th className="table__head-item">Hành Động</th>
                        </thead>
                        <tbody className="table__body">
                          {category.map((category) => (
@@ -75,7 +75,7 @@ function AllCategory() {
                                   <div className="d-flex justify-content-around align-items-center">
                                    <button className="btn-edit">
                                         <Link to={`/admin/category_details/${category.id}`} className="btn-text">
-                                             Details
+                                             Chi tiết
                                         </Link>
                                    </button>
                                    </div>
