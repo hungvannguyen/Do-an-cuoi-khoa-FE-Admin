@@ -63,7 +63,7 @@ function AddCategory() {
                 .then((response) => {
                     console.log(response.data);
      
-                    toast.success("Add Category Success",{
+                    toast.success("Thêm Danh Mục Thành Công!",{
                         position: "bottom-right",
                         autoClose: 2000,
                         hideProgressBar: true,
@@ -82,7 +82,7 @@ function AddCategory() {
                     console.log(error);
                 });
         }else{
-            toast.error("Please enter all required fields",{
+            toast.error("Hãy Đảm Bảo Rằng Đã Điền Đủ Thông Tin!",{
                 position: "bottom-right",
                         autoClose: 2000,
                         hideProgressBar: true,
