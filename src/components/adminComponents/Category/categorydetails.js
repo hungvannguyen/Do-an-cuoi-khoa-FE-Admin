@@ -93,10 +93,10 @@ function CategoryDetails(){
             <div className="main__form">
                 <div className="form__product-id">
                 <label className="form__product-id-title">
-                        Category ID: <span>{initCategoryId}</span>
+                        ID Danh Mục: <span>{initCategoryId}</span>
                     </label>
                     <label className="form__product-id-title">
-                        Category Name: <span>{initialCategoryName}</span>
+                        Tên Danh Mục: <span>{initialCategoryName}</span>
                     </label>
                     <input type="text" className="form__product-id-input " placeholder="Enter Category Name" 
                         value={categoryName}
@@ -106,7 +106,7 @@ function CategoryDetails(){
                 </div>
                 <div className="form__product-cate-id">
                     <label className="form__product-id-title">
-                        Category Description : <span>{initiaCategoryDescription}</span>
+                        Mô Tả : <span>{initiaCategoryDescription}</span>
                     </label>
 
                     <input type="text" className="form__product-id-input" placeholder="Enter Category Description" 
@@ -119,7 +119,7 @@ function CategoryDetails(){
                     <Link to="/admin/all_category" >
                         <button class="form__category-btn form__input-btn">
                         <i className="fas fa-angle-left features__item-main-arrow me-3"></i>
-                                Back
+                                Trở về
                         </button>
                     </Link>
                 </div>
@@ -127,14 +127,14 @@ function CategoryDetails(){
                     <button className="form__product-btn form__input-btn"
                             onClick={updateCategory}
                     >
-                        Update Category
+                        Cập Nhật Danh Mục
                     </button>
                 </div>
                 <div class="form__category-check me-3">
                     <button className="form__product-btn form__input-btn "
                             onClick={deleteCategory}
                     >
-                        Delete Category
+                        Xóa Danh Mục
                     </button>
                 </div>
                 </div>

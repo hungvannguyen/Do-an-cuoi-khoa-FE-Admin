@@ -65,10 +65,19 @@ function Sidebar  () {
                     </Link>
                </div>
                <div className="features__item">
+                    <Link to="/admin/client_setting" className="features__item-main">
+                         <i className="far fa-chart-bar features__item-main-icon"></i>
+                         <span className="features__item-main-text">
+                              Cài Đặt Trang Client
+                         </span>
+                         
+                    </Link>
+               </div>
+               <div className="features__item">
                     <div className="features__item-main">
                          <i className="fas fa-compress features__item-main-icon"></i>
                          <span className="features__item-main-text">
-                              Category
+                              Danh Mục
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
@@ -76,12 +85,12 @@ function Sidebar  () {
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/all_category">
-                                        All Category
+                                        Tất Cả Danh Mục
                                    </Link>
                               </li>
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/add_category">
-                                        Add Category
+                                        Thêm Mới Danh Mục
                                    </Link>
                               </li>
                          </ul>
@@ -91,7 +100,7 @@ function Sidebar  () {
                     <div className="features__item-main">
                          <i className="far fa-gem features__item-main-icon"></i>
                          <span className="features__item-main-text">
-                              Product
+                              Sản Phẩm
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow "></i>
                     </div>
@@ -99,7 +108,7 @@ function Sidebar  () {
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/all_product">
-                                        All Product
+                                        Tất Cả Sản Phẩm
                                    </Link>
                               </li>
                               <li className="features__item-func-list-item">
@@ -114,7 +123,7 @@ function Sidebar  () {
                     <div className="features__item-main">
                          <i className="far fa-sticky-note features__item-main-icon"></i>
                          <span className="features__item-main-text">
-                              Order
+                              Đơn Hàng
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
@@ -122,7 +131,7 @@ function Sidebar  () {
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/all_order">
-                                        All Order
+                                        Tất Cả Đơn Hàng
                                    </Link>
                               </li>
                          </ul>
@@ -139,7 +148,7 @@ function Sidebar  () {
                     <div className="features__item-main">
                          <i className="far fa-user features__item-main-icon"></i>
                          <span className="features__item-main-text">
-                              Employee
+                              Nhân Viên
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
@@ -147,12 +156,12 @@ function Sidebar  () {
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/all_employee">
-                                        All Employee
+                                        Tất Cả Nhân Viên
                                    </Link>
                               </li>
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/add_employee">
-                                        Add Employee
+                                        Thêm Mới Nhân Viên
                                    </Link>
                               </li>
                          </ul>
@@ -162,7 +171,7 @@ function Sidebar  () {
                     <div className="features__item-main">
                          <i className="far fa-user-circle features__item-main-icon"></i>
                          <span className="features__item-main-text">
-                              Customer
+                              Khách Hàng
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
@@ -170,7 +179,7 @@ function Sidebar  () {
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/all_customer">
-                                        Customer List
+                                        Danh Sách Khách Hàng
                                    </Link>
                               </li>
                          </ul>
@@ -180,7 +189,7 @@ function Sidebar  () {
                <div className="features__item-main">
                     <i className="fa-solid fa-right-from-bracket features__item-main-icon"></i>
                          <span className="features__item-main-text" onClick={handleLogout}>
-                              Log Out
+                              Đăng Xuất
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>

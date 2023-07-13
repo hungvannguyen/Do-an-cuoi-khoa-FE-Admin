@@ -54,25 +54,25 @@ function AllEmployee(){
                   <table className="datatable__table-frame">
                        <thead className="table__head">
                             <th className="table__head-item">ID</th>
-                            <th className="table__head-item">Name</th>
-                            <th className="table__head-item">Phone number</th>
-                            <th className="table__head-item">Account</th>
+                            <th className="table__head-item">Tên</th>
+                            <th className="table__head-item">Số Điện Thoại</th>
+                            <th className="table__head-item">Tài Khoản</th>
                             <th className="table__head-item">Email</th>
-                            <th className="table__head-item">Action</th>
+                            <th className="table__head-item">Hành Động</th>
                        </thead>
                        <tbody className="table__body">
                          {employee.map((item) => (
                             <tr className="table__body-item">
                                  <td className="table__body-data">{item.id}</td>
-                                 <td className="table__body-data">{item.name === null ? <span style={{ color:"red"}}>Not Set</span> : item.name}</td>
-                                 <td className="table__body-data">{item.phone_number === null ? <span style={{ color:"red"}}>Not Set</span> : item.phone_number}</td>
+                                 <td className="table__body-data">{item.name === null ? <span style={{ color:"red"}}>Chưa đặt</span> : item.name}</td>
+                                 <td className="table__body-data">{item.phone_number === null ? <span style={{ color:"red"}}>Chưa đặt</span> : item.phone_number}</td>
                                  <td className="table__body-data">{item.account}</td>
                                  <td className="table__body-data">{item.email}</td>
                                  <td className="table__body-data">
                                    <div className="d-flex justify-content-around align-items-center">
                                    <button className="btn-edit">
                                         <Link to={`/admin/user_details/${item.id}`} className="btn-text">
-                                             Details
+                                             Chi tiết
                                         </Link>
                                    </button>
                                    </div>

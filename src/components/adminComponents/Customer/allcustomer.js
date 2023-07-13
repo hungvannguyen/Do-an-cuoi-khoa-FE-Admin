@@ -8,6 +8,7 @@ import Authorized from "../Authorized/authorized"
 function AllCustomer(){
   const [customers, setCustomers] = useState([]);
 
+
   const user = sessionStorage.getItem("role_id");
   const allowedRoles = ["1",];
 
@@ -49,26 +50,26 @@ function AllCustomer(){
               <thead className="table__head">
                 <tr>
                   <th className="table__head-item">ID</th>
-                  <th className="table__head-item">Name</th>
-                  <th className="table__head-item">Phone number</th>
-                  <th className="table__head-item">Account</th>
+                  <th className="table__head-item">Tên</th>
+                  <th className="table__head-item">Số Điện Thoại</th>
+                  <th className="table__head-item">Tài Khoản</th>
                   <th className="table__head-item">Email</th>
-                  <th className="table__head-item">Action</th>
+                  <th className="table__head-item">Hành Động</th>
                 </tr>
               </thead>
               <tbody className="table__body">
                 {customers.map((customer) => (
                 <tr className="table__body-item">
                   <td className="table__body-data">{customer.id}</td>
-                  <td className="table__body-data">{customer.name === null ? <span style={{ color: 'red' }}>Not Set</span> : customer.name}</td>
-                  <td className="table__body-data">{customer.phone_number === null ? <span style={{ color: 'red' }}>Not Set</span> : customer.phone_number }</td>
+                  <td className="table__body-data">{customer.name === null ? <span style={{ color: 'red' }}>Chưa Đặt</span> : customer.name}</td>
+                  <td className="table__body-data">{customer.phone_number === null ? <span style={{ color: 'red' }}>Chưa Đặt</span> : customer.phone_number }</td>
                   <td className="table__body-data">{customer.account}</td>
                   <td className="table__body-data">{customer.email}</td>
                   <td className="table__body-data">
                     <div className="d-flex justify-content-around align-items-center">
                     <button className="btn-edit">
                       <Link to={`/admin/user_details/${customer.id}`} className="btn-text">
-                        Details
+                        Chi tiết
                       </Link>
                     </button>
                     </div>

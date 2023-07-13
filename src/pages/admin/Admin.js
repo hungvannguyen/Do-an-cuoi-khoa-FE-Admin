@@ -26,6 +26,8 @@ import DetailsOrder from "../../components/adminComponents/Orders/orderdetail";
 import AllCustomer from "../../components/adminComponents/Customer/allcustomer";
 import ResetPass from "../../components/adminComponents/Customer/resetpass";
 
+import ClientSetting from "../../components/adminComponents/Banner/client_setting"
+
 
 
 
@@ -41,6 +43,9 @@ function Admin() {
         <Routes>
             //login
             <Route path="/login" element={<Login />} />
+
+            //Client Setting
+            <Route path="/admin/client_setting" element={requireAuth(ClientSetting)} />
 
             <Route path="/admin/dashboard" element={requireAuth(Dashboard)} />
             //product

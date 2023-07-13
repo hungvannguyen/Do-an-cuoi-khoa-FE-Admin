@@ -9,13 +9,10 @@ function AddProduct() {
 
      //getcategory
      const [category, setCategory] = useState([]);
-     //getwarehouse
-     const [warehouse, setWarehouse] = useState([]);
      //setErrorMessage
      const [catIdError, setCatIdError] = useState("");
      const [prdNameError, setPrdNameError] = useState("");
      const [prdStatusError, setPrdStatusError] = useState("");
-     const [whIdError, setWhIdError] = useState("");
      const [prdDesError, setPrdDesError] = useState("");
      const [prdQuantityError, setPrdQuantityError] = useState("");
      const [prdIsSaleError, setPrdIsSaleError] = useState("");
@@ -30,7 +27,6 @@ function AddProduct() {
      const [categoryId, setCategoryId] = useState("");
      const [productName, setProductName] = useState("");
      const [productStatus, setProductStatus] = useState("");
-     const [wareHouseId, setWareHouseId] = useState("");
      const [productDescription, setProductDescription] = useState("");
      const [productQuantity, setProductQuantity] = useState("");
      const [productIsSale, setProductIsSale] = useState("");
@@ -46,7 +42,6 @@ function AddProduct() {
           setCatIdError("");
           setPrdNameError("");
           setPrdStatusError("");
-          setWhIdError("");
           setPrdDesError("");
           setPrdQuantityError("");
           setPrdIsSaleError("");
@@ -70,24 +65,6 @@ function AddProduct() {
           });
      }, []);
 
-     useEffect(() => {
-          axios
-          .get("/warehouse/info",{
-               headers: {
-                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-               },
-          })
-          .then((response) => {
-               console.log(response.data);
-               setWarehouse(response.data);
-          })
-          .catch((error) => {
-               console.log(error);
-          });
-     }, []);
-
-
-
 
      const addProduct = (e) => {
           e.preventDefault();
@@ -95,7 +72,6 @@ function AddProduct() {
           console.log("categoryId:", categoryId);
           console.log("productName:", productName);
           console.log("productStatus:", productStatus);
-          console.log("wareHouseId:", wareHouseId);
           console.log("productDescription:", productDescription);
           console.log("productQuantity:", productQuantity);
           console.log("productIsSale:", productIsSale);
@@ -106,51 +82,55 @@ function AddProduct() {
           console.log("imgFileName:", imgFileName);
           console.log("-----------------------");
              if (!categoryId) {
-               setCatIdError("Please choose category!");
+               setCatIdError("Hãy Chọn Danh Mục Cho Sản Phẩm!");
                setIsValid(false);
              }
              if (!productName) {
-               setPrdNameError("Please enter product name!");
+               setPrdNameError("Hãy Nhập Vào Tên Sản Phẩm!");
                setIsValid(false);
              }
              if (!productStatus) {
-               setPrdStatusError("Please choose product status!");
-               setIsValid(false);
-             }
-             if (!wareHouseId) {
-               setWhIdError("Please choose warehouse!");
+               setPrdStatusError("Hãy Chọn Trạng Thái Cho Sản Phẩm!");
                setIsValid(false);
              }
              if (!productDescription) {
-               setPrdDesError("Please enter product description!");
+               setPrdDesError("Hãy Nhập Mô Tả Cho Sản Phẩm!");
                setIsValid(false);
              }
              if (!productQuantity) {
-               setPrdQuantityError("Please enter product quantity!");
+               setPrdQuantityError("Hãy Nhập Số Lượng Cho Sản Phẩm!");
                setIsValid(false);
              }
              if (!productIsSale) {
-               setPrdIsSaleError("Please choose product is sale!");
+               setPrdIsSaleError("Hãy Chọn Có Giảm Giá Hay Không!");
                setIsValid(false);
              }
              if (!importPrice && !exportPrice) {
-               setImportPriceError("Please enter price!");
+               setImportPriceError("Hãy Nhập Vào Giá Nhập Hàng!");
+               setExportPriceError("Hãy Nhập Vào Giá Bán Ra!");
                setIsValid(false);
              } else if (importPrice > exportPrice) {
-               setImportPriceError("Import price must be less than export price!");
+               setImportPriceError("Giá Nhập Hàng Phải Bé Hơn Giá Bán Ra!");
                setIsValid(false);
              }
-             if (productIsSale !== 99) {
-               if (productSalePercent < 1) {
-                 setPrdSalePercentError("Sale percent must be greater than 1%!");
-                 setIsValid(false);
-               }else if (productSalePercent > 80) {
-                    setPrdSalePercentError("Sale percent must be less than 80%!");
-                    setIsValid(false);
-               }
-             }
+             if(productIsSale === 99) {
+               setProductSalePercent(0);
+               setIsValid(true);
+                }
+               // else if (productIsSale !== 99) {
+               // if (!productSalePercent) {
+               //       setPrdSalePercentError("Please enter sale percent!");
+               //           setIsValid(false);
+               // }else if (productSalePercent < 1) {
+               //           setPrdSalePercentError("Sale percent must be greater than 1%!");
+               //           setIsValid(false);
+               // }else if (productSalePercent > 80) {
+               //           setPrdSalePercentError("Sale percent must be less than 80%!");
+               //           setIsValid(false);
+               // }
+          // }
              if (!productImage) {
-               setPrdImageError("Please choose product image!");
+               setPrdImageError("Hãy Chọn Ảnh Cho Sản Phẩm!");
                setIsValid(false);
              }
            
@@ -158,7 +138,6 @@ function AddProduct() {
                const productData = {
                     cat_id: categoryId,
                     status: productStatus,
-                    warehouse_id: wareHouseId,
                     is_sale: productIsSale,
                     name: productName,
                     description: productDescription,
@@ -179,7 +158,7 @@ function AddProduct() {
                          console.log(response.data);
                          setProductImage("");
 
-                         toast.success("Add product successfully!",{
+                         toast.success("Thêm Sản Phẩm Mới Thành Công!",{
                               position: "bottom-right",
                               autoClose: 2000,
                               hideProgressBar: true,
@@ -198,7 +177,7 @@ function AddProduct() {
                          console.log(error);
                     });
           }else{
-               toast.error("Please enter all required fields",{
+               toast.error("Hãy Đảm Bảo Rằng Đã Nhập Đủ Các Mục",{
                     position: "bottom-right",
                          autoClose: 2000,
                          hideProgressBar: true,
@@ -239,14 +218,6 @@ function AddProduct() {
           }
      };
 
-     const handleWareHouseId = (event) => {
-          setWareHouseId(event.target.value);
-          if (!isValid) {
-               setIsValid(false);
-               setWhIdError("");
-          
-          }
-     };
 
      const handleProductDescription = (event) => {
           setProductDescription(event.target.value);
@@ -341,7 +312,7 @@ function AddProduct() {
      />
     <div className="main__title">
          <span className="main__title-text">
-              Add Product
+              Nhập Hàng Mới
          </span>
          <span className="main__title-des">
               DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -349,32 +320,9 @@ function AddProduct() {
     </div>
     <div className="main__form row">
      <div className="col-lg-4">
-     <div className="form__product-id">
-              <label className="form__product-id-title">
-                   Warehouse ID
-              </label>
-              {warehouse && (
-              <select 
-                    readonly className="form__product-id-input" 
-                    value={wareHouseId}
-                    onChange={handleWareHouseId}
-                    onClick={hanldeInputClick}
-              >
-                    <option value="">Choose Warehouse</option>
-                    <option value={warehouse.id}>
-                         {warehouse.city},{warehouse.district},{warehouse.ward}
-                    </option>
-                 </select>
-               )}
-               {whIdError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {whIdError}
-                    </div>
-               )}
-         </div>
          <div className="form__product-cate-id">
               <label className="form__product-id-title">
-                   Category ID
+               ID Danh Mục
               </label>
                <select value={categoryId} onChange={handleCategoryId} className="form__product-id-input">
                     <option value="">Choose Category</option>
@@ -392,7 +340,7 @@ function AddProduct() {
          </div>
          <div className="form__product-cate-id">
               <label className="form__product-id-title">
-                   Product Status
+                   Trạng Thái Sản Phẩm
               </label>
               <select type="number" 
                     className="form__product-id-input" 
@@ -412,7 +360,7 @@ function AddProduct() {
          </div>
          <div className="form__product-cate-id">
               <label className="form__product-id-title">
-                   Is Sale
+                   Giảm Giá 
               </label>
               <select 
                     className="form__product-id-input" 
@@ -420,9 +368,9 @@ function AddProduct() {
                     onChange={handleProductIsSale}
                     onClick={hanldeInputClick}
                >
-                    <option value="">Choose Is Sale</option>
-                    <option value="99">Not Sale</option>
-                    <option value="1">Sale</option>
+                    <option value="">Chọn Giảm Giá</option>
+                    <option value="99">Không Giảm Giá</option>
+                    <option value="1">Giảm Giá</option>
                </select>
                {prdIsSaleError && (
                     <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
@@ -432,7 +380,7 @@ function AddProduct() {
          </div>
          <div className="form__product-name">
               <label for="form__product-name-input" className="form__product-name-title">
-                   Sale Percent
+                   Phần Trăm Giảm Giá
               </label>
               {productIsSale !== "99" && (
                     <input type="number" 
@@ -463,7 +411,7 @@ function AddProduct() {
      <div className="col-lg-4">
           <div className="form__product-name">
               <label for="form__product-name-input" className="form__product-name-title">
-                   Product Name
+                  Tên Sản Phẩm
               </label>
               <input type="text" 
                     id="form__product-name-input" 
@@ -500,7 +448,7 @@ function AddProduct() {
          </div>
          <div className="form__product-quantity">
               <label for="form__product-quantity-input" className="form__product-quantity-title">
-                   Product Description
+                   Mô Tả Sản Phẩm
               </label>
               <input type="text" 
                     id="form__product-quantity-input" 
@@ -519,7 +467,7 @@ function AddProduct() {
          <div className="form__product-price d-flex">
                <div className="form__product-price">
                     <label for="form__product-price-input" className="form__product-price-title">
-                         Product Import Price
+                         Giá Nhập Vào
                     </label>
                     <input type="number" 
                          id="form__product-price-input" 
@@ -544,7 +492,7 @@ function AddProduct() {
                </div>
                <div className="form__product-price">
                     <label for="form__product-price-input" className="form__product-price-title">
-                         Product Export Price
+                         Giá Bán Ra
                     </label>
                     <input type="number" 
                          id="form__product-price-input" 
@@ -572,7 +520,7 @@ function AddProduct() {
      </div>
      <div className="col-lg-4 d-flex flex-column ">
           <label className="form__product-id-title">
-                   Product Image
+                   Hình Ảnh Sản Phẩm
           </label>
           <input type="file" onChange={handleImageUpload}/>
           <input type="text" value={imgFileName} onChange={handleProductImage} style={{display:"none"}} />
@@ -589,7 +537,7 @@ function AddProduct() {
               <button className="form__product-btn form__input-btn"
                     onClick={addProduct}
               >
-                   Add Product
+                  Thêm Mới Sản Phẩm
               </button>
          </div>
     </div>

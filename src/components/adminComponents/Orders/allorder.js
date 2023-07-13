@@ -6,8 +6,11 @@ import axios from "axios";
 
 function AllOders(){
   const [pages, setPages] = useState(1);
+  const [isNextPageEnabled, setNextPageEnabled] = useState(true);
+  const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
   const [currentPage, setCurrentPage] = useState();
   const [totalPages, setTotalPages] = useState();
+
 
   const [orders, setOrders] = useState([]);
 
@@ -20,12 +23,17 @@ function AllOders(){
         })
         .then((response) => {
             console.log(response.data);
+            setCurrentPage(response.data.current_page);
+            setTotalPages(response.data.total_page);
             setOrders(response.data.data);
+            console.log("P" + response.data.current_page);
+            console.log(response.data);
+            console.log(typeof response.data);
         })
         .catch((error) => {
             console.log(error);
         });
-    }, []);
+    }, [pages]);
 
     const handlePreviousPage = () => {
       if (pages > 1) {
@@ -44,6 +52,22 @@ function AllOders(){
       setPages(page);
       setCurrentPage(page);
     };
+
+    useEffect(() => {
+      if (currentPage === totalPages) {
+        setNextPageEnabled(false);
+      } else {
+        setNextPageEnabled(true);
+      }
+    }, [currentPage, totalPages]);
+    
+    useEffect(() => {
+      if (currentPage === 1) {
+        setPreviousPageEnabled(false);
+      } else {
+        setPreviousPageEnabled(true);
+      }
+    }, [currentPage]);
   
 
    // Hàm render phân trang
@@ -99,16 +123,16 @@ const renderPagination = () => {
             <table className="datatable__table-frame">
               <thead className="table__head">
                 <tr>
-                  <th className="table__head-item">Id</th>
-                  <th className="table__head-item">Name</th>
-                  <th className="table__head-item">Phone</th>
-                  <th className="table__head-item">Address</th>
+                  <th className="table__head-item">ID</th>
+                  <th className="table__head-item">Tên</th>
+                  <th className="table__head-item">Số Điện Thoại</th>
+                  <th className="table__head-item">Địa Chỉ</th>
                 
-                  <th className="table__head-item">Status</th>
-                  <th className="table__head-item">Total Price</th>
-                  <th className="table__head-item">Payment Status</th>
-                  <th className="table__head-item">Payment Type</th>
-                  <th className="table__head-item">Action</th>
+                  <th className="table__head-item">Trạng Thái</th>
+                  <th className="table__head-item">Tổng Tiền</th>
+                  <th className="table__head-item">Trạng Thái Giao Dịch</th>
+                  <th className="table__head-item">Phương Thức Thanh Toán</th>
+                  <th className="table__head-item">Hành Động</th>
                 </tr>
               </thead>
               <tbody className="table__body">
@@ -122,19 +146,19 @@ const renderPagination = () => {
                     <td className="table__body-data">
                       {(() => {
                         if (order.status === 0) {
-                          return <span style={{ color: '#8D8D8D' }}>Waiting for comfirmation</span>;
+                          return <span style={{ color: '#8D8D8D' }}>Chờ Xác nhận</span>;
                         } else if (order.status === 1) {
-                          return <span style={{ color: '#c69600' }}>Confirmed</span>;
+                          return <span style={{ color: '#c69600' }}>Đã Xác nhận</span>;
                         } else if (order.status === 2) {
-                          return <span style={{ color: '#00bcdd' }}>Shipping</span>;
+                          return <span style={{ color: '#00bcdd' }}>Đang Vận Chuyển</span>;
                         } else if (order.status === 10) {
-                          return <span style={{ color: '#001bc6' }}>Delivered</span>;
+                          return <span style={{ color: '#001bc6' }}>Đã Giao Hàng</span>;
                         } else if (order.status === 100) {
-                          return <span style={{ color: '#00dd00' }}>Completed</span>;
+                          return <span style={{ color: '#00dd00' }}>Hoàn Thành</span>;
                         } else if (order.status === 99) {
-                          return <span style={{ color: 'red' }}>Cancelled</span>;
+                          return <span style={{ color: 'red' }}>Hủy Đơn</span>;
                         } else if( order.status === 50){
-                          return <span style={{ color: '#af3a94' }}>Refund</span>;
+                          return <span style={{ color: '#af3a94' }}>Hoàn Hàng</span>;
                         }else{
                         {
                           return <span />;
@@ -147,18 +171,26 @@ const renderPagination = () => {
                     </td>
                     <td className="table__body-data">{(() => {
                       if(order.payment_status === 99){
-                        return <span style={{ color: 'red' }}>unpaid</span>;
+                        return <span style={{ color: 'red' }}>Chưa Thanh Toán</span>;
                       }else if (order.payment_status === 0){
-                        return <span style={{ color: 'green' }}>paid</span>;
+                        return <span style={{ color: 'green' }}>Đã Thanh Toán</span>;
                       }
                     })()}  
                     </td>
-                    <td className="table__body-data">
+                    <td className="table__body-data" style={{ textAlign:"center"}}>
                     {(() => {
                       if (order.payment_type_id === 1) {
-                        return <span style={{ color: 'green' }}><i className="fa-solid fa-credit-card"></i></span>;
+                        return <span style={{ color: 'green', fontSize:"35px",}}
+                        title="Thanh toán bằng thẻ tín dụng"
+                        >
+                          <i className="fa-solid fa-credit-card"></i>
+                          </span>;
                       } else if (order.payment_type_id === 2) {
-                        return <span style={{ color: 'blue' }}><i className="fa-regular fa-money-bill-1"></i></span>;
+                        return <span style={{ color: 'blue', fontSize:"35px" }}
+                        title="Thanh toán khi nhận hàng"
+                        >
+                          <i className="fa-regular fa-money-bill-1"></i>
+                          </span>;
                       }else{
                         return <span />;
                       }
@@ -168,7 +200,7 @@ const renderPagination = () => {
                       <div className="d-flex align-items-center justify-content-around">
                       <button className="btn-edit">
                       <Link to={`/admin/order_details/${order.id}`} className="btn-text">
-                        Details
+                        Chi Tiết
                       </Link>
                       </button>
                       </div>
@@ -187,15 +219,15 @@ const renderPagination = () => {
 
               <ul className="datatable__footer-page-list">
               <li
-                className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`}
-                onClick={handlePreviousPage}
+                className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
+                onClick={isPreviousPageEnabled ? handlePreviousPage : null}
               >
                 Previous
               </li>
-                {renderPagination()}
-                <li
-                className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`}
-                onClick={handleNextPage}
+              {renderPagination()}
+              <li
+                className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
+                onClick={isNextPageEnabled ? handleNextPage : null}
               >
                 Next
               </li>

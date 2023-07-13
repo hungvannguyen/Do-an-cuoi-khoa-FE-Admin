@@ -55,7 +55,11 @@ function AddCategory() {
                 cat_description: categoryDescription,
             };
             axios
-                .post("/category/add", categoryData)
+                .post("/category/add", categoryData, {
+                    headers: {
+                        Authorization: "Bearer " + sessionStorage.getItem("token"),
+                    },
+                })
                 .then((response) => {
                     console.log(response.data);
      
@@ -105,7 +109,7 @@ function AddCategory() {
         />
             <div className="main__title">
                 <span className="main__title-text">
-                    Add Category
+                    Thêm Mới Danh Mục
                 </span>
                 <span className="main__title-des">
                     DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -114,7 +118,7 @@ function AddCategory() {
             <div className="main__form">
                 <div className="form__product-id">
                     <label className="form__product-id-title">
-                        Category Name
+                        Tên Danh Mục
                     </label>
                     <input type="text" 
                         className="form__product-id-input " 
@@ -131,7 +135,7 @@ function AddCategory() {
                 </div>
                 <div className="form__product-cate-id">
                     <label className="form__product-id-title">
-                        Category Description
+                        Mô Tả Danh Mục
                     </label>
                     <input type="text" 
                         className="form__product-id-input" 
@@ -150,7 +154,7 @@ function AddCategory() {
                     <button className="form__product-btn form__input-btn"
                             onClick={addCategory}
                     >
-                        Add Category
+                        Thêm Mới
                     </button>
                 </div>
             </div>

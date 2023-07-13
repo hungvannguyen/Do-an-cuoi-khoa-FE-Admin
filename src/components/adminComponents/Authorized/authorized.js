@@ -27,12 +27,12 @@ const hasPermission = (user, allowedRoles) => {
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    You don't have permission to access this page    
+                    Bạn Không Có Quyền Truy Cập Vào Trang Này!  
                 </h2>
                 <div className="d-flex flex-column ">
                     <button className="btn-edit">
                         <Link to={`/admin/dashboard`} className="btn-text">
-                            Back to Dashboard
+                            Trở Lại Trang Chủ
                         </Link>
                     </button>
                 </div>
