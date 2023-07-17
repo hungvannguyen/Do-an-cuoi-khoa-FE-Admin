@@ -66,7 +66,7 @@ function Sidebar  () {
                </div>
                <div className="features__item">
                     <Link to="/admin/client_setting" className="features__item-main">
-                         <i className="far fa-chart-bar features__item-main-icon"></i>
+                         <i className="fa-solid fa-gear features__item-main-icon"></i>
                          <span className="features__item-main-text">
                               Cài Đặt Trang Client
                          </span>
@@ -113,7 +113,12 @@ function Sidebar  () {
                               </li>
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/add_product">
-                                        Add Product
+                                       Tạo Sản Phẩm
+                                   </Link>
+                              </li>
+                              <li className="features__item-func-list-item">
+                                   <Link to="/admin/import_product">
+                                       Nhập Hàng
                                    </Link>
                               </li>
                          </ul>

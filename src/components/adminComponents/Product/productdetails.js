@@ -68,11 +68,6 @@ function ProductDetails(){
      
      const [imgFileName, setImgFileName] = useState("");
 
-     // Format number
-     const formatNumber = (number) => {
-                    return number.toLocaleString("vi-VN");
-     };
-
      const hanldeInputClick = () => {
           setCatIdError("");
           setPrdNameError("");
@@ -114,13 +109,6 @@ function ProductDetails(){
                setPrdDesError("");
           }
      };
-     const handleProductQuantity = (e) => {
-          setProductQuantity(e.target.value);
-          if(!isValid){
-               setIsValid(false);
-               setPrdQuantityError("");
-          }
-     };
      const handleProductIsSale = (e) => {
           setProductIsSale(e.target.value);
           if(!isValid){
@@ -128,20 +116,17 @@ function ProductDetails(){
                setPrdIsSaleError("");
           }
      };
-     const handleImportPrice = (e) => {
-          setImportPrice(e.target.value);
-          if(!isValid){
-               setIsValid(false);
-               setImportPriceError("");
+     const handleExportPrice = (event) => {
+          const value = event.target.value;
+          const formattedValue = value.replace(/[^0-9]/g, ""); // Giữ lại các ký tự số
+          const price = parseFloat(formattedValue);
+          setExportPrice(price);
+          
+          if (!isValid) {
+            setIsValid(false);
+            setExportPriceError("");
           }
-     };
-     const handleExportPrice = (e) => {
-          setExportPrice(e.target.value);
-          if(!isValid){
-               setIsValid(false);
-               setExportPriceError("");
-          }
-     };
+        };
      const handleProductSalePercent = (e) => {
           setProductSalePercent(e.target.value);
           if(!isValid){
@@ -156,7 +141,6 @@ function ProductDetails(){
                setPrdImageError("");
           }
      };
-     //Api get category all
      useEffect(() => {   
           axios
           .get("/category/all")
@@ -169,7 +153,6 @@ function ProductDetails(){
                console.log(error);
           });
      }, []);
-
 
      //api get product by id
      useEffect(() => {
@@ -213,29 +196,6 @@ function ProductDetails(){
                     .catch((error) => {
                          console.log(error);
                     });
-                    //api warehouse info
-                    axios
-                    .get(`/warehouse/info`,{
-                         headers: {
-                              Authorization: "Bearer " + sessionStorage.getItem("token"),
-                         },
-                    })
-                    .then((warehouseresponse) => {
-                         console.log(warehouseresponse.data);
-                         const warehouseInfo = warehouseresponse.data;
-                         if (warehouseInfo.id = response.data.warehouse_id) {
-                              const city = warehouseresponse.data.city;
-                              const district = warehouseresponse.data.district;
-                              const ward = warehouseresponse.data.ward;
-
-                              setCrCity(city);
-                              setCrDistrict(district);
-                              setCrWard(ward);
-                         }
-                    })
-                    .catch((error) => {
-                    console.log(error);
-                    });
                })
                .catch((error) => {
                     console.log(error);
@@ -274,26 +234,12 @@ function ProductDetails(){
                setPrdDesError("Hãy Nhập Mô Tả Cho Sản Phẩm!");
                setIsValid(false);
           }
-          if (!productQuantity) {
-               setPrdQuantityError("Hãy Nhập Số Lượng Cho Sản Phẩm!");
-               setIsValid(false);
-          }
           if (!productIsSale) {
                setPrdIsSaleError("Hãy Chọn Sản Phẩm Có Giảm Giá Hay Không!");
                setIsValid(false);
           }
-          if (!importPrice) {
-               setImportPriceError("Hãy Nhập Vào Giá Nhập Hàng!");
-               setIsValid(false);
-          }else if(importPrice > exportPrice){
-               setImportPriceError("Giá Nhập Phải Thấp Hơn Giá Bán Ra!");
-               setIsValid(false);
-          }
           if (!exportPrice) {
                setExportPriceError("Hãy Nhập Vào Giá Bán Ra!");
-               setIsValid(false);
-          }else if(importPrice > exportPrice){
-               setImportPriceError("Giá Nhập Phải Thấp Hơn Giá Bán Ra!");
                setIsValid(false);
           }
           if (productIsSale === 1 && productSalePercent  < 1) {
@@ -307,18 +253,12 @@ function ProductDetails(){
                setPrdImageError("Hãy Thêm Hình Ảnh Cho Sản Phẩm!");
                setIsValid(false);
           }
-          if(importPrice > exportPrice) {
-               setImportPriceError("Giá Nhập Phải Thấp Hơn Giá Bán Ra!");
-               setIsValid(false);
-          }
 
           if(isValid){
                axios
                .put(`/product/update/${id}`, {
                     name: productName,
                     description: productDescription,
-                    quantity: productQuantity,
-                    import_price: importPrice,
                     price: exportPrice,
                     sale_percent: productSalePercent,
                     img_url: productImage,
@@ -345,7 +285,7 @@ function ProductDetails(){
                     });
                     const redirectInterval = setInterval(() => {
                          clearInterval(redirectInterval);
-                         window.location.href = "/admin/all_product";
+                         // window.location.href = "/admin/all_product";
                     },1500);     
                })
                .catch((error) => {
@@ -392,6 +332,14 @@ function ProductDetails(){
           });
      };
 
+     const formatNumber = (number) => {
+          if (number) {
+            return new Intl.NumberFormat("vi-VN").format(number);
+          }
+          return "";
+        };
+ 
+
     return(
         <div className="main">
           <ToastContainer 
@@ -413,6 +361,9 @@ function ProductDetails(){
           <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        ID Sản Phẩm: <span>{crProductId}</span>
+                  </label>
+                  <label className="form__product-delete-id-title">
+                       Số Lượng: <span>{crProductQuantity}</span>
                   </label>
                </div>
                <div className="form__product-delete-id">
@@ -453,25 +404,6 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Số Lượng: <span>{crProductQuantity}</span>
-                  </label>
-                  <input type="number" 
-                    id="form__product-quantity-input" 
-                    className="form__product-quantity-input" 
-                    placeholder="Enter Product Quantity" 
-                    min={0}
-                    value={productQuantity}
-                    onChange={handleProductQuantity}
-                    onClick={hanldeInputClick}
-              />
-               {prdQuantityError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {prdQuantityError}
-                    </div>
-               )}
-               </div>
-               <div className="form__product-delete-id">
-                    <label className="form__product-delete-id-title">
                        Trạng Thái Sản Phẩm: <span>{crProductStatus === 1 ? "Đang bán" : "Không bán"}</span>
                     </label>
                     <select type="number" 
@@ -491,7 +423,7 @@ function ProductDetails(){
                          </div>
                     )}
                </div>
-               <div className="form__product-delete-id">
+               {/* <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Giá Nhập: <span>{formatNumber(crImportPrice)} VND</span>
                     </label>
@@ -514,7 +446,7 @@ function ProductDetails(){
                               {importExportError}
                          </div>
                     )}
-               </div>
+               </div> */}
                
           </div>
           <div className="col-lg-4">
@@ -522,12 +454,12 @@ function ProductDetails(){
                     <label for="form__product-price-input" className="form__product-price-title">
                          Giá Bán: <span>{formatNumber(crExportPrice)} VND</span>
                     </label>
-                    <input type="number" 
+                    <input type="text" 
                          id="form__product-price-input" 
                          className="form__product-price-input" 
                          placeholder="Enter Product Export Price" 
                          min={0}
-                         value={exportPrice}
+                         value={formatNumber(exportPrice)}
                          onChange={handleExportPrice}
                          onClick={hanldeInputClick}
                     />    

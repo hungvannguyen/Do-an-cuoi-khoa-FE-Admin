@@ -120,7 +120,7 @@ function EmployeeDetails(){
                })
                .then((response) => {
                     console.log(response.data);
-                    toast.success("Add product successfully!",{
+                    toast.success("Cập Nhậy Người Dùng Thành CÔng!",{
                          position: "bottom-right",
                          autoClose: 2000,
                          hideProgressBar: true,
@@ -139,7 +139,7 @@ function EmployeeDetails(){
                     console.log(error);
                });
           }else{
-               toast.error("Please enter all required fields",{
+               toast.error("Hãy Điền Đủ Các Thông Tin Cần Thiết",{
                     position: "bottom-right",
                          autoClose: 2000,
                          hideProgressBar: true,
@@ -212,7 +212,7 @@ function EmployeeDetails(){
           />
         <div className="main__title">
              <span className="main__title-text">
-               User Detail: {userRoleId === 10 ? " Employee" : userRoleId === 99 ? " Customer" : userRoleId === 1 ? " Admin" : ""}
+               Chi Tiết Người Dùng: {userRoleId === 10 ? " Nhân Viên" : userRoleId === 99 ? " Khách Hàng" : userRoleId === 1 ? " Admin" : ""}
              </span>
              <span className="main__title-des">
                   DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -222,23 +222,23 @@ function EmployeeDetails(){
         <div className="main__form row">
                <div className="col-lg-4">
                <label className="form__product-delete-id-title">
-                         User ID: {userId}
+                         ID Người Dùng: {userId}
                </label>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                         User Account: {userAccount}
+                         Tên Tài Khoản: {userAccount}
                     </label>
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                         User Email: {userEmail}
+                         Email: {userEmail}
                     </label>
                </div>
                </div>
                <div className="col-lg-4">
                     <div className="form__product-delete-id">
                          <label className="form__product-delete-id-title">
-                              User Name: {initUserName === null ? "Not Set" : initUserName}
+                              Tên Người Dùng: {initUserName === null ? "Not Set" : initUserName}
                          </label>
                          {userRoleId !== 99 && (
                               <input type="text" 
@@ -257,7 +257,7 @@ function EmployeeDetails(){
                     </div>
                     <div className="form__product-delete-id">
                          <label className="form__product-delete-id-title">
-                              User Phone Number: {initUserPhone === null ? "Not Set" : initUserPhone}
+                              Số Điện Thoại: {initUserPhone === null ? "Not Set" : initUserPhone}
                          </label>
                          {userRoleId !== 99 && (
                               <input type="text" 
@@ -283,14 +283,14 @@ function EmployeeDetails(){
                          <button className="form__category-btn form__input-btn"
                               onClick={openModal}
                          >
-                              Update
+                              Cập Nhật
                          </button>
                     </div>
                     <div className="form__category-check">
                          <button className="form__category-btn form__input-btn"
                               onClick={openModal2}
                          >
-                              Block User
+                             Khóa Tài Khoản
                          </button>
                     </div>
                </div>
@@ -303,14 +303,14 @@ function EmployeeDetails(){
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Are you sure you want to update this user?    
+                    Bạn Muốn Cập Nhật Người Dùng Này?    
                 </h2>
                 <div className="d-flex align-items-center justify-content-between">
                     <button className="form__input-btn me-3" onClick={updateUser}>
-                         Yes
+                     Đúng
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal}>
-                         No
+                         Không
                     </button>
                 </div>
                 </div>
@@ -323,14 +323,14 @@ function EmployeeDetails(){
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Are you sure you want to block this user?    
+                    Bạn Muốn Khóa Tài Khoản Người Dùng Này?    
                 </h2>
                 <div className="d-flex align-items-center justify-content-between">
                     <button className="form__input-btn me-3" onClick={blockUser}>
-                         Yes
+                         Đúng 
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
-                         No
+                         Không
                     </button>
                 </div>
                 </div>

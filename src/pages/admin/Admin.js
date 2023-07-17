@@ -10,6 +10,7 @@ import Login from "../Login"
 import AllProduct from "../../components/adminComponents/Product/allproducts";
 import DetailsProduct from "../../components/adminComponents/Product/productdetails";
 import AddProduct from "../../components/adminComponents/Product/addproduct";
+import ImportProduct from "../../components/adminComponents/Product/importproduct";
 
 import AllCategory from "../../components/adminComponents/Category/allcategory";
 import DetailsCategory from "../../components/adminComponents/Category/categorydetails";
@@ -52,6 +53,7 @@ function Admin() {
             <Route path="/admin/all_product" element={requireAuth(AllProduct)} />
             <Route path="/admin/add_product" element={requireAuth(AddProduct )} />\
             <Route path="/admin/product_details/:id" element={requireAuth(DetailsProduct)} />
+            <Route path="/admin/import_product" element={requireAuth(ImportProduct)} />
             
             //category
             <Route path="/admin/all_category" element={requireAuth(AllCategory)} />

@@ -26,7 +26,7 @@ function AddProduct() {
      //addproduct
      const [categoryId, setCategoryId] = useState("");
      const [productName, setProductName] = useState("");
-     const [productStatus, setProductStatus] = useState("");
+     const [productStatus, setProductStatus] = useState(99);
      const [productDescription, setProductDescription] = useState("");
      const [productQuantity, setProductQuantity] = useState("");
      const [productIsSale, setProductIsSale] = useState("");
@@ -89,34 +89,22 @@ function AddProduct() {
                setPrdNameError("Hãy Nhập Vào Tên Sản Phẩm!");
                setIsValid(false);
              }
-             if (!productStatus) {
-               setPrdStatusError("Hãy Chọn Trạng Thái Cho Sản Phẩm!");
-               setIsValid(false);
-             }
              if (!productDescription) {
                setPrdDesError("Hãy Nhập Mô Tả Cho Sản Phẩm!");
                setIsValid(false);
              }
-             if (!productQuantity) {
-               setPrdQuantityError("Hãy Nhập Số Lượng Cho Sản Phẩm!");
+             if (!exportPrice) {
+               setExportPriceError("Hãy Nhập Giá Xuất Cho Sản Phẩm!");
                setIsValid(false);
-             }
+                }
              if (!productIsSale) {
                setPrdIsSaleError("Hãy Chọn Có Giảm Giá Hay Không!");
-               setIsValid(false);
-             }
-             if (!importPrice && !exportPrice) {
-               setImportPriceError("Hãy Nhập Vào Giá Nhập Hàng!");
-               setExportPriceError("Hãy Nhập Vào Giá Bán Ra!");
-               setIsValid(false);
-             } else if (importPrice > exportPrice) {
-               setImportPriceError("Giá Nhập Hàng Phải Bé Hơn Giá Bán Ra!");
                setIsValid(false);
              }
              if(productIsSale === 99) {
                setProductSalePercent(0);
                setIsValid(true);
-                }
+               }
                // else if (productIsSale !== 99) {
                // if (!productSalePercent) {
                //       setPrdSalePercentError("Please enter sale percent!");
@@ -141,12 +129,9 @@ function AddProduct() {
                     is_sale: productIsSale,
                     name: productName,
                     description: productDescription,
-                    quantity: productQuantity,
-                    import_price: importPrice,
                     price: exportPrice,
                     sale_percent: productSalePercent,
                     img_url: productImage,
-               
                };
                axios
                     .post("/product/add", productData, {
@@ -210,14 +195,6 @@ function AddProduct() {
           }
      };
 
-     const handleProductStatus = (event) => {
-          setProductStatus(event.target.value);
-          if (!isValid) {
-               setIsValid(false);
-               setPrdStatusError("");
-          }
-     };
-
 
      const handleProductDescription = (event) => {
           setProductDescription(event.target.value);
@@ -227,13 +204,6 @@ function AddProduct() {
           }
      };
 
-     const handleProductQuantity = (event) => {
-          setProductQuantity(event.target.value);
-          if (!isValid) {
-               setIsValid(false);
-               setPrdQuantityError("");
-          }
-     };
 
      const handleProductIsSale = (event) => {
           setProductIsSale(event.target.value);
@@ -243,24 +213,17 @@ function AddProduct() {
           }
      };
 
-     const handleImportPrice = (event) => {
-          const price = parseFloat(event.target.value);
-          setImportPrice(price);
-
-          if (!isValid) {
-               setIsValid(false);
-               setImportPriceError("");
-          }
-     };
-
      const handleExportPrice = (event) => {
-          const price = parseFloat(event.target.value);
+          const value = event.target.value;
+          const formattedValue = value.replace(/[^0-9]/g, ""); // Giữ lại các ký tự số
+          const price = parseFloat(formattedValue);
           setExportPrice(price);
+          
           if (!isValid) {
-               setIsValid(false);
-               setExportPriceError("");
+            setIsValid(false);
+            setExportPriceError("");
           }
-     };
+        };
 
      const handleProductSalePercent = (event) => {
           setProductSalePercent(event.target.value);
@@ -301,6 +264,13 @@ function AddProduct() {
           });
      };
 
+     const formatNumber = (number) => {
+          if (number) {
+            return new Intl.NumberFormat("vi-VN").format(number);
+          }
+          return "";
+        };
+
 
   return (
     <div className="main">
@@ -312,7 +282,7 @@ function AddProduct() {
      />
     <div className="main__title">
          <span className="main__title-text">
-              Nhập Hàng Mới
+              Tạo Sản Phẩm
          </span>
          <span className="main__title-des">
               DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -335,26 +305,6 @@ function AddProduct() {
                {catIdError && (
                     <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
                          {catIdError}
-                    </div>
-               )}
-         </div>
-         <div className="form__product-cate-id">
-              <label className="form__product-id-title">
-                   Trạng Thái Sản Phẩm
-              </label>
-              <select type="number" 
-                    className="form__product-id-input" 
-                    value={productStatus}
-                    onChange={handleProductStatus}
-                    onClick={hanldeInputClick}
-               >
-                    <option value="">Choose Product Status</option>
-                    <option value="99">Not Sell</option>
-                    <option value="1">Sell</option>
-               </select>
-               {prdStatusError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>     
-                         {prdStatusError}
                     </div>
                )}
          </div>
@@ -429,25 +379,6 @@ function AddProduct() {
          </div>
          <div className="form__product-quantity">
               <label for="form__product-quantity-input" className="form__product-quantity-title">
-                   Product Quantity
-              </label>
-              <input type="number" 
-                    id="form__product-quantity-input" 
-                    className="form__product-quantity-input" 
-                    placeholder="Enter Product Quantity" 
-                    min={0}
-                    value={productQuantity}
-                    onChange={handleProductQuantity}
-                    onClick={hanldeInputClick}
-              />
-               {prdQuantityError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {prdQuantityError}
-                    </div>
-               )}
-         </div>
-         <div className="form__product-quantity">
-              <label for="form__product-quantity-input" className="form__product-quantity-title">
                    Mô Tả Sản Phẩm
               </label>
               <input type="text" 
@@ -467,39 +398,14 @@ function AddProduct() {
          <div className="form__product-price d-flex">
                <div className="form__product-price">
                     <label for="form__product-price-input" className="form__product-price-title">
-                         Giá Nhập Vào
-                    </label>
-                    <input type="number" 
-                         id="form__product-price-input" 
-                         className="form__product-price-input" 
-                         placeholder="Enter Product Import Price" 
-                         min={0}
-                         value={importPrice}
-                         onChange={handleImportPrice}
-                         onClick={hanldeInputClick}
-                    />  
-                    {importPriceError && (
-                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                              {importPriceError}
-                         </div>
-                    )}
-                    {importExportError && (
-                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                              {importExportError}
-                         </div>
-                    )}
-
-               </div>
-               <div className="form__product-price">
-                    <label for="form__product-price-input" className="form__product-price-title">
                          Giá Bán Ra
                     </label>
-                    <input type="number" 
+                    <input type="text" 
                          id="form__product-price-input" 
                          className="form__product-price-input" 
                          placeholder="Enter Product Export Price" 
                          min={0}
-                         value={exportPrice}
+                         value={formatNumber(exportPrice)}
                          onChange={handleExportPrice}
                          onClick={hanldeInputClick}
                     />    
@@ -522,7 +428,11 @@ function AddProduct() {
           <label className="form__product-id-title">
                    Hình Ảnh Sản Phẩm
           </label>
-          <input type="file" onChange={handleImageUpload}/>
+          <label for="product_add" className="uploadimg_btn">
+                            Tải Ảnh Lên
+          </label>
+          <input type="file" id="product_add" onChange={handleImageUpload}/>
+
           <input type="text" value={imgFileName} onChange={handleProductImage} style={{display:"none"}} />
           {productImagePreview && (
           <img src={productImagePreview} width="80%" alt="Preview_image" />)}

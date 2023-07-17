@@ -223,7 +223,7 @@ function OrderDetail() {
           />
         <div class="main__title">
             <span class="main__title-text">
-                Order Detail
+                Chi Tiết Đơn Hàng
             </span>
             <span class="main__title-des">
                 DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
@@ -235,26 +235,26 @@ function OrderDetail() {
 
             <div class="col-lg-4" >
                 <label class="form__category-id-title fs-1 mb-2">
-                        Customer Infor
+                      Thông tin khách hàng
                 </label>
                 <div class="form__category-des">
                     <label class="form__category-id-title">
-                            Order ID: {orderId}
+                             ID đơn hàng: {orderId}
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Status: <span style={{color: statusInfo.color}}> {statusInfo.text}</span> 
+                        Trạng thái: <span style={{color: statusInfo.color}}> {statusInfo.text}</span> 
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label class="form__category-name-title">
-                        Name: {userName}
+                        Tên người đặt hàng: {userName}
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-name-input" class="form__category-name-title">
-                        Phone Number: {phoneNumber}
+                        Số điện thoại: {phoneNumber}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -264,17 +264,17 @@ function OrderDetail() {
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Address: {address}
+                        Địa chỉ: {address}
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Note: {orderNote === "" ? "(Customers do not leave notes)" : orderNote}
+                        Ghi chú: {orderNote === "" ? "(khách hàng không để lại ghi chú!)" : orderNote}
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Payment Type: {orderPaymentType}
+                        Phương thức thanh toán: {orderPaymentType}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -282,30 +282,30 @@ function OrderDetail() {
                         class="form__category-des-title"
                           
                     >
-                        Payment Status: {orderPaymentStatus === 0 ? "Paid" : "Unpaid"}
+                        Trạng thái thanh toán: {orderPaymentStatus === 0 ? "Paid" : "Unpaid"}
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Total Price: {formatNumber(orderTotalPrice)} VND
+                        Tổng tiền: {formatNumber(orderTotalPrice)} VND
                     </label>
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Oder Date: {orderDate}
+                        Thời gian đặt hàng: {orderDate}
                     </label>
                 </div>
             </div>
             <div class="col-lg-7">
                 <label class="form__category-id-title fs-1 mb-2">
-                        Product Infor
+                        Thông tin đơn hàng
                 </label>
                 
             {products && products.map((product, index) => (
                 <div class="product-list d-flex align-items-center justify-content-between mb-6 row">
                     <div class="form__category-des col-lg-2">
                         <label class="form__category-id-title">
-                            Name: <p style={{ visibility: 'hidden' }}></p>{product.name}
+                            Sản phẩm: <p style={{ visibility: 'hidden' }}></p>{product.name}
                         </label>
                     </div>
                     {imageProduct[index] && (
@@ -316,17 +316,17 @@ function OrderDetail() {
                         )}
                     <div class="form__category-des col-lg-2">
                         <label class="form__category-id-title">
-                            Price:<p style={{ visibility: 'hidden' }}></p> {formatNumber(product.price)} VNĐ
+                            Giá:<p style={{ visibility: 'hidden' }}></p> {formatNumber(product.price)} VNĐ
                         </label>
                     </div>
                     <div class="form__category-des col-lg-2">
                         <label class="form__category-id-title">
-                            Quantity: {product.quantity}
+                            Số lượng: {product.quantity}
                         </label>
                     </div>
                     <div class="form__category-des col-lg-2">
                         <label class="form__category-id-title">
-                            Total Price: {formatNumber(product.total_price)} VNĐ
+                            Tổng tiền: {formatNumber(product.total_price)} VNĐ
                         </label>
                     </div>
                 </div>
@@ -338,7 +338,7 @@ function OrderDetail() {
                     <Link to="/admin/all_order" >
                         <button class="form__category-btn form__input-btn me-6">
                         <i className="fas fa-angle-left features__item-main-arrow me-3"></i>
-                                Back
+                                Trở về
                         </button>
                     </Link>
                 </div>
@@ -348,7 +348,7 @@ function OrderDetail() {
                         value={1} 
                         onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
-                                Confirm
+                                Xác nhận đơn hàng
                         </button>
                     </div>
                 )}
@@ -358,7 +358,7 @@ function OrderDetail() {
                         value={2}
                         onClick={(e) =>{ handleStatusChange(e); openModal();}}
                      >
-                             Shipping
+                                Đang giao hàng
                      </button>
                  </div>
                 )}
@@ -368,28 +368,7 @@ function OrderDetail() {
                         value={10} 
                         onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
-                                Delivered
-                        </button>
-                    </div>
-                )}
-                { orderStatus === 2 && (
-                    <div class="form__category-check">
-                        <button class="form__category-btn form__input-btn me-6"
-                        style={{backgroundColor: "blue"}}
-                        value={50} 
-                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
-                        >
-                                Refund
-                        </button>
-                    </div>
-                )}
-                { orderStatus === 10 && (
-                    <div class="form__category-check">
-                        <button class="form__category-btn form__input-btn me-6" 
-                        value={0}
-                        onClick={openModal2}
-                        >
-                                Confirm Payment
+                                Đã giao hàng
                         </button>
                     </div>
                 )}
@@ -399,7 +378,7 @@ function OrderDetail() {
                         value={99}
                         onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
-                                Cancel the Order
+                                Hủy đơn
                         </button>
                     </div>
                 )}
@@ -413,14 +392,14 @@ function OrderDetail() {
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Are you sure you want to update the order?    
+                    Bạn muốn cập nhật trạng thái đơn hàng?    
                 </h2>
                 <div className="d-flex align-items-center justify-content-between">
                     <button className="form__input-btn me-3" value={setOrderStatusUpdate} onClick={updateOrderStatus}>
-                         Yes
+                         Có
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal}>
-                         No
+                         Không
                     </button>
                 </div>
                 </div>

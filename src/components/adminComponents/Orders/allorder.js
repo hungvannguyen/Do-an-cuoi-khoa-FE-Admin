@@ -102,7 +102,7 @@ const renderPagination = () => {
     return(
         <div className="main">
         <div className="main__title">
-          <span className="main__title-text">All Order</span>
+          <span className="main__title-text">Tất Cả Đơn Hàng</span>
           <span className="main__title-des">
             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
           </span>
@@ -159,11 +159,11 @@ const renderPagination = () => {
                           return <span style={{ color: 'red' }}>Hủy Đơn</span>;
                         } else if( order.status === 50){
                           return <span style={{ color: '#af3a94' }}>Hoàn Hàng</span>;
+                        }else if ( order.status === 49){
+                          return <span style={{ color: '#9b6432' }}>Yêu Cầu Hoàn Hàng</span>;
                         }else{
-                        {
-                          return <span />;
+                          return <span style={{ color: 'red' }}>Không Xác Định</span>;
                         }
-                      }
                       })()}
                       </td>
                     <td className="table__body-data">
