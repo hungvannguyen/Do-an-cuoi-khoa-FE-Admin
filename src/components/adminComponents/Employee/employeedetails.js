@@ -159,7 +159,7 @@ function EmployeeDetails(){
      //block user
      const blockUser = () => {
           axios
-          .put(`/user/lock?user_id=${user_id}`,{
+          .delete(`/user/lock?user_id=${user_id}`,{
                headers: {
                     Authorization: "Bearer " + sessionStorage.getItem("token"),
                },
