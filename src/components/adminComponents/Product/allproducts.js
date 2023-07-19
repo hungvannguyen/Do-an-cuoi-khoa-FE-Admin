@@ -185,7 +185,12 @@ useEffect(() => {
 
     return(   
       <div className="main">
-
+        <ToastContainer 
+            style={{
+                width: "400px",
+                fontSize: "18px",
+            }} 
+        />
         <div className="main__title">
           <span className="main__title-text">All Product</span>
           <span className="main__title-des">
@@ -335,16 +340,16 @@ useEffect(() => {
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Are you sure you want to add product quantity?    
+                    Bạn muốn cập nhật sản phẩm này?    
                 </h2>
                 {quantityError && <span className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>{quantityError}</span>
                 }
                 <div className="d-flex align-items-center justify-content-between">
                     <button className="form__input-btn me-3" onClick={handleQuantityAdd}>
-                         Yes
+                         Có
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
-                         No
+                         Không
                     </button>
                 </div>
                 </div>

@@ -2,7 +2,8 @@ import axios from "axios";
 import  "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify";
+import ReactModal from 'react-modal';
 
 function CategoryDetails(){
     const { cat_id } = useParams();
@@ -13,6 +14,26 @@ function CategoryDetails(){
     const [initCategoryId, setInitCategoryId] = useState("");
     const [initialCategoryName, setInitialCategoryName] = useState("");
     const [initiaCategoryDescription, setInitialCategoryDescription] = useState("");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
+  
+      
+      const openModal2 = () => {
+        setIsModalOpen2(true);
+      };
+    
+      const closeModal2 = () => {
+        setIsModalOpen2(false);
+      };
 
     useEffect(() => {
         axios
@@ -52,7 +73,20 @@ function CategoryDetails(){
                 setCategory(response.data)
                 setCategoryName(response.data.cat_name); // Cập nhật giá trị mới
                 setCategoryDescription(response.data.cat_description); // Cập nhật giá trị mới
-                window.location.href = "/admin/all_category";
+                toast.success("Cập Nhật Danh Mục Thành CÔng!",{
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+               });
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+                    window.location.href = "/admin/all_category";
+               }, 500);
             })
             .catch((error) => {
                 console.log(error);
@@ -60,8 +94,6 @@ function CategoryDetails(){
     };
 
     const deleteCategory = () => {
-        const confirmBox = window.confirm("Do you really want to delete this category?");
-        if (confirmBox === true) {
             axios
             .delete(`/category/delete/${cat_id}`, {
                 headers: {
@@ -70,18 +102,45 @@ function CategoryDetails(){
             })
             .then((response) => {
                 console.log(response.data);
-                window.location.href = "/admin/all_category";
+                toast.success("Cập Nhật Danh Mục Thành CÔng!",{
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+               });
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+                    window.location.href = "/admin/all_category";
+               }, 500);
             })
             .catch((error) => {
                 console.log(error);
+                toast.error("Không Thể Xóa Danh Mục Vì Có Sản Phẩm Đang Sử Dụng!",{
+                    position: "bottom-right",
+                         autoClose: 2000,
+                         hideProgressBar: true,
+                         closeOnClick: true,
+                         pauseOnHover: true,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "colored"
+               });
+               
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+               },500);
             });
-        }
     };
 
 
     return(
         <div>
         <div className="main">
+
             <div className="main__title">
                 <span className="main__title-text">
                     Category Details
@@ -125,14 +184,14 @@ function CategoryDetails(){
                 </div>
                 <div class="form__category-check me-3">
                     <button className="form__product-btn form__input-btn"
-                            onClick={updateCategory}
+                             onClick={openModal}
                     >
                         Cập Nhật Danh Mục
                     </button>
                 </div>
                 <div class="form__category-check me-3">
                     <button className="form__product-btn form__input-btn "
-                            onClick={deleteCategory}
+                           onClick={openModal2}
                     >
                         Xóa Danh Mục
                     </button>
@@ -140,6 +199,61 @@ function CategoryDetails(){
                 </div>
             </div>
         </div>
+                
+        <ReactModal isOpen={isModalOpen} onRequestClose={closeModal} className="react_modal ReactModal_Content">
+
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                 style={
+                    {height: "175px",
+                    width: "356px",
+                    }
+                }>            
+                <ToastContainer 
+                style={{
+                    width: "400px",
+                    fontSize: "18px",
+                }} 
+                />
+                <h2 className="d-lex justify-content-center form__product-id-title text-center">
+                    Bạn muốn cập nhật danh mục này?    
+                </h2>
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="form__input-btn me-3" onClick={updateCategory}>
+                         Có
+                    </button>
+                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal}>
+                         Không
+                    </button>
+                </div>
+                </div>
+        </ReactModal>
+        <ReactModal isOpen={isModalOpen2} onRequestClose={closeModal2} className="react_modal ReactModal_Content">
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                 style={
+                    {height: "175px",
+                    width: "356px",
+                    }
+                }>
+                <ToastContainer 
+                    style={{
+                        width: "400px",
+                        fontSize: "18px",
+                    }} 
+                />
+                <h2 className="d-lex justify-content-center form__product-id-title text-center">
+                    Bạn muốn xóa danh mục này?    
+                </h2>
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="form__input-btn me-3" onClick={deleteCategory}>
+                         Có
+                    </button>
+                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
+                         Không
+                    </button>
+                </div>
+                </div>
+        </ReactModal>
+
     </div>
 
     );

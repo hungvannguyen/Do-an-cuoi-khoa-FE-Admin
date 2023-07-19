@@ -1,50 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState  } from 'react';
 import {Link} from 'react-router-dom';
 
 function Sidebar  () {
-//   useEffect(() => {
-//     // JavaScript code for sidebar interactions
-//     const featureBtn = document.querySelectorAll('.features__item');
-//     const func = document.querySelectorAll('.features__item-func');
-//     const arrow = document.querySelectorAll('.features__item-main-arrow');
-
-//     featureBtn.forEach((item, index) => {
-//       item.addEventListener('click', () => {
-//         featureBtn.forEach((tg) => {
-//           tg.classList.remove('features__item--selected');
-//         });
-//         func.forEach((tg) => {
-//           tg.style.display = null;
-//         });
-//         arrow.forEach((tg) => {
-//           tg.classList.remove('arrow-animation');
-//         });
-
-//         item.classList.add('features__item--selected');
-//         arrow[index].classList.add('arrow-animation');
-//         func[index - 1].style.display = 'block';
-//         item.style.borderTopRightRadius = '16px';
-//         item.style.borderBottomRightRadius = '16px';
-//       });
-//     });
-
-//     const searchBtn = document.querySelector('.header__search-icon');
-
-//     searchBtn.addEventListener('click', () => {
-//       const searchInput = document.querySelector('.header__search-input');
-//       searchInput.style.display = 'block';
-//       searchInput.parentElement.classList.add('header__search--active');
-//     });
-//   }, []);
-
+     const [expandedItems, setExpandedItems] = useState({});
      let hasSessionData = sessionStorage.getItem("token") !== null;
-    //Logout    
-    const handleLogout = () => {
-     sessionStorage.removeItem("token");
-     hasSessionData = false;
-     window.location.href = "http://localhost:3000/";
- };
+     // Logout
+     const handleLogout = () => {
+          sessionStorage.removeItem('token');
+          setExpandedItems((prevState) => ({
+          ...prevState,
+          'features__item-main': false, // Collapse the item when logging out
+          }));
+          window.location.href = 'http://localhost:3000/';
+     };
+ 
 
+     useEffect(() => {
+          // When the component mounts, check sessionStorage for token and set the initial expanded state
+          const hasSessionData = sessionStorage.getItem('token') !== null;
+          setExpandedItems((prevState) => ({
+            ...prevState,
+            'features__item-main': hasSessionData, // You can set any default expanded state you want here
+          }));
+        }, []);
+
+       // Function to toggle expansion for an item
+     const toggleExpansion = (itemName) => {
+          setExpandedItems((prevState) => ({
+          ...prevState,
+          [itemName]: !prevState[itemName],
+          }));
+     }; 
+     
   return (
     <div className="sidebar">
             <div className="sidebar">
@@ -74,13 +61,19 @@ function Sidebar  () {
                     </Link>
                </div>
                <div className="features__item">
-                    <div className="features__item-main">
+                    <div className="features__item-main"
+                          onClick={() => toggleExpansion('features__item-category')}
+                    >
                          <i className="fas fa-compress features__item-main-icon"></i>
                          <span className="features__item-main-text">
                               Danh Mục
                          </span>
-                         <i className="fas fa-angle-right features__item-main-arrow"></i>
+                         <i  className={`fas ${
+                                   expandedItems['features__item-category'] ? 'fa-angle-down' : 'fa-angle-right'
+                              } features__item-main-arrow`}
+                         ></i>
                     </div>
+                    {expandedItems['features__item-category'] && (
                     <div className="features__item-func">
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
@@ -95,15 +88,22 @@ function Sidebar  () {
                               </li>
                          </ul>
                     </div>
+                    )}
                </div>
                <div className="features__item">
-                    <div className="features__item-main">
+                    <div className="features__item-main"
+                         onClick={() => toggleExpansion('features__item-product')}
+                    >
                          <i className="far fa-gem features__item-main-icon"></i>
                          <span className="features__item-main-text">
                               Sản Phẩm
                          </span>
-                         <i className="fas fa-angle-right features__item-main-arrow "></i>
+                         <i  className={`fas ${
+                                   expandedItems['features__item-category'] ? 'fa-angle-down' : 'fa-angle-right'
+                              } features__item-main-arrow`}
+                         ></i>
                     </div>
+                    {expandedItems['features__item-product'] && (
                     <div className="features__item-func">
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
@@ -123,15 +123,19 @@ function Sidebar  () {
                               </li>
                          </ul>
                     </div>
+                    )}
                </div>
                <div className="features__item">
-                    <div className="features__item-main">
+                    <div className="features__item-main"
+                         onClick={() => toggleExpansion('features__item-order')}
+                    >
                          <i className="far fa-sticky-note features__item-main-icon"></i>
                          <span className="features__item-main-text">
                               Đơn Hàng
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
+                    {expandedItems['features__item-order'] && (
                     <div className="features__item-func">
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
@@ -140,23 +144,20 @@ function Sidebar  () {
                                    </Link>
                               </li>
                          </ul>
-                         <ul className="features__item-func-list">
-                              <li className="features__item-func-list-item">
-                                   <Link to="/admin/add_order">
-                                        Add Order
-                                   </Link>
-                              </li>
-                         </ul>
                     </div>
+                    )}
                </div>
                <div className="features__item">
-                    <div className="features__item-main">
+                    <div className="features__item-main"
+                         onClick={() => toggleExpansion('features__item-employee')}
+                    >
                          <i className="far fa-user features__item-main-icon"></i>
                          <span className="features__item-main-text">
                               Nhân Viên
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
+                    {expandedItems['features__item-employee'] && (
                     <div className="features__item-func">
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
@@ -171,15 +172,19 @@ function Sidebar  () {
                               </li>
                          </ul>
                     </div>
+                    )}
                </div>
                <div className="features__item">
-                    <div className="features__item-main">
+                    <div className="features__item-main"
+                         onClick={() => toggleExpansion('features__item-customer')}
+                    >
                          <i className="far fa-user-circle features__item-main-icon"></i>
                          <span className="features__item-main-text">
                               Khách Hàng
                          </span>
                          <i className="fas fa-angle-right features__item-main-arrow"></i>
                     </div>
+                    {expandedItems['features__item-customer'] && (
                     <div className="features__item-func">
                          <ul className="features__item-func-list">
                               <li className="features__item-func-list-item">
@@ -189,6 +194,7 @@ function Sidebar  () {
                               </li>
                          </ul>
                     </div>
+                    )}
                </div>
                <div className="features__item">
                <div className="features__item-main">
