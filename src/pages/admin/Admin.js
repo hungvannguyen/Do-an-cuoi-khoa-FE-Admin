@@ -22,7 +22,7 @@ import AddEmployee from "../../components/adminComponents/Employee/addemployee";
 
 import AllOrder from "../../components/adminComponents/Orders/allorder";
 import DetailsOrder from "../../components/adminComponents/Orders/orderdetail";
-// import AddOrder from "../../components/adminComponents/Orders/addorder";
+import AddOrder from "../../components/adminComponents/Orders/addorder";
 
 import AllCustomer from "../../components/adminComponents/Customer/allcustomer";
 import ResetPass from "../../components/adminComponents/Customer/resetpass";
@@ -67,6 +67,7 @@ function Admin() {
             //Order
             <Route path="/admin/all_order" element={requireAuth(AllOrder)} />
             <Route path="/admin/order_details/:order_id" element={requireAuth(DetailsOrder)} />
+            <Route path="/admin/add_order" element={requireAuth(AddOrder)} />
            
 
             //Customer

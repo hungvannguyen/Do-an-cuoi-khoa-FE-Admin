@@ -31,6 +31,7 @@ function EmployeeDetails(){
      const [userNameError, setUserNameError] = useState("");
      const [phoneNumberError, setPhoneNumberError] = useState("");
 
+
      
      const openModal = () => {
      setIsModalOpen(true);

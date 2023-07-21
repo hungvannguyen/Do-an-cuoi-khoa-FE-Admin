@@ -33,17 +33,16 @@ function ProductDetails(){
      const [crProductIsSale, setCrProductIsSale] = useState("");
      const [crCategoryId, setCrCategoryId] = useState("");
 
+     
      const [crProductId, setCrProductId] = useState("");
-     const [crCity, setCrCity] = useState("");
-     const [crDistrict, setCrDistrict] = useState("");
-     const [crWard, setCrWard] = useState("");
-
+     
+     
      //update
      const [product, setProduct] = useState([]);
      const [categoryId, setCategoryId] = useState("");
      const [productName, setProductName] = useState("");
      const [productStatus, setProductStatus] = useState("");
-
+     
      const [productDescription, setProductDescription] = useState("");
      const [productQuantity, setProductQuantity] = useState("");
      const [productIsSale, setProductIsSale] = useState("");
@@ -57,7 +56,7 @@ function ProductDetails(){
      const [catIdError, setCatIdError] = useState("");
      const [prdNameError, setPrdNameError] = useState("");
      const [prdStatusError, setPrdStatusError] = useState("");
-
+     
      const [prdDesError, setPrdDesError] = useState("");
      const [prdQuantityError, setPrdQuantityError] = useState("");
      const [prdIsSaleError, setPrdIsSaleError] = useState("");
@@ -67,6 +66,87 @@ function ProductDetails(){
      const [prdImageError, setPrdImageError] = useState("");
      
      const [imgFileName, setImgFileName] = useState("");
+
+     
+     const [productDetails, setProductDetails] = useState([
+          {id: '', quantity: ''}
+     ]);
+
+     const handleSubmit = (e) => {
+          e.preventDefault();
+      
+          // Validate quantity
+          const hasInvalidQuantity = productDetails.some((product) => {
+            return isNaN(product.quantity) || product.quantity <= 0; // Quantity must be a positive number
+          });
+      
+          if (hasInvalidQuantity) {
+            setIsValid(false);
+            toast.error("Số lượng sản phẩm phải là số dương!", {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            return; // Don't proceed with the API call if there are invalid quantities
+          }
+      
+          setIsValid(true);
+      
+          const formatteData = JSON.stringify(productDetails)
+            .replace(/"/g, "'")
+            .replace(/:/g, ": ")
+            .replace(/,/g, ", ");
+      
+          axios
+            .put("/product/update/quantity", { data: formatteData }, {
+              headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              toast.success("Cập Nhật Sản Phẩm Thành Công!", {
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
+              const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+                window.location.href = "/admin/all_product";
+              }, 1500);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+
+     const handleChange = (index, field, value) => {
+          const updateQuantity = [...productDetails];
+          updateQuantity[index][field] = value;
+          setProductDetails(updateQuantity);
+     };
+
+     const validateInput = () => {
+          for (let i = 0; i < productDetails.length; i++) {
+            const product = productDetails[i];
+            if (
+              (isNaN(product.quantity) || product.quantity <= 0)
+            ) {
+              return false;
+            }
+          }
+          return true;
+        };
 
      const hanldeInputClick = () => {
           setCatIdError("");
@@ -160,7 +240,9 @@ function ProductDetails(){
                .get(`/product/${id}`)
                .then((response) => {
                     console.log(response.data);
+                    console.log(response.data.details);
                     setProduct(response.data);
+                    setProductDetails(response.data.details);
                     //current data
                     setCrCategoryId(response.data.cat_id);
                     setCrProductName(response.data.name);
@@ -265,7 +347,6 @@ function ProductDetails(){
                     status: productStatus,
                     is_sale: productIsSale,
                     cat_id: categoryId,
-
                },{
                     headers: {
                          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -285,7 +366,7 @@ function ProductDetails(){
                     });
                     const redirectInterval = setInterval(() => {
                          clearInterval(redirectInterval);
-                         // window.location.href = "/admin/all_product";
+                         window.location.href = "/admin/all_product";
                     },1500);     
                })
                .catch((error) => {
@@ -337,7 +418,7 @@ function ProductDetails(){
             return new Intl.NumberFormat("vi-VN").format(number);
           }
           return "";
-        };
+     };
  
 
     return(
@@ -560,6 +641,44 @@ function ProductDetails(){
                {productImagePreview && (
                     <img src={productImagePreview} width="80%" alt="Preview_image" />
                )}          
+          </div>
+          <div className="col-lg-12 row mt-3">
+               {productDetails.map((productDetail, index) => (
+               <div className="col-lg-4">
+                    <div className="form__product-delete-id">
+                         <label className="form__product-delete-id-title">
+                         Giá Nhập Vào: {formatNumber(productDetail.import_price)} VNĐ
+                         </label>
+                    </div>    
+                    <div className="form__product-delete-id">
+                         <label className="form__product-delete-id-title">
+                         Số lượng: {productDetail.quantity}
+                         </label>
+                         <input
+                         type="number"
+                         className="form__product-id-input"
+                         placeholder="Enter Category Description"
+                         value={productDetail.quantity}
+                         onChange={(e) => handleChange(index, 'quantity', e.target.value)}
+                         />
+                         <input
+                         type="number"
+                         className="form__product-id-input"
+                         placeholder="Enter Category Description"
+                         value={productDetail.id}
+                         onChange={(e) => handleChange(index, 'id', e.target.value)}
+                         style={{display:"none"}}
+                         />
+                    </div>  
+               </div> 
+               ))} 
+               <div className="col-lg-12">
+               <button className="form__category-btn form__input-btn"
+                         onClick={handleSubmit}
+                    >
+                         Cập Nhật Số Lượng
+                    </button>
+               </div>
           </div>
           <div className="form__category-check col-lg-12 d-flex">
                <div class="form__category-check me-3">

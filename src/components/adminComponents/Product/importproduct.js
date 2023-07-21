@@ -36,27 +36,26 @@ function ImportProduct() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateInput()) {
-      setIsValid(false);
-      toast.error("Số lượng và giá nhập phải là số dương và lớn hơn 0!",{
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored"
-   });
-   const redirectInterval = setInterval(() => {
-        clearInterval(redirectInterval);
-   },1500);
-      return;
+          setIsValid(false);
+          toast.error("Số lượng và giá nhập phải là số dương và lớn hơn 0!",{
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+      });
+      const redirectInterval = setInterval(() => {
+            clearInterval(redirectInterval);
+      },1500);
+          return;
     }
     const formattedData = JSON.stringify(products)
       .replace(/"/g, "'")
       .replace(/:/g, ': ')
       .replace(/,/g, ', ');
-
     axios
       .post("/import/import", { data: formattedData }, {
         headers: {
@@ -113,20 +112,15 @@ function ImportProduct() {
   // API lấy sản phẩm
   useEffect(() => {
     axios
-      .get(`/product/all/?page=${pages}`)
+      .get(`/product/import/all`)
       .then((response) => {
         console.log(response.data);
-        setProductsInfo(response.data.data);
-        setCurrentPage(response.data.current_page);
-        setTotalPages(response.data.total_page);
-        console.log("P" + response.data.current_page);
-        console.log(response.data);
-        console.log(typeof response.data);
+        setProductsInfo(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [pages]);
+  }, []);
 
   const handleSelectProduct = (productId, productName, index) => {
     const updatedProducts = [...products];

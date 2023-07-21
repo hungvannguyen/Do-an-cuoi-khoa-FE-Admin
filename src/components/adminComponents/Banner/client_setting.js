@@ -226,7 +226,7 @@ useEffect(() => {
         />
             <div className="main__title">
                 <span className="main__title-text">
-                    Client Setting
+                    Cài Đặt Trang Người Dùng
                 </span>
                 <span className="main__title-des">
                     DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>

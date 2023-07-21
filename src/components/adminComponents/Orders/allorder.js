@@ -213,7 +213,7 @@ const renderPagination = () => {
 
           <div className="datatable__footer">
             <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing 1 to 10 of 57 entries</span>
+              <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
             </div>
             <div className="datatable__footer-page">
 
@@ -222,14 +222,14 @@ const renderPagination = () => {
                 className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
                 onClick={isPreviousPageEnabled ? handlePreviousPage : null}
               >
-                Previous
+                Trang trước
               </li>
               {renderPagination()}
               <li
                 className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
                 onClick={isNextPageEnabled ? handleNextPage : null}
               >
-                Next
+                Trang sau
               </li>
               </ul>
             </div>

@@ -98,13 +98,14 @@ function OrderDetail() {
     }, []);
 
     const statusMapping = {
-        0: {color: "#8D8D8D", text: "Waiting for confirmation"},
-        1: {color: "#c69600", text: "Confirmed"},
-        2: {color: "#00bcdd", text: "Shipping"},
-        10: {color: "#001bc6", text: "Delivered"},
-        100: {color: "#00dd00", text: "Completed"},
-        50: {color: "#af3a94", text: "Refund"},
-        99:{color: "red", text: "Cancelled"},
+        0: {color: "#8D8D8D", text: "Chờ Xác Nhận"},
+        1: {color: "#c69600", text: "Đã Xác Nhận"},
+        2: {color: "#00bcdd", text: "Đang Vận Chuyển"},
+        10: {color: "#001bc6", text: "Đã Giao Hàng"},
+        100: {color: "#00dd00", text: "Hoàn Thành"},
+        50: {color: "#af3a94", text: "Hoàn Hàng"},
+        99:{color: "red", text: "Hủy Đơn Hàng"},
+        49: {color: "#9b6432", text: "Yêu Cầu Hoàn Hàng"},
     };
     const statusInfo = statusMapping[orderStatus] || { color: "black", text: "" };
 

@@ -4,13 +4,31 @@ import axios from "axios";
 
 
 function Header () {
+    const [user, setUser] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("/user/info",{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+            },
+        })
+        .then((response) => {
+            console.log(response.data);
+            setUser(response.data.name);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
 
     return(
         <header className="admin-header">
           <div className="header__welcome">
               <p className="header__welcome-title">
-                    Good Morning, <span className="header__welcome-title-name">
-                        John Doe
+                    Wellcome, <span className="header__welcome-title-name">
+                        {user}
                     </span>
               </p>
               <p className="header__welcome-des">
@@ -47,6 +65,7 @@ function Header () {
                         <img src="./images/faces/face21.jpg" alt="" className="header__user-avatar-img" />
                     </div>
               </div>
+
           </div>
       </header>
 

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 function AddProduct() {
      
-     const [isValid, setIsValid] = useState("");
+     const [isValid, setIsValid] = useState(true);
 
      //getcategory
      const [category, setCategory] = useState([]);
@@ -16,7 +16,6 @@ function AddProduct() {
      const [prdDesError, setPrdDesError] = useState("");
      const [prdQuantityError, setPrdQuantityError] = useState("");
      const [prdIsSaleError, setPrdIsSaleError] = useState("");
-     const [importPriceError, setImportPriceError] = useState("");
      const [exportPriceError, setExportPriceError] = useState("");
      const [prdSalePercentError, setPrdSalePercentError] = useState("");
      const [prdImageError, setPrdImageError] = useState("");
@@ -45,7 +44,6 @@ function AddProduct() {
           setPrdDesError("");
           setPrdQuantityError("");
           setPrdIsSaleError("");
-          setImportPriceError("");
           setExportPriceError("");
           setPrdSalePercentError("");
           setPrdImageError("");
@@ -73,9 +71,7 @@ function AddProduct() {
           console.log("productName:", productName);
           console.log("productStatus:", productStatus);
           console.log("productDescription:", productDescription);
-          console.log("productQuantity:", productQuantity);
           console.log("productIsSale:", productIsSale);
-          console.log("importPrice:", importPrice);
           console.log("exportPrice:", exportPrice);
           console.log("productSalePercent:", productSalePercent);
           console.log("productImage:", productImage);
@@ -104,19 +100,18 @@ function AddProduct() {
              if(productIsSale === 99) {
                setProductSalePercent(0);
                setIsValid(true);
+               }else if (productIsSale !== 99) {
+               if (!productSalePercent) {
+                     setPrdSalePercentError("Please enter sale percent!");
+                         setIsValid(false);
+               }else if (productSalePercent < 1) {
+                         setPrdSalePercentError("Sale percent must be greater than 1%!");
+                         setIsValid(false);
+               }else if (productSalePercent > 80) {
+                         setPrdSalePercentError("Sale percent must be less than 80%!");
+                         setIsValid(false);
                }
-               // else if (productIsSale !== 99) {
-               // if (!productSalePercent) {
-               //       setPrdSalePercentError("Please enter sale percent!");
-               //           setIsValid(false);
-               // }else if (productSalePercent < 1) {
-               //           setPrdSalePercentError("Sale percent must be greater than 1%!");
-               //           setIsValid(false);
-               // }else if (productSalePercent > 80) {
-               //           setPrdSalePercentError("Sale percent must be less than 80%!");
-               //           setIsValid(false);
-               // }
-          // }
+          }
              if (!productImage) {
                setPrdImageError("Hãy Chọn Ảnh Cho Sản Phẩm!");
                setIsValid(false);

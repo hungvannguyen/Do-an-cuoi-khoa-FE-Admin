@@ -67,7 +67,7 @@ function AllProducts(){
     };
 
     // Hàm render phân trang
-const renderPagination = () => {
+  const renderPagination = () => {
   const pageNumbers = [];
 
   // Tạo một mảng chứa các số trang từ 1 đến totalPages
@@ -192,7 +192,7 @@ useEffect(() => {
             }} 
         />
         <div className="main__title">
-          <span className="main__title-text">All Product</span>
+          <span className="main__title-text">Tất cả sản phẩm</span>
           <span className="main__title-des">
             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
           </span>
@@ -220,7 +220,6 @@ useEffect(() => {
                   <th className="table__head-item">Giảm giá</th>
                   <th className="table__head-item">% Giảm Giá</th>
                   <th className="table__head-item">Số Lượng</th>
-                  <th className="table__head-item">Giá Nhập</th>
                   <th className="table__head-item">Giá Bán</th>
                   <th className="table__head-item">Tình Trạng</th>
                   <th className="table__head-item">Hành Động</th>
@@ -247,9 +246,6 @@ useEffect(() => {
                   <td className="table__body-data">{product.sale_percent}%</td>
                   <td className="table__body-data">{product.quantity}</td>
                   <td className="table__body-data">
-                    {formatNumber(product.import_price)} VNĐ
-                  </td>
-                  <td className="table__body-data">
                     {formatNumber(product.price)} VNĐ
                   </td>
                   <td className="table__body-data">
@@ -263,12 +259,14 @@ useEffect(() => {
                       }
                     })()}
                   </td>
-                  <td className="table__body-data d-flex justify-content-around align-items-center"> 
-                    <button className="btn-edit ">                    
-                      <Link to={`/admin/product_details/${product.id}`} className="btn-text">
-                        Chi Tiết
-                      </Link>
-                    </button>
+                  <td className="table__body-data "> 
+                    <div className="d-flex justify-content-around align-items-center">
+                      <button className="btn-edit ">                    
+                        <Link to={`/admin/product_details/${product.id}`} className="btn-text">
+                          Chi Tiết
+                        </Link>
+                      </button>
+                    </div>
                     {/* <button
                       className="form__product-btn ms-3"
                       value={product.id}
@@ -285,9 +283,11 @@ useEffect(() => {
               </tbody>
             </table>
           </div>
-          <div className="datatable__footer">
+          <div className="datatable__footer mt-30">
             <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text"></span>
+            <div className="datatable__footer-description">
+              <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
+            </div>
             </div>
             <div className="datatable__footer-page">
              <ul className="datatable__footer-page-list">
@@ -295,14 +295,14 @@ useEffect(() => {
                 className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
                 onClick={isPreviousPageEnabled ? handlePreviousPage : null}
               >
-                Previous
+                Trang Trước
               </li>
               {renderPagination()}
               <li
                 className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
                 onClick={isNextPageEnabled ? handleNextPage : null}
               >
-                Next
+                Trang Sau
               </li>
               </ul>
             </div>
