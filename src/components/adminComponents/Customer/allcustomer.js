@@ -7,6 +7,11 @@ import Authorized from "../Authorized/authorized"
 
 function AllCustomer(){
   const [customers, setCustomers] = useState([]);
+  const [pages, setPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState();
+  const [totalPages, setTotalPages] = useState();
+  const [isNextPageEnabled, setNextPageEnabled] = useState(true);
+  const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
 
 
   const user = sessionStorage.getItem("role_id");
@@ -14,21 +19,91 @@ function AllCustomer(){
 
     useEffect(() => {
       axios
-      .get(`user/all_user?role_id=99`)
+      .get(`user/all_user?role_id=99&page=${pages}`)
       .then((response) => {
         console.log(response.data);
-        setCustomers(response.data);
+        setCustomers(response.data.data);
+        setCurrentPage(response.data.current_page);
+        setTotalPages(response.data.total_page);
       })
       .catch((error) => {
         console.log(error);
       });
-    }, []);
+    }, [pages]);
+    const handlePreviousPage = () => {
+      if (pages > 1) {
+        setCurrentPage(pages - 1);
+        setPages(pages - 1);
+      } 
+    };
+    
+    const handleNextPage = () => {
+      setCurrentPage(pages + 1);
+      setPages(pages + 1);
+      }
+
+    const handleFirstPage = () => {
+      setCurrentPage(1);
+      setPages(1);
+    };
+
+    const handleLastPage = () => {
+      setCurrentPage(totalPages);
+      setPages(totalPages);
+    };
+
+    const handlePageChange = (pages) => {
+      // setLoading(true);
+      setPages(pages);
+      setCurrentPage(pages);
+    };
+
+    // Hàm render phân trang
+  const renderPagination = () => {
+  const pageNumbers = [];
+
+  // Tạo một mảng chứa các số trang từ 1 đến totalPages
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <>
+      {pageNumbers.map((pageNumber) => (
+        <li
+          className={`datatable__footer-list-item ${currentPage === pageNumber ? 'active' : ''}`}
+          key={pageNumber}
+          onClick={() => handlePageChange(pageNumber)}
+        >
+          {pageNumber}
+        </li>
+      ))}
+    </>
+  );
+};    
+
+ useEffect(() => {
+      if (currentPage === totalPages) {
+        setNextPageEnabled(false);
+      } else {
+        setNextPageEnabled(true);
+      }
+    }, [currentPage, totalPages]);
+    
+    useEffect(() => {
+      if (currentPage === 1) {
+        setPreviousPageEnabled(false);
+      } else {
+        setPreviousPageEnabled(true);
+      }
+    }, [currentPage]);
+
 
     return(
         <div className="main">
            <Authorized user={user} allowedRoles={allowedRoles}>
         <div className="main__title">
-          <span className="main__title-text">All Customer</span>
+          <span className="main__title-text">Tất Cả Khách Hàng</span>
           <span className="main__title-des">
             DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
           </span>
@@ -79,20 +154,27 @@ function AllCustomer(){
               </tbody>
             </table>
           </div>
-          <div className="datatable__footer">
+          <div className="datatable__footer mt-30">
+          <div className="datatable__footer-description">
             <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing 1 to 10 of 57 entries</span>
+              <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
+            </div>
             </div>
             <div className="datatable__footer-page">
-              <ul className="datatable__footer-page-list">
-                <li className="datatable__footer-list-item datatable__footer-list-item--disabled">Previous</li>
-                <li className="datatable__footer-list-item datatable__footer-list-item--enabled">1</li>
-                <li className="datatable__footer-list-item">2</li>
-                <li className="datatable__footer-list-item">3</li>
-                <li className="datatable__footer-list-item">4</li>
-                <li className="datatable__footer-list-item">5</li>
-                <li className="datatable__footer-list-item">6</li>
-                <li className="datatable__footer-list-item">Next</li>
+             <ul className="datatable__footer-page-list">
+             <li
+                className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
+                onClick={isPreviousPageEnabled ? handlePreviousPage : null}
+              >
+                Trang Trước
+              </li>
+              {renderPagination()}
+              <li
+                className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
+                onClick={isNextPageEnabled ? handleNextPage : null}
+              >
+                Trang Sau
+              </li>
               </ul>
             </div>
           </div>

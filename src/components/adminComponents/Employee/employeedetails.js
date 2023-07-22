@@ -22,6 +22,7 @@ function EmployeeDetails(){
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [isModalOpen2, setIsModalOpen2] = useState(false);
      const [isModalOpen3, setIsModalOpen3] = useState(false);
+     const [isModalOpen4, setIsModalOpen4] = useState(false);
 
      //user init data
      const [initUserName, setInitUserName] = useState("");
@@ -56,6 +57,14 @@ function EmployeeDetails(){
      const closeModal3 = () => {
           setIsModalOpen3(false);
      };
+     const openModal4 = () => {
+          setIsModalOpen4(true);
+     };
+      
+     const closeModal4 = () => {
+          setIsModalOpen4(false);
+     };
+
 
      const handleInputClick = () => {
           setUserNameError("");
@@ -254,6 +263,50 @@ function EmployeeDetails(){
           });
      }
 
+     //delete user
+     const deleteUser = () => {
+          axios
+          .delete(`/user/delete/${user_id}`,{
+               headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token"),
+               },
+          })
+          .then((response) => {
+               console.log(response.data);
+               console.log(response.data);
+               toast.success("Mở Khóa Tài Khoản Thành Công!",{
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+               });
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+                    window.location.href = "/admin/dashboard";
+               }, 1500);
+          })
+          .catch((error) => {
+               console.log(error);
+               toast.error("Có Lỗi Đã Xảy Ra!",{
+                    position: "bottom-right",
+                         autoClose: 2000,
+                         hideProgressBar: true,
+                         closeOnClick: true,
+                         pauseOnHover: true,
+                         draggable: true,
+                         progress: undefined,
+                         theme: "colored"
+               });
+               
+               const redirectInterval = setInterval(() => {
+                    clearInterval(redirectInterval);
+               },500);
+          });
+     }
 
     return(
         <div className="main">
@@ -350,7 +403,7 @@ function EmployeeDetails(){
                     </div>
                     )}
                     {isLock === 99 && (
-                    <div className="form__category-check">
+                    <div className="form__category-check me-6">
                          <button className="form__category-btn form__input-btn"
                               onClick={openModal2}
                          >
@@ -359,7 +412,7 @@ function EmployeeDetails(){
                     </div>
                     )}
                     {isLock === 1 && (
-                    <div className="form__category-check">
+                    <div className="form__category-check me-6">
                          <button className="form__category-btn form__input-btn"
                               onClick={openModal3}
                          >
@@ -367,6 +420,15 @@ function EmployeeDetails(){
                          </button>
                     </div>  
                     )}  
+                    {userRoleId !== 99 && (
+                         <div className="form__category-check me-6">
+                              <button className="form__category-btn form__input-btn"
+                                   onClick={openModal4}
+                              >
+                                   Xóa Tài Khoản
+                            </button>
+                         </div>  
+                    )}
                </div>
         </div>
           <ReactModal isOpen={isModalOpen} onRequestClose={closeModal} className="react_modal ReactModal_Content">
@@ -424,6 +486,26 @@ function EmployeeDetails(){
                          Đúng 
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal3}>
+                         Không
+                    </button>
+                </div>
+                </div>
+            </ReactModal>            
+            <ReactModal isOpen={isModalOpen4} onRequestClose={closeModal4} className="react_modal ReactModal_Content">
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                 style={
+                    {height: "175px",
+                    width: "356px",
+                    }
+                }>
+                <h2 className="d-lex justify-content-center form__product-id-title text-center">
+                    Bạn Muốn Xóa Tài Khoản Người Dùng Này?    
+                </h2>
+                <div className="d-flex align-items-center justify-content-between">
+                    <button className="form__input-btn me-3" onClick={deleteUser}>
+                         Đúng 
+                    </button>
+                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal4}>
                          Không
                     </button>
                 </div>

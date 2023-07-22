@@ -284,7 +284,7 @@ useEffect(() => {
             </table>
           </div>
           <div className="datatable__footer mt-30">
-            <div className="datatable__footer-description">
+          <div className="datatable__footer-description">
             <div className="datatable__footer-description">
               <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
             </div>

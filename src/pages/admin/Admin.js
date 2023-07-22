@@ -29,6 +29,8 @@ import ResetPass from "../../components/adminComponents/Customer/resetpass";
 
 import ClientSetting from "../../components/adminComponents/Banner/client_setting"
 
+import Log from "../../components/adminComponents/Log/log";
+
 
 
 
@@ -74,6 +76,10 @@ function Admin() {
             <Route path="/admin/all_customer" element={requireAuth(AllCustomer)} />
             <Route path="/admin/user_details/:user_id" element={requireAuth(DetailsUser)} />
             <Route path="/admin/reser_request" element={<ResetPass />} />
+
+            //Log
+            <Route path="/admin/log" element={requireAuth(Log)} />
+
         </Routes>
         <Footer />
         </div>

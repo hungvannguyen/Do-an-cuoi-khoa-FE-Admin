@@ -13,12 +13,16 @@ function AddEmployee(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
 
     //Error
     const [accountError, setAccountError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPassError, setConfirmPassError] = useState("");
+    const [nameError, setNameError] = useState("");
+    const [phoneError, setPhoneError] = useState("");
 
     //authorized
     const user = sessionStorage.getItem("role_id");
@@ -64,6 +68,22 @@ function AddEmployee(){
         }
     };
 
+    const handleName = (event) => {
+        setName(event.target.value);
+        if(!isValid){
+            setIsValid(false);
+            setNameError("");
+        }
+    };
+
+    const handlePhone = (event) => {
+        setPhone(event.target.value);
+        if(!isValid){
+            setIsValid(false);
+            setPhoneError("");
+        }
+    };
+
 
     const addEmployee = (e) => {
         e.preventDefault();
@@ -88,9 +108,22 @@ function AddEmployee(){
             setConfirmPassError("Mật Khẩu Không Trùng Khớp");
             setIsValid(false);
         }
+        if(!name){
+            setNameError("Hãy Nhập Vào Tên");
+            setIsValid(false);
+        }
+        if(!phone){
+            setPhoneError("Hãy Nhập Vào Số Điện Thoại");
+            setIsValid(false);
+        }else if(phone.length  < 10 || phone.length > 11){
+            setPhoneError("Số Điện Thoại Không Hợp Lệ");
+            setIsValid(false);
+        }
         if(isValid){
             const employeeData = {
                 account: account,
+                name: name,
+                phone_number: phone,
                 email: email,
                 password: password,
                 confirm_password: confirmPass,
@@ -188,6 +221,38 @@ function AddEmployee(){
                                     {emailError}
                                 </div>
                             )}
+                    </div>                      <div className="form__product-cate-id">
+                            <label className="form__product-id-title">
+                                Tên Nhân Viên
+                            </label>
+                            <input type="text" 
+                                    className="form__product-id-input" 
+                                    placeholder="Enter Email" 
+                                    value={name}
+                                    onChange={handleName}
+                                    onClick={handleInputClick}
+                            />
+                            {nameError && (
+                                <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                                    {nameError}
+                                </div>
+                            )}
+                    </div>                      <div className="form__product-cate-id">
+                            <label className="form__product-id-title">
+                                Số Điện Thoại
+                            </label>
+                            <input type="text" 
+                                    className="form__product-id-input" 
+                                    placeholder="Enter Email" 
+                                    value={phone}
+                                    onChange={handlePhone}
+                                    onClick={handleInputClick}
+                            />
+                            {phoneError && (
+                                <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
+                                    {phoneError}
+                                </div>
+                            )}
                     </div> 
                     <div className="form__product-name">
                             <label for="form__product-name-input" className="form__product-name-title">
@@ -243,6 +308,7 @@ function AddEmployee(){
                 </div>
             </div>
             </Authorized>
+
         </div>
     );
 }
