@@ -10,16 +10,9 @@ function AllProducts(){
   const [pages, setPages] = useState(1);
   const [currentPage, setCurrentPage] = useState();
   const [totalPages, setTotalPages] = useState();
-  const [quantityValue, setQuantityValue] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [idSave, setIdSave] = useState("");
-  const [isValid, setIsValid] = useState("");
   const [isNextPageEnabled, setNextPageEnabled] = useState(true);
   const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
 
-  //error
-  const [quantityError, setQuantityError] = useState("");
       
     useEffect(() => {
       axios
@@ -36,7 +29,7 @@ function AllProducts(){
       .catch((error) => {
         console.log(error);
       });
-    }, [pages, quantityValue]);
+    }, [pages]);
 
     const handlePreviousPage = () => {
       if (pages > 1) {
@@ -49,16 +42,6 @@ function AllProducts(){
       setCurrentPage(pages + 1);
       setPages(pages + 1);
       }
-
-    const handleFirstPage = () => {
-      setCurrentPage(1);
-      setPages(1);
-    };
-
-    const handleLastPage = () => {
-      setCurrentPage(totalPages);
-      setPages(totalPages);
-    };
 
     const handlePageChange = (pages) => {
       // setLoading(true);
@@ -108,78 +91,6 @@ useEffect(() => {
 
     const formatNumber = (number) => {
       return number.toLocaleString("vi-VN");
-    };
-
-    const openModal = () => {
-      setIsModalOpen(true);
-    };
-  
-    const closeModal = () => {
-      setIsModalOpen(false);
-      setQuantityValue("");
-    };
-
-    
-    const openModal2 = () => {
-      setIsModalOpen2(true);
-    };
-  
-    const closeModal2 = () => {
-      setIsModalOpen2(false);
-    };
-
-    const handleIdSave = (e) => {
-      setIdSave(e.target.value);
-      if(!isValid){
-        setIsValid(false);
-        setQuantityError("");
-      }
-    };
-
-    const handleQuantityAdd = (e) => {
-      e.preventDefault();
-      setIsValid(true);
-      if (quantityValue === "") {
-        setQuantityError("Quantity is required");
-        setIsValid(false);
-      }else if(quantityValue <= 0){
-        setQuantityError("Quantity must be greater than 0");
-        setIsValid(false);
-      }
-      console.log(idSave);
-      console.log(quantityValue);
-      if(isValid){
-        axios
-        .post(`/product/add_quantity?prd_id=${idSave}&quantity=${quantityValue}`,{
-          headers: {
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-        })
-        .then((response) => {
-          console.log(response.data);
-          closeModal2();
-          toast.success("Update quantity successfully!",{
-            position: "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored"
-       });
-       const redirectInterval = setInterval(() => {
-            clearInterval(redirectInterval);
-            window.location.href = "/admin/all_product";
-       }, 1500);
-  
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      }else{
-        console.log("error");
-      }
     };
 
 
@@ -267,16 +178,6 @@ useEffect(() => {
                         </Link>
                       </button>
                     </div>
-                    {/* <button
-                      className="form__product-btn ms-3"
-                      value={product.id}
-                      onClick={(e) => {
-                        handleIdSave(e);
-                        openModal();
-                      }}
-                    >
-                      Add Quantity
-                    </button> */}
                   </td>
                 </tr>
                 ))}
@@ -309,51 +210,6 @@ useEffect(() => {
           </div>
           
         </div>
-        <ReactModal isOpen={isModalOpen} onRequestClose={closeModal}
-            className="react_modal ReactModal__Content"
-        >
-          <ToastContainer 
-          style={{
-               width: "400px",
-               fontSize: "18px",
-          }} 
-          />
-        <h3 className="d-lex justify-content-center form__product-id-title text-center">Enter Quantity</h3>
-        <div className="d-flex flex-column ">
-          <input type="number" 
-            value={quantityValue} 
-            onChange={(e) => setQuantityValue(e.target.value)} 
-            className="form__input-reactmodal"
-            min={1}
-            />  
-          <div className="d-flex justify-content-around mt-4">
-            <button onClick={openModal2} className="form__input-btn" >Add</button>
-            <button onClick={closeModal} className="form__input-btn">Cancel</button>
-          </div>
-        </div>
-          </ReactModal>
-          <ReactModal isOpen={isModalOpen2} onRequestClose={closeModal2} className="react_modal ReactModal_Content">
-                <div className="d-flex flex-column justify-content-center align-items-center"
-                 style={
-                    {height: "175px",
-                    width: "356px",
-                    }
-                }>
-                <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Bạn muốn cập nhật sản phẩm này?    
-                </h2>
-                {quantityError && <span className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>{quantityError}</span>
-                }
-                <div className="d-flex align-items-center justify-content-between">
-                    <button className="form__input-btn me-3" onClick={handleQuantityAdd}>
-                         Có
-                    </button>
-                    <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
-                         Không
-                    </button>
-                </div>
-                </div>
-        </ReactModal>
       </div>
       
     );
