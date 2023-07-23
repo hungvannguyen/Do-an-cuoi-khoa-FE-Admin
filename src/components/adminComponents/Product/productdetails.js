@@ -504,30 +504,6 @@ function ProductDetails(){
                          </div>
                     )}
                </div>
-               {/* <div className="form__product-delete-id">
-                    <label className="form__product-delete-id-title">
-                       Giá Nhập: <span>{formatNumber(crImportPrice)} VND</span>
-                    </label>
-                    <input type="number" 
-                         id="form__product-price-input" 
-                         className="form__product-price-input" 
-                         placeholder="Enter Product Import Price" 
-                         min={0}
-                         value={formatNumber(importPrice)}
-                         onChange={handleImportPrice}
-                         onClick={hanldeInputClick}
-                    />  
-                    {importPriceError && (
-                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                              {importPriceError}
-                         </div>
-                    )}
-                    {importExportError && (
-                         <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                              {importExportError}
-                         </div>
-                    )}
-               </div> */}
                
           </div>
           <div className="col-lg-4">

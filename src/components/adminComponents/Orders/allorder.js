@@ -10,30 +10,36 @@ function AllOders(){
   const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
   const [currentPage, setCurrentPage] = useState();
   const [totalPages, setTotalPages] = useState();
+  const [orderStatus, setOrderStatus] = useState(111);
 
 
   const [orders, setOrders] = useState([]);
 
-    useEffect(() => {
-        axios
-        .get(`/order/admin/all?page=${pages}`,{
-          headers: {
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-          },
-        })
-        .then((response) => {
-            console.log(response.data);
-            setCurrentPage(response.data.current_page);
-            setTotalPages(response.data.total_page);
-            setOrders(response.data.data);
-            console.log("P" + response.data.current_page);
-            console.log(response.data);
-            console.log(typeof response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }, [pages]);
+  useEffect(() => {
+    let apiEndpoint = `/order/admin/all?page=${pages}`;
+    if (orderStatus !== 111) {
+      apiEndpoint += `&order_status=${orderStatus}`;
+    }
+  
+    axios
+      .get(apiEndpoint, {
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setCurrentPage(response.data.current_page);
+        setTotalPages(response.data.total_page);
+        setOrders(response.data.data);
+        console.log("P" + response.data.current_page);
+        console.log(response.data);
+        console.log(typeof response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [pages, orderStatus]);
 
     const handlePreviousPage = () => {
       if (pages > 1) {
@@ -71,7 +77,7 @@ function AllOders(){
   
 
    // Hàm render phân trang
-const renderPagination = () => {
+    const renderPagination = () => {
   const pageNumbers = [];
 
   // Tạo một mảng chứa các số trang từ 1 đến totalPages
@@ -92,11 +98,16 @@ const renderPagination = () => {
       ))}
     </>
   );
-};
+    };
 
       // Format number
     const formatNumber = (number) => {
       return number.toLocaleString("vi-VN");
+    };
+
+    const handleOrderStatusChange = (event) => {
+      const selectedOrderStatus = event.target.value;
+      setOrderStatus(Number(selectedOrderStatus));
     };
 
     return(
@@ -104,15 +115,26 @@ const renderPagination = () => {
         <div className="main__title">
           <span className="main__title-text">Tất Cả Đơn Hàng</span>
           <span className="main__title-des">
-            DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+            Hiển thị tất cả đơn hàng của khách hàng
           </span>
         </div>
         <div className="datatable__location">
           <div className="datatable__head">
             <div className="datatable__head-show">
-              <span className="datatable__show-text">Show</span>
-              <input type="number" name="" id="datatable__show-number" min="5" max="20" step="5" value="10" />
-              <span className="datatable__show-text">entries</span>
+            <select
+              value={orderStatus.toString()} // Convert to string to match option value type
+              onChange={handleOrderStatusChange}
+            >
+              <option value="111">All</option>
+              <option value="0">Chờ Xác Nhận</option>
+              <option value="1">Đã Xác Nhận</option>
+              <option value="2">Đang Vận Chuyển</option>
+              <option value="10">Đẫ Giao Hàng</option>
+              <option value="100">Hoàn Thành</option>
+              <option value="99">Hủy Đơn</option>
+              <option value="50">Đã Hoàn Hàng</option>
+              <option value="49">Yêu Cầu Hoàn Hàng</option>
+            </select>
             </div>
             <div className="datatable__head-search">
               <span className="datatable__search-text">Search:</span>
@@ -158,7 +180,7 @@ const renderPagination = () => {
                         } else if (order.status === 99) {
                           return <span style={{ color: 'red' }}>Hủy Đơn</span>;
                         } else if( order.status === 50){
-                          return <span style={{ color: '#af3a94' }}>Hoàn Hàng</span>;
+                          return <span style={{ color: '#af3a94' }}>Đã Hoàn Hàng</span>;
                         }else if ( order.status === 49){
                           return <span style={{ color: '#9b6432' }}>Yêu Cầu Hoàn Hàng</span>;
                         }else{

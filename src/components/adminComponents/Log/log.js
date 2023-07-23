@@ -113,11 +113,9 @@ function Log() {
     <Authorized user={user} allowedRoles={allowedRoles}>
     <div className="main">
       <div className="main__title">
-        <span className="main__title-text">Edit History</span>
+        <span className="main__title-text">Lịch sử chỉnh sửa</span>
         <span className="main__title-des">
-          DataTables is a third-party plugin used to generate the demo table
-          below. For more information about DataTables,{" "}
-          <span>please visit the official Datatables documentation.</span>
+            Lịch sử chỉnh sửa của cửa hàng
         </span>
       </div>
       <div className="datatable__location">
@@ -131,7 +129,7 @@ function Log() {
                 }`}
                 onClick={() => handleSort("asc")}
             >
-                Sort Asc
+                Sắp xếp tăng dần
             </button>
             <button
                 className={`datatable__sort-button ${
@@ -139,7 +137,7 @@ function Log() {
                 }`}
                 onClick={() => handleSort("desc")}
             >
-                Sort Desc
+                Sắp xếp giảm dần
             </button>
             </div>
         </div>
@@ -181,7 +179,7 @@ function Log() {
                 <option value="success">Success</option>
                 <option value="failed">Failed</option>
                 </select>
-                <button onClick={() => setCurrentPage(1)}>Apply Filters</button>
+                <button onClick={() => setCurrentPage(1)}>Áp dụng</button>
             </div>
         </div>
         </div>
@@ -190,11 +188,11 @@ function Log() {
             <thead className="table__head">
               <tr>
                 <th className="table__head-item">ID</th>
-                <th className="table__head-item">Method</th>
-                <th className="table__head-item">Item</th>
-                <th className="table__head-item">Action</th>
-                <th className="table__head-item">Status</th>
-                <th className="table__head-item">Timestamp</th>
+                <th className="table__head-item">Phương Thức</th>
+                <th className="table__head-item">Mục</th>
+                <th className="table__head-item">Chi Tiết</th>
+                <th className="table__head-item">Trạng Thái</th>
+                <th className="table__head-item">Thời Gian</th>
               </tr>
             </thead>
             <tbody className="table__body">
@@ -214,7 +212,7 @@ function Log() {
       <div className="datatable__footer mt-30">
         <div className="datatable__footer-description">
           <span className="datatable__footer-description-text">
-            Showing {currentPage} of {totalPages} pages
+            Hiển thị trang {currentPage} trong tổng số {totalPages} trang
           </span>
         </div>
         <div className="datatable__footer-page">
@@ -225,7 +223,7 @@ function Log() {
               }`}
               onClick={handlePreviousPage}
             >
-              Previous Page
+              Trang trước
             </li>
             {renderPagination()}
             <li
@@ -234,7 +232,7 @@ function Log() {
               }`}
               onClick={handleNextPage}
             >
-              Next Page
+              Trang sau
             </li>
           </ul>
         </div>

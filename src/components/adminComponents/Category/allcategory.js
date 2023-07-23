@@ -32,10 +32,10 @@ function AllCategory() {
            <Authorized user={user} allowedRoles={allowedRoles}>
         <div className="main__title">
              <span className="main__title-text">
-                  All Employee
+                    Danh sách danh mục
              </span>
              <span className="main__title-des">
-                  DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                    Danh sách danh mục của cửa hàng
              </span>
         </div>
         <div className="datatable__location">

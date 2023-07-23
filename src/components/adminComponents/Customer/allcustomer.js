@@ -105,7 +105,7 @@ function AllCustomer(){
         <div className="main__title">
           <span className="main__title-text">Tất Cả Khách Hàng</span>
           <span className="main__title-des">
-            DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+            Tất cả khách hàng đang sử dụng dịch vụ của hệ thống
           </span>
         </div>
         <div className="datatable__location">

@@ -280,7 +280,7 @@ function AddProduct() {
               Tạo Sản Phẩm
          </span>
          <span className="main__title-des">
-              DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                 Tạo Sản Phẩm Mới Cho Cửa Hàng
          </span>
     </div>
     <div className="main__form row">

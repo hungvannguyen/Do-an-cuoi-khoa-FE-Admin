@@ -26,7 +26,7 @@ function AddEmployee(){
 
     //authorized
     const user = sessionStorage.getItem("role_id");
-    const allowedRoles = ["1",];
+    const allowedRoles = ["1"];
 
 
     const handleInputClick = () => {
@@ -184,7 +184,7 @@ function AddEmployee(){
                             Thêm Mới Nhân Viên
                     </span>
                     <span className="main__title-des">
-                            DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                            Tạo Mới Nhân Viên
                     </span>
                 </div>
                 <div className="main__form">

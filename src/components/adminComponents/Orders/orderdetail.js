@@ -119,7 +119,7 @@ function OrderDetail() {
         })
         .then((response) => {
             console.log(response.data.data);
-            toast.success("Update order status successfully!",{
+            toast.success("Cập nhật đơn hàng thành công!",{
                 position: "bottom-right",
                 autoClose: 2000,
                 hideProgressBar: true,
@@ -136,7 +136,7 @@ function OrderDetail() {
         })
         .catch((error) => {
             console.log(error);
-            toast.error("Something went wrong!",{
+            toast.error("Đã có lỗi xảy ra!",{
                 position: "bottom-right",
                      autoClose: 2000,
                      hideProgressBar: true,
@@ -179,7 +179,7 @@ function OrderDetail() {
         })
         .then((response) => {
             console.log(response.data.data);
-            toast.success("Update order status successfully!",{
+            toast.success("Cập nhật trạng thái thành công!",{
                 position: "bottom-right",
                 autoClose: 2000,
                 hideProgressBar: true,
@@ -196,7 +196,7 @@ function OrderDetail() {
         })
         .catch((error) => {
             console.log(error);
-            toast.error("Something went wrong!",{
+            toast.error("Có lỗi xảy ra!",{
                 position: "bottom-right",
                      autoClose: 2000,
                      hideProgressBar: true,
@@ -260,7 +260,7 @@ function OrderDetail() {
                 </div>
                 <div class="form__category-des">
                     <label for="form__category-des-input" class="form__category-des-title">
-                        Email: {email === "" ? "(Customers don't have email)" : email}
+                        Email: {email === "" ? "(Khách hàng không có địa chỉ email)" : email}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -283,7 +283,7 @@ function OrderDetail() {
                         class="form__category-des-title"
                           
                     >
-                        Trạng thái thanh toán: {orderPaymentStatus === 0 ? "Paid" : "Unpaid"}
+                        Trạng thái thanh toán: {orderPaymentStatus === 0 ? "đã thanh toán" : "chưa thanh toán"}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -423,14 +423,14 @@ function OrderDetail() {
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Are you sure you want to update the order?    
+                    Bạn có muốn cập nhật đơn hàng này?    
                 </h2>
                 <div className="d-flex align-items-center justify-content-between">
                     <button className="form__input-btn me-3" onClick={updatePaymentStatus}>
-                         Yes
+                         Có
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>
-                         No
+                         Không
                     </button>
                 </div>
                 </div>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import ReactModal from 'react-modal';
+import Authorized from "../Authorized/authorized"
 
 
 function EmployeeDetails(){
@@ -31,6 +32,10 @@ function EmployeeDetails(){
      //Error
      const [userNameError, setUserNameError] = useState("");
      const [phoneNumberError, setPhoneNumberError] = useState("");
+
+     //authorized
+    const user = sessionStorage.getItem("role_id");
+    const allowedRoles = ["1"];
 
 
      
@@ -197,7 +202,8 @@ function EmployeeDetails(){
                });
                const redirectInterval = setInterval(() => {
                     clearInterval(redirectInterval);
-                    window.location.href = "/admin/dashboard";
+                    {userRoleId === 99 ? window.location.href = "/admin/all_customer" 
+                    : window.location.href = "/admin/all_employee"}
                }, 1500);
           })
           .catch((error) => {
@@ -241,7 +247,8 @@ function EmployeeDetails(){
                });
                const redirectInterval = setInterval(() => {
                     clearInterval(redirectInterval);
-                    window.location.href = "/admin/dashboard";
+                    {userRoleId === 99 ? window.location.href = "/admin/all_customer" 
+                    : window.location.href = "/admin/all_employee"}
                }, 1500);
           })
           .catch((error) => {
@@ -286,7 +293,8 @@ function EmployeeDetails(){
                });
                const redirectInterval = setInterval(() => {
                     clearInterval(redirectInterval);
-                    window.location.href = "/admin/dashboard";
+                    {userRoleId === 99 ? window.location.href = "/admin/all_customer" 
+                    : window.location.href = "/admin/all_employee"}
                }, 1500);
           })
           .catch((error) => {
@@ -309,6 +317,7 @@ function EmployeeDetails(){
      }
 
     return(
+     <Authorized user={user} allowedRoles={allowedRoles}>
         <div className="main">
           <ToastContainer 
           style={{
@@ -383,6 +392,7 @@ function EmployeeDetails(){
                </div>
 
                <div className="col-lg-12 d-flex align-items-center">
+                    {userRoleId == 99 && (
                     <div class="form__category-check">
                          <Link to="/admin/all_customer" >
                          <button class="form__category-btn form__input-btn me-6">
@@ -391,6 +401,17 @@ function EmployeeDetails(){
                          </button>
                          </Link>
                     </div>
+                    )}
+                    {userRoleId !== 99 && (
+                    <div class="form__category-check">
+                         <Link to="/admin/all_employee" >
+                         <button class="form__category-btn form__input-btn me-6">
+                         <i className="fas fa-angle-left features__item-main-arrow me-3"></i>
+                                   Trở về
+                         </button>
+                         </Link>
+                    </div>
+                    )}
                     
                     {userRoleId !== 99 && ( 
                     <div className="form__category-check me-6">
@@ -512,7 +533,7 @@ function EmployeeDetails(){
                 </div>
             </ReactModal>
         </div>
-
+     </Authorized>
     );
 }
 

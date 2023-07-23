@@ -112,7 +112,7 @@ function AddCategory() {
                     Thêm Mới Danh Mục
                 </span>
                 <span className="main__title-des">
-                    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                    Tạo Mới Danh Mục Sản Phẩm
                 </span>
             </div>
             <div className="main__form">
