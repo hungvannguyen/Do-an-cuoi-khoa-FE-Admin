@@ -162,7 +162,7 @@ function Sidebar  () {
                               </li>
                               <li className="features__item-func-list-item">
                                    <Link to="/admin/add_order">
-                                        Đặt Hàng Từ Khách
+                                        Thêm Đơn Hàng
                                    </Link>
                               </li>
                          </ul>

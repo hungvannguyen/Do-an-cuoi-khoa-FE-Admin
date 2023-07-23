@@ -1,6 +1,7 @@
 import "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Authorized from "../Authorized/authorized"
 
 function Log() {
   const [logs, setLogs] = useState([]);
@@ -10,6 +11,11 @@ function Log() {
   const [filterType, setFilterType] = useState([]);
   const [filterTarget, setFilterTarget] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+
+      //authorized
+      const user = sessionStorage.getItem("role_id");
+      const allowedRoles = ["1",];
+  
 
   // Function to call the API with sorting and optional filter parameters
   const callApiWithFilters = (page, rowPerPage, sort) => {
@@ -103,6 +109,8 @@ function Log() {
   };
 
   return (
+    <div>
+    <Authorized user={user} allowedRoles={allowedRoles}>
     <div className="main">
       <div className="main__title">
         <span className="main__title-text">Edit History</span>
@@ -233,6 +241,8 @@ function Log() {
      
       </div>
       </div>
+    </div>
+    </Authorized>
     </div>
   );
 }

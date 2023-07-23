@@ -383,6 +383,16 @@ function OrderDetail() {
                         </button>
                     </div>
                 )}
+                {orderStatus === 49 && (
+                    <div class="form__category-check">
+                        <button class="form__category-btn form__input-btn me-6" 
+                        value={50}
+                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
+                        >
+                               Đồng ý hoàn trả
+                        </button>
+                    </div>
+                )}
             </div> 
         </div>
         <ReactModal isOpen={isModalOpen} onRequestClose={closeModal} className="react_modal ReactModal_Content">

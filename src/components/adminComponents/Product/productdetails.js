@@ -494,9 +494,9 @@ function ProductDetails(){
                          onChange={handleProductStatus}
                          onClick={hanldeInputClick}
                     >
-                         <option value="">Choose Status</option>
-                         <option value="99">Not Sell</option>
-                         <option value="1">Sell</option>
+                         <option value="">Chọn trạng thái sản phẩm</option>
+                         <option value="99">Không bán</option>
+                         <option value="1">Bán</option>
                     </select>
                     {prdStatusError && (
                          <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>     
@@ -581,7 +581,7 @@ function ProductDetails(){
                     <label className="form__product-delete-id-title">
                        Phần Trăm Giảm Giá: <span>{crProductSalePercent}%</span>
                     </label>
-                    {productIsSale !== "99" && (
+                    {productIsSale !== 99 && (
                          <input type="number" 
                          id="form__product-name-input" 
                          className={`form__product-id-input  ${productIsSale === "99" ? "readonly form__input--readonly:focus": ""}`} 
@@ -591,7 +591,7 @@ function ProductDetails(){
                          onClick={hanldeInputClick}
                          />
                     )}
-                    {productIsSale === "99" && (
+                    {productIsSale === 99 && (
                          <input className="form__product-id-input" 
                          type="number" value="0" 
                          min={0}
@@ -599,9 +599,9 @@ function ProductDetails(){
                          readOnly
                          />
                     )}
-                    {productIsSale === "1" && productSalePercent < 1 &&(
+                    {productIsSale === 1 && productSalePercent < 1 &&(
                          <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                              Sale Percent must be greater than 0
+                              Phần Trăm Giảm Giá Phải Lớn Hơn 0
                          </div>
                     )}
                      {prdSalePercentError && (

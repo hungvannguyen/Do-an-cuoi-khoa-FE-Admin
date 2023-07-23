@@ -2,6 +2,7 @@ import  "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Authorized from "../Authorized/authorized"
 import ReactModal from 'react-modal';
 
 function AllEmployee(){
@@ -11,6 +12,10 @@ function AllEmployee(){
      const [totalPages, setTotalPages] = useState();
      const [isNextPageEnabled, setNextPageEnabled] = useState(true);
      const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
+
+         //authorized
+    const user = sessionStorage.getItem("role_id");
+    const allowedRoles = ["1",];
 
      useEffect(() => {
           axios
@@ -99,6 +104,8 @@ function AllEmployee(){
 
 
     return(
+     <div>
+            <Authorized userRoles={user} allowedRoles={allowedRoles}>
         <div className="main">
         <div className="main__title">
              <span className="main__title-text">
@@ -184,7 +191,9 @@ function AllEmployee(){
             </div>
           </div>
         </div>
-   </div>
+     </div>
+          </Authorized>
+     </div>
     );
 }
 

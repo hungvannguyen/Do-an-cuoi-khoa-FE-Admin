@@ -4,7 +4,7 @@ function Footer(){
     return(
         <footer className="admin-footer">
         <div className="footer__info">
-             Copyright © 2022. All rights reserved.
+             Copyright © 2023. All rights reserved.
         </div>
    </footer>
 

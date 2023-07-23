@@ -116,14 +116,14 @@ function EmployeeDetails(){
           e.preventDefault();
           setIsValid(true);
           if (!userName){
-               setUserNameError("Please enter your name!")
+               setUserNameError("Nhập vào tên!")
                setIsValid(false);
           }
           if (!userPhone){
-               setPhoneNumberError("Please enter your phone number!")
+               setPhoneNumberError("Hãy nhập vào số điện thoại!")
                setIsValid(false);
           }else if (userPhone.length < 10 || userPhone.length > 11){
-               setPhoneNumberError("Please enter your phone number correctly! (length: 10)")
+               setPhoneNumberError("Số điện thoại nhập vào không đúng! (độ dài: 10)")
                setIsValid(false);
           }
           if (isValid){
@@ -197,7 +197,7 @@ function EmployeeDetails(){
                });
                const redirectInterval = setInterval(() => {
                     clearInterval(redirectInterval);
-                    window.location.href = "admin/dashboard";
+                    window.location.href = "/admin/dashboard";
                }, 1500);
           })
           .catch((error) => {

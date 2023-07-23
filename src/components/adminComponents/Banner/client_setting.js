@@ -2,6 +2,7 @@ import  "../../../pages/admin/Styles/css/allCss.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Authorized from "../Authorized/authorized"
 
 function ClientSetting(){
     const [banner1, setBanner1] = useState("");
@@ -27,6 +28,11 @@ function ClientSetting(){
     const [crBanner1, setCrBanner1] = useState("");
 
     const [imageBanners, setImageBanners] = useState([]);
+
+        //authorized
+        const user = sessionStorage.getItem("role_id");
+        const allowedRoles = ["1",];
+    
 
 
 
@@ -217,6 +223,7 @@ useEffect(() => {
 
     return(
         <div>
+        <Authorized user={user} allowedRoles={allowedRoles}>
         <div className="main">
         <ToastContainer 
             style={{
@@ -427,6 +434,7 @@ useEffect(() => {
           </div>
 
      </div>
+     </Authorized>
     </div>
     )
 }

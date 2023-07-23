@@ -194,7 +194,7 @@ function AddEmployee(){
                             </label>
                             <input type="text" 
                                     readonly className="form__product-id-input " 
-                                    placeholder="Enter User Name"
+                                    placeholder="Nhập vào Tài Khoản"
                                     value={account}
                                     onChange={handleAccount}
                                     onClick={handleInputClick}
@@ -211,7 +211,7 @@ function AddEmployee(){
                             </label>
                             <input type="text" 
                                     className="form__product-id-input" 
-                                    placeholder="Enter Email" 
+                                    placeholder="Nhập vào Email" 
                                     value={email}
                                     onChange={handleEmail}
                                     onClick={handleInputClick}
@@ -227,7 +227,7 @@ function AddEmployee(){
                             </label>
                             <input type="text" 
                                     className="form__product-id-input" 
-                                    placeholder="Enter Email" 
+                                    placeholder="Nhập vào tên nhân viên" 
                                     value={name}
                                     onChange={handleName}
                                     onClick={handleInputClick}
@@ -243,7 +243,7 @@ function AddEmployee(){
                             </label>
                             <input type="text" 
                                     className="form__product-id-input" 
-                                    placeholder="Enter Email" 
+                                    placeholder="Nhập vào số điện thoại" 
                                     value={phone}
                                     onChange={handlePhone}
                                     onClick={handleInputClick}
@@ -260,7 +260,7 @@ function AddEmployee(){
                             </label>
                             <input type="password" id="form__product-input" 
                                     className="form__product-nane-input" 
-                                    placeholder="Enter Password" 
+                                    placeholder="Nhập vào mật khẩu" 
                                     value={password}
                                     onChange={handlePassword}
                                     onClick={handleInputClick}
@@ -278,7 +278,7 @@ function AddEmployee(){
                             <input type="password" 
                                 id="form__product-quantity-input" 
                                 className="form__product-quantity-input" 
-                                placeholder="Enter Confirm Password" 
+                                placeholder="Nhập lại mật khẩu" 
                                 value={confirmPass}
                                 onChange={handleConfirmPass}
                                 onClick={handleInputClick}

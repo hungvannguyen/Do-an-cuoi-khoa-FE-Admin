@@ -27,17 +27,17 @@ function Header () {
         <header className="admin-header">
           <div className="header__welcome">
               <p className="header__welcome-title">
-                    Wellcome, <span className="header__welcome-title-name">
+                    Chào Mừng, <span className="header__welcome-title-name">
                         {user}
                     </span>
               </p>
-              <p className="header__welcome-des">
+              {/* <p className="header__welcome-des">
                     Your performance summary this week
-              </p>
+              </p> */}
           </div>
           <div className="header__account">
 
-              <div className="header__search">
+              {/* <div className="header__search">
                     <label htmlFor="header__search-input">
                         <i className="fas fa-search header__search-icon"></i>
                     </label>
@@ -64,7 +64,7 @@ function Header () {
                     <div className="header__user-avatar">
                         <img src="./images/faces/face21.jpg" alt="" className="header__user-avatar-img" />
                     </div>
-              </div>
+              </div> */}
 
           </div>
       </header>

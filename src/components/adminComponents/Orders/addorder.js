@@ -23,16 +23,16 @@ function AddOrder(){
         />
             <div className="main__title">
                 <span className="main__title-text">
-                    Đặt Hàng Từ Khách
+                    Thêm đơn hàng
                 </span>
                 <span className="main__title-des">
-                    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                    Thêm các đơn hàng cho khách mua tại cửa hàng.
                 </span>
             </div>
             <div className="main__form">
                 <div className="form__product-id">
                     <label className="form__product-id-title fs-21">
-                        Di Chuyển Tới Trang Của Hàng
+                        Di Chuyển Tới Trang Cửa Hàng
                     </label>
                 <div className="form__product-check">
                     <button className="form__product-btn form__input-btn"
