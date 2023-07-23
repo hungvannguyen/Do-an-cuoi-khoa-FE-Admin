@@ -12,11 +12,14 @@ function AllProducts(){
   const [totalPages, setTotalPages] = useState();
   const [isNextPageEnabled, setNextPageEnabled] = useState(true);
   const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
+  const [sort, setSort] = useState(0);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
 
       
-    useEffect(() => {
-      axios
-      .get(`/product/all/?page=${pages}`)
+  useEffect(() => {
+    axios
+      .get(`/product/all/?page=${pages}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data.data);
@@ -29,7 +32,41 @@ function AllProducts(){
       .catch((error) => {
         console.log(error);
       });
-    }, [pages]);
+  }, [pages, sort, minPrice, maxPrice]);
+  const sortOptions = [
+    { value: 0, label: "Tất cả" },
+    { value: 1, label: "Giá tăng dần" },
+    { value: 2, label: "Giá giảm dần" },
+  ];
+  
+  const handleSortChange = (event) => {
+    const selectedSortValue = event.target.value;
+    if (selectedSortValue === "0") {
+      setSort(0);
+      setMinPrice(0);
+      setMaxPrice(0);
+    } else {
+      setSort(Number(selectedSortValue));
+    }
+  };
+  
+  const handlePriceRangeChange = (event) => {
+    const selectedPriceRange = event.target.value;
+  
+    if (selectedPriceRange === "0-0") {
+      // If "All" is selected, reset the sort and price range filters
+      setSort(0); // Set sort to 1 for ascending price (you can choose another default if needed)
+      setMinPrice(0);
+      setMaxPrice(0);
+    } else {
+      // Parse the selectedPriceRange string to extract min and max price values
+      const [min, max] = selectedPriceRange.split("-");
+      setSort(3);
+      setMinPrice(Number(min));
+      setMaxPrice(Number(max));
+    }
+  };
+
 
     const handlePreviousPage = () => {
       if (pages > 1) {
@@ -111,9 +148,32 @@ useEffect(() => {
         <div className="datatable__location">
           <div className="datatable__head">
             <div className="datatable__head-show">
-              <span className="datatable__show-text">Show</span>
-              <input type="number" name="" id="datatable__show-number" min="5" max="20" step="5" value="10" />
-              <span className="datatable__show-text">entries</span>
+            <div className="datatable__head-sort">
+      <span className="datatable__sort-text">Sort by:</span>
+      <select
+        value={sort.toString()} // Convert to string to match option value type
+        onChange={handleSortChange}
+        className="datatable__sort-select"
+      >
+        {sortOptions.map((option) => (
+          <option key={option.value} value={option.value.toString()}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+    <div className="datatable__head-price">
+      <span className="datatable__price-text">Price Range:</span>
+      <select
+        onChange={handlePriceRangeChange}
+        className="datatable__price-select"
+      >
+        <option value="0-0">All</option>
+        <option value="100000-500000">100,000 - 500,000</option>
+        <option value="500000-1000000">500,000 - 1,000,000</option>
+        {/* Add more options as needed */}
+      </select>
+    </div>
             </div>
             <div className="datatable__head-search">
               <span className="datatable__search-text">Search:</span>
