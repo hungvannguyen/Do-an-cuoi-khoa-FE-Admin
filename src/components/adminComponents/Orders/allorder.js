@@ -235,7 +235,7 @@ function AllOders(){
 
           <div className="datatable__footer">
             <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
+              <span className="datatable__footer-description-text">Hiển thị trang {currentPage} trong tổng số {totalPages} trang</span>
             </div>
             <div className="datatable__footer-page">
 

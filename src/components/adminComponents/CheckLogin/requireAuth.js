@@ -9,7 +9,7 @@ const requireAuth = (Component) => {
         return isAuthenticated ? (
             <Component />
         ) : (
-            window.location.href = "http://45.124.95.80/login"
+            window.location.href = "http://45.124.95.80:443/login"
         );
 }
 export default requireAuth;

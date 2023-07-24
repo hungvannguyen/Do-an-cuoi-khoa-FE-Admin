@@ -110,15 +110,6 @@ function AllCustomer(){
         </div>
         <div className="datatable__location">
           <div className="datatable__head">
-            <div className="datatable__head-show">
-              <span className="datatable__show-text">Show</span>
-              <input type="number" name="" id="datatable__show-number" min="5" max="20" step="5" value="10" />
-              <span className="datatable__show-text">entries</span>
-            </div>
-            <div className="datatable__head-search">
-              <span className="datatable__search-text">Search:</span>
-              <input type="text" className="datatable__search-input" />
-            </div>
           </div>
           <div className="datatable__table">
             <table className="datatable__table-frame">
@@ -155,29 +146,34 @@ function AllCustomer(){
             </table>
           </div>
           <div className="datatable__footer mt-30">
-          <div className="datatable__footer-description">
-            <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
-            </div>
-            </div>
-            <div className="datatable__footer-page">
-             <ul className="datatable__footer-page-list">
-             <li
-                className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
-                onClick={isPreviousPageEnabled ? handlePreviousPage : null}
-              >
-                Trang Trước
-              </li>
-              {renderPagination()}
-              <li
-                className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
-                onClick={isNextPageEnabled ? handleNextPage : null}
-              >
-                Trang Sau
-              </li>
-              </ul>
-            </div>
-          </div>
+        <div className="datatable__footer-description">
+          <span className="datatable__footer-description-text">
+            Hiển thị trang {currentPage} trong tổng số {totalPages} trang
+          </span>
+        </div>
+        <div className="datatable__footer-page">
+          <ul className="datatable__footer-page-list">
+            <li
+              className={`datatable__footer-list-item ${
+                currentPage === 1 ? "disabled" : ""
+              }`}
+              onClick={handlePreviousPage}
+            >
+              Trang trước
+            </li>
+            {renderPagination()}
+            <li
+              className={`datatable__footer-list-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+              onClick={handleNextPage}
+            >
+              Trang sau
+            </li>
+          </ul>
+        </div>
+     
+      </div>
         </div>
         </Authorized>
       </div>

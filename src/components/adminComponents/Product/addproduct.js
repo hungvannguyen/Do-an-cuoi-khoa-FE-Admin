@@ -27,9 +27,7 @@ function AddProduct() {
      const [productName, setProductName] = useState("");
      const [productStatus, setProductStatus] = useState(99);
      const [productDescription, setProductDescription] = useState("");
-     const [productQuantity, setProductQuantity] = useState("");
-     const [productIsSale, setProductIsSale] = useState("");
-     const [importPrice, setImportPrice] = useState("");
+     const [productIsSale, setProductIsSale] = useState(99);
      const [exportPrice, setExportPrice] = useState("");
      const [productSalePercent, setProductSalePercent] = useState(0);
      const [hasSalePercentChanged, setHasSalePercentChanged] = useState(false);

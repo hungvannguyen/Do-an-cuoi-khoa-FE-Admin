@@ -245,29 +245,34 @@ useEffect(() => {
             </table>
           </div>
           <div className="datatable__footer mt-30">
-          <div className="datatable__footer-description">
-            <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Showing {currentPage} of {totalPages} pages</span>
-            </div>
-            </div>
-            <div className="datatable__footer-page">
-             <ul className="datatable__footer-page-list">
-             <li
-                className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
-                onClick={isPreviousPageEnabled ? handlePreviousPage : null}
-              >
-                Trang Trước
-              </li>
-              {renderPagination()}
-              <li
-                className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
-                onClick={isNextPageEnabled ? handleNextPage : null}
-              >
-                Trang Sau
-              </li>
-              </ul>
-            </div>
-          </div>
+        <div className="datatable__footer-description">
+          <span className="datatable__footer-description-text">
+            Hiển thị trang {currentPage} trong tổng số {totalPages} trang
+          </span>
+        </div>
+        <div className="datatable__footer-page">
+          <ul className="datatable__footer-page-list">
+            <li
+              className={`datatable__footer-list-item ${
+                currentPage === 1 ? "disabled" : ""
+              }`}
+              onClick={handlePreviousPage}
+            >
+              Trang trước
+            </li>
+            {renderPagination()}
+            <li
+              className={`datatable__footer-list-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+              onClick={handleNextPage}
+            >
+              Trang sau
+            </li>
+          </ul>
+        </div>
+     
+      </div>
           
         </div>
       </div>
