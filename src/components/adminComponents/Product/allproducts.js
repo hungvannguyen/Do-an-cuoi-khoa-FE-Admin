@@ -217,7 +217,7 @@ useEffect(() => {
                   <td className="table__body-data">{product.sale_percent}%</td>
                   <td className="table__body-data">{product.quantity}</td>
                   <td className="table__body-data">
-                    {formatNumber(product.price)} VNĐ
+                    {formatNumber(product.sale_price)} VNĐ
                   </td>
                   <td className="table__body-data">
                     {(() =>{

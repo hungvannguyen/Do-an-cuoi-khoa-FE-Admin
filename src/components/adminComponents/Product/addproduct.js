@@ -91,25 +91,7 @@ function AddProduct() {
                setExportPriceError("Hãy Nhập Giá Xuất Cho Sản Phẩm!");
                setIsValid(false);
                 }
-             if (!productIsSale) {
-               setPrdIsSaleError("Hãy Chọn Có Giảm Giá Hay Không!");
-               setIsValid(false);
-             }
-             if(productIsSale === 99) {
-               setProductSalePercent(0);
-               setIsValid(true);
-               }else if (productIsSale !== 99) {
-               if (!productSalePercent) {
-                     setPrdSalePercentError("Please enter sale percent!");
-                         setIsValid(false);
-               }else if (productSalePercent < 1) {
-                         setPrdSalePercentError("Sale percent must be greater than 1%!");
-                         setIsValid(false);
-               }else if (productSalePercent > 80) {
-                         setPrdSalePercentError("Sale percent must be less than 80%!");
-                         setIsValid(false);
-               }
-          }
+          
              if (!productImage) {
                setPrdImageError("Hãy Chọn Ảnh Cho Sản Phẩm!");
                setIsValid(false);
@@ -198,13 +180,6 @@ function AddProduct() {
      };
 
 
-     const handleProductIsSale = (event) => {
-          setProductIsSale(event.target.value);
-          if (!isValid) {
-               setIsValid(false);
-               setPrdIsSaleError("");
-          }
-     };
 
      const handleExportPrice = (event) => {
           const value = event.target.value;
@@ -301,57 +276,6 @@ function AddProduct() {
                     </div>
                )}
          </div>
-         <div className="form__product-cate-id">
-              <label className="form__product-id-title">
-                   Giảm Giá 
-              </label>
-              <select 
-                    className="form__product-id-input" 
-                    value={productIsSale}
-                    onChange={handleProductIsSale}
-                    onClick={hanldeInputClick}
-               >
-                    <option value="">Chọn Giảm Giá</option>
-                    <option value="99">Không Giảm Giá</option>
-                    <option value="1">Giảm Giá</option>
-               </select>
-               {prdIsSaleError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {prdIsSaleError}
-                    </div>
-               )}
-         </div>
-         <div className="form__product-name">
-              <label for="form__product-name-input" className="form__product-name-title">
-                   Phần Trăm Giảm Giá
-              </label>
-              {productIsSale !== "99" && (
-                    <input type="number" 
-                    id="form__product-name-input" 
-                    className={`form__product-id-input ${productIsSale === "99" ? "readonly": ""}`} 
-                    placeholder="Enter Sale Percent" 
-                    min={0}
-                    value={productSalePercent}
-                    onChange={handleProductSalePercent}
-                    onClick={hanldeInputClick}
-               />)}
-              
-               {productIsSale === "99" && (
-                    <input className="form__product-id-input" 
-                    type="number" value="0" 
-                    min={0}
-                    onChange={handleProductSalePercent} 
-                    readOnly
-                    />
-               )}
-               {prdSalePercentError && (
-                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>
-                         {prdSalePercentError}
-                    </div>
-               )}
-         </div>
-     </div>
-     <div className="col-lg-4">
           <div className="form__product-name">
               <label for="form__product-name-input" className="form__product-name-title">
                   Tên Sản Phẩm
@@ -370,6 +294,8 @@ function AddProduct() {
                     </div>
                )}
          </div>
+     </div>
+     <div className="col-lg-4">
          <div className="form__product-quantity">
               <label for="form__product-quantity-input" className="form__product-quantity-title">
                    Mô Tả Sản Phẩm

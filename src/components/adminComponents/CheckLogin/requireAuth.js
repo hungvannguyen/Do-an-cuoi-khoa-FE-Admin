@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
-import { useState } from 'react';
-import { get } from 'jquery';
+import {WEB_BASE_URL} from "../../../urlConfig"
 
 const requireAuth = (Component) => {
         const isAuthenticated = sessionStorage.getItem("token") && sessionStorage.getItem("role_id");
@@ -9,7 +7,7 @@ const requireAuth = (Component) => {
         return isAuthenticated ? (
             <Component />
         ) : (
-            window.location.href = "http://45.124.95.80:443/login"
+            window.location.href = `${WEB_BASE_URL}/login`
         );
 }
 export default requireAuth;

@@ -3,13 +3,14 @@ import { useState, useEffect} from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {WEB_BASE_URL} from "../../../urlConfig"
 
 function AddOrder(){
 
     const handleMoveToPage = () => {
         const token = sessionStorage.getItem("token");
         const id = sessionStorage.getItem("role_id");
-        const url = `http://localhost:3000/?token=${token}&role_id=${id}`;
+        const url = `${WEB_BASE_URL}/?token=${token}&role_id=${id}`;
         window.location.href = url;
     }
 

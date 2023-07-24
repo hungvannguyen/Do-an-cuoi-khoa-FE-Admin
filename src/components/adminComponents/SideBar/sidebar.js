@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState  } from 'react';
 import {Link} from 'react-router-dom';
-
+import {WEB_BASE_URL} from "../../../urlConfig"
 function Sidebar  () {
      const [expandedItems, setExpandedItems] = useState({});
      const [logo, setLogo] = useState("");
@@ -13,7 +13,7 @@ function Sidebar  () {
           ...prevState,
           'features__item-main': false, // Collapse the item when logging out
           }));
-          window.location.href = 'http://localhost:3000/';
+          window.location.href = '${WEB_BASE_URL}/';
      };
  
 

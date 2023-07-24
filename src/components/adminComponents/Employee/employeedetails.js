@@ -9,7 +9,7 @@ import Authorized from "../Authorized/authorized"
 
 function EmployeeDetails(){
      const {user_id} = useParams();
-     const [isValid, setIsValid] = useState("");
+     const [isValid, setIsValid] = useState(true);
      const [users, setUsers] = useState([]);
      const [userId, setUserId] = useState("");
      const [userName, setUserName] = useState("");
@@ -32,6 +32,7 @@ function EmployeeDetails(){
      //Error
      const [userNameError, setUserNameError] = useState("");
      const [phoneNumberError, setPhoneNumberError] = useState("");
+     const [phoneNumberError2, setPhoneNumberError2] = useState("");
 
      //authorized
     const user = sessionStorage.getItem("role_id");
@@ -93,7 +94,6 @@ function EmployeeDetails(){
                     setUserEmail(response.data.email);
                     setUserRoleId(response.data.role_id);
                     setIsLock(response.data.is_locked);
-
                     setInitUserName(response.data.name);
                     setInitUserPhone(response.data.phone_number);
                })
@@ -127,8 +127,9 @@ function EmployeeDetails(){
           if (!userPhone){
                setPhoneNumberError("Hãy nhập vào số điện thoại!")
                setIsValid(false);
-          }else if (userPhone.length < 10 || userPhone.length > 11){
-               setPhoneNumberError("Số điện thoại nhập vào không đúng! (độ dài: 10)")
+          } 
+          if (userPhone.length < 10 || userPhone.length > 11){
+               setPhoneNumberError2("Số điện thoại nhập vào không đúng! (độ dài: 10)")
                setIsValid(false);
           }
           if (isValid){
@@ -163,6 +164,7 @@ function EmployeeDetails(){
                     console.log(error);
                });
           }else{
+               console.log(userPhone.length);
                toast.error("Hãy Điền Đủ Các Thông Tin Cần Thiết",{
                     position: "bottom-right",
                          autoClose: 2000,
@@ -386,6 +388,11 @@ function EmployeeDetails(){
                               {phoneNumberError && (
                                    <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>     
                                         {phoneNumberError}
+                                   </div>
+                              )}
+                              {phoneNumberError2 && (
+                                   <div className="alert alert-danger" role="alert" style={{fontSize:"16px"}}>     
+                                        {phoneNumberError2}
                                    </div>
                               )}
                     </div>
