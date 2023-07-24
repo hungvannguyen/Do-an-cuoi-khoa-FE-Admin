@@ -122,7 +122,7 @@ function AddCategory() {
                     </label>
                     <input type="text" 
                         className="form__product-id-input " 
-                        placeholder="Enter Category Name" 
+                        placeholder="Nhập vào tên danh mục" 
                         value={categoryName}
                         onChange={handleCategoryName}
                         onClick={handleInputClick}
@@ -139,7 +139,7 @@ function AddCategory() {
                     </label>
                     <input type="text" 
                         className="form__product-id-input" 
-                        placeholder="Enter Category Description" 
+                        placeholder="Nhập vào mô tả danh mục" 
                         value={categoryDescription}
                         onChange={handleCategoryDescription}
                         onClick={handleInputClick}

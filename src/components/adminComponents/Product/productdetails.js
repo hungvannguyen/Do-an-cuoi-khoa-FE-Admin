@@ -77,7 +77,7 @@ function ProductDetails(){
       
           // Validate quantity
           const hasInvalidQuantity = productDetails.some((product) => {
-            return isNaN(product.quantity) || product.quantity <= 0; // Quantity must be a positive number
+            return isNaN(product.quantity) || product.quantity < 0; // Quantity must be a positive number
           });
       
           if (hasInvalidQuantity) {
@@ -140,7 +140,7 @@ function ProductDetails(){
           for (let i = 0; i < productDetails.length; i++) {
             const product = productDetails[i];
             if (
-              (isNaN(product.quantity) || product.quantity <= 0)
+              (isNaN(product.quantity) || product.quantity < 0)
             ) {
               return false;
             }
@@ -454,7 +454,7 @@ function ProductDetails(){
                     <input type="text" 
                          id="form__product-name-input" 
                          className="form__product-nane-input" 
-                         placeholder="Enter Product Name" 
+                         placeholder="Nhập vào tên sản phẩm" 
                          value={productName}
                          onChange={handleProductName}
                          onClick={hanldeInputClick}
@@ -472,7 +472,7 @@ function ProductDetails(){
                     <input type="text" 
                          id="form__product-quantity-input" 
                          className="form__product-quantity-input" 
-                         placeholder="Enter Product Description" 
+                         placeholder="Nhập vào mô tả sản phẩm" 
                          value={productDescription}
                          onChange={handleProductDescription}
                          onClick={hanldeInputClick}
@@ -489,7 +489,6 @@ function ProductDetails(){
                     </label>
                     <select type="number" 
                          className="form__product-id-input" 
-                         placeholder="1 is Sell - 0 is Not Sell" 
                          value={productStatus}
                          onChange={handleProductStatus}
                          onClick={hanldeInputClick}
@@ -514,7 +513,7 @@ function ProductDetails(){
                     <input type="text" 
                          id="form__product-price-input" 
                          className="form__product-price-input" 
-                         placeholder="Enter Product Export Price" 
+                         placeholder="Nhập vào giá bán" 
                          min={0}
                          value={formatNumber(exportPrice)}
                          onChange={handleExportPrice}

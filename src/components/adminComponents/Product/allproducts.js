@@ -146,35 +146,38 @@ useEffect(() => {
           </span>
         </div>
         <div className="datatable__location">
-          <div className="datatable__head">
-            <div className="datatable__head-show">
-            <div className="datatable__head-sort">
-      <span className="datatable__sort-text">Sort by:</span>
-      <select
-        value={sort.toString()} // Convert to string to match option value type
-        onChange={handleSortChange}
-        className="datatable__sort-select"
-      >
-        {sortOptions.map((option) => (
-          <option key={option.value} value={option.value.toString()}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
-    <div className="datatable__head-price">
-      <span className="datatable__price-text">Price Range:</span>
-      <select
-        onChange={handlePriceRangeChange}
-        className="datatable__price-select"
-      >
-        <option value="0-0">All</option>
-        <option value="100000-500000">100,000 - 500,000</option>
-        <option value="500000-1000000">500,000 - 1,000,000</option>
-        {/* Add more options as needed */}
-      </select>
-    </div>
-            </div>
+          <div className="datatable__head  mt-0">
+            <div className="datatable__head-show d-flex align-items-center ">
+              <div>
+              <span className="form__sort-text">Sort by: </span>
+              <select
+                value={sort.toString()} // Convert to string to match option value type
+                onChange={handleSortChange}
+                className="form__sellect-sort me-3"
+              >
+                {sortOptions.map((option) => (
+                  <option key={option.value} value={option.value.toString()}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              </div>
+              <div className="datatable__head-price">
+                      <div className="datatable__head-sort">
+                <span className="form__sort-text">Khoảng giá: </span>
+                <select
+                  onChange={handlePriceRangeChange}
+                  className="form__sellect-sort datatable__price-select"
+                >
+                  <option value="0-0">Tất cả</option>
+                  <option value="100000-500000">100,000 - 500,000</option>
+                  <option value="500000-1000000">500,000 - 1,000,000</option>
+                  <option value="1000000-2000000">1,000,000 - 2,000,000</option>
+                  {/* Add more options as needed */}
+                </select>
+              </div>
+              </div>
+           </div>
             <div className="datatable__head-search">
               <span className="datatable__search-text">Search:</span>
               <input type="text" className="datatable__search-input" />

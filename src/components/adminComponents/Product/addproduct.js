@@ -263,7 +263,7 @@ function AddProduct() {
                ID Danh Mục
               </label>
                <select value={categoryId} onChange={handleCategoryId} className="form__product-id-input">
-                    <option value="">Choose Category</option>
+                    <option value="">---chọn danh mục---</option>
                          {category.map((category) => (
                               <option key={category.id} value={category.id}>
                                    {category.cat_name}
@@ -283,7 +283,7 @@ function AddProduct() {
               <input type="text" 
                     id="form__product-name-input" 
                     className="form__product-nane-input" 
-                    placeholder="Enter Product Name" 
+                    placeholder="Nhập vào tên sản phẩm" 
                     value={productName}
                     onChange={handleProductName}
                     onClick={hanldeInputClick}
@@ -303,7 +303,7 @@ function AddProduct() {
               <input type="text" 
                     id="form__product-quantity-input" 
                     className="form__product-quantity-input" 
-                    placeholder="Enter Product Description" 
+                    placeholder="Nhập vào mô tả sản phẩm" 
                     value={productDescription}
                     onChange={handleProductDescription}
                     onClick={hanldeInputClick}
@@ -322,7 +322,7 @@ function AddProduct() {
                     <input type="text" 
                          id="form__product-price-input" 
                          className="form__product-price-input" 
-                         placeholder="Enter Product Export Price" 
+                         placeholder="Nhập vào giá bán ra" 
                          min={0}
                          value={formatNumber(exportPrice)}
                          onChange={handleExportPrice}

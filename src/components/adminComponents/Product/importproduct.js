@@ -165,7 +165,7 @@ function ImportProduct() {
           </span>
         </div>
         <div className="main__form row">
-          <form onSubmit={handleSubmit}>
+    
             <div className="col-lg-12 row">
               {products.map((product, index) => (
                 <div className="col-lg-12 row" key={index}>
@@ -183,11 +183,11 @@ function ImportProduct() {
                     </select>
                   </div>
                   <div className="form__product-cate-id col-lg-3 me-3" >
-                    <label className="form__product-id-title">Tên Giá Nhập</label>
+                    <label className="form__product-id-title">Giá Nhập</label>
                     <input
                       type="text"
                       className="form__product-id-input"
-                      placeholder="Enter Category Description"
+                      placeholder="Nhập giá nhập"
                       value={formatPrice(product.import_price)}
                       onChange={(e) => handleExportPrice(e, index)}
                     />
@@ -197,7 +197,7 @@ function ImportProduct() {
                     <input
                       type="number"
                       className="form__product-id-input"
-                      placeholder="Enter Category Description"
+                      placeholder="Nhập số lượng"
                       value={product.quantity}
                       onChange={(e) => handleChange(index, 'quantity', e.target.value)}
                     />
@@ -227,12 +227,12 @@ function ImportProduct() {
             </div>
             <div className="form__product-check">
               <button className="form__product-btn form__input-btn"
-                type="submit"
+                onClick={handleSubmit}
               >
                 Nhập Hàng
               </button>
             </div>
-          </form>
+          
         </div>
       </div>
       <div className="action">

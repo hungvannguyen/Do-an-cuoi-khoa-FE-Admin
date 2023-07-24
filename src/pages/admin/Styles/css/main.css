@@ -336,3 +336,40 @@ input[type="file"] {
 .mt-30{
     margin-top: 30px !important;
 }
+
+.form__sellect-sort{
+    margin-top: 12px;
+    height: 27px;
+    padding: 2px 12px;
+    font-size: 14px;
+    outline: none;
+    border-radius: 12px;
+    border: 1px solid #7FACD6;
+    width: 180px;
+    color: #333;
+}
+
+.form__sort-text{
+    color: #000000;
+    font-size: 14px;
+}
+
+.sort__select{
+    background-color: #4C72DE;
+    color: white;
+    padding: 8px 16px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+
+.sort__select-active{
+    background-color: #FE3464;
+}
+
+.disabled{
+    cursor: not-allowed !important;
+    color: #525252 !important;
+}

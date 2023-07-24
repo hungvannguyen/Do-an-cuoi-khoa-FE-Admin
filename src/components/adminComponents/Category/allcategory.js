@@ -39,7 +39,7 @@ function AllCategory() {
              </span>
         </div>
         <div className="datatable__location">
-             <div className="datatable__head">
+             {/* <div className="datatable__head">
                   <div className="datatable__head-show">
                        <span className="datatable__show-text">
                             Show
@@ -56,7 +56,7 @@ function AllCategory() {
                        </span>
                        <input type="text" className="datatable__search-input" />
                   </div>
-             </div>
+             </div> */}
              <div className="datatable__table">
                   <table className="datatable__table-frame">
                        <thead className="table__head">

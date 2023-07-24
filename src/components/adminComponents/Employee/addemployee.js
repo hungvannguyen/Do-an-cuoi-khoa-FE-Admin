@@ -7,7 +7,7 @@ import  "../../../pages/admin/Styles/css/allCss.css";
 
 function AddEmployee(){
 
-    const [isValid, setIsValid] = useState("");
+    const [isValid, setIsValid] = useState(true);
     const [role, setRole] = useState(10);
     const [account, setAccount] = useState("");
     const [email, setEmail] = useState("");

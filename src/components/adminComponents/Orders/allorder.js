@@ -121,9 +121,11 @@ function AllOders(){
         <div className="datatable__location">
           <div className="datatable__head">
             <div className="datatable__head-show">
+            <span className="form__sort-text">Trạng thái: </span>
             <select
               value={orderStatus.toString()} // Convert to string to match option value type
               onChange={handleOrderStatusChange}
+              className="form__sellect-sort me-3"
             >
               <option value="111">All</option>
               <option value="0">Chờ Xác Nhận</option>

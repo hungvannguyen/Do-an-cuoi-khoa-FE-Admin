@@ -49,7 +49,7 @@ function Dashboard (){
                <ul class="home__statitics-list">
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
-                              Bounce Rate
+                              Tổng Doanh Thu
                          </span>
                          <span class="home__statitics-item-number">
                               32.53%
@@ -60,7 +60,7 @@ function Dashboard (){
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
-                              Page Views
+                              Tổng Lợi Nhuận
                          </span>
                          <span class="home__statitics-item-number">
                               7,682
@@ -71,7 +71,7 @@ function Dashboard (){
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
-                              New Sessions
+                              Tổng Số Lượng Đơn Hàng
                          </span>
                          <span class="home__statitics-item-number">
                               68.8
@@ -82,7 +82,7 @@ function Dashboard (){
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
-                              Avg. Time on Site
+                              Số lượng Đơn Hàng Thành Công
                          </span>
                          <span class="home__statitics-item-number">
                               5m:35s
@@ -93,7 +93,7 @@ function Dashboard (){
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
-                              New Sessions
+                              Số Lượng Đơn Hàng Bị Hủy
                          </span>
                          <span class="home__statitics-item-number">
                               68.8
@@ -104,7 +104,7 @@ function Dashboard (){
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
-                              Avg. Time on Site
+                              Số Lượng Đơn Bị Trả Lại
                          </span>
                          <span class="home__statitics-item-number">
                               5m:35s
@@ -117,7 +117,8 @@ function Dashboard (){
                </ul>
           </div>
           <div class="home__table">
-               <div class="home__table--left">
+               <div class="row">
+               <div class="home__table--left col-lg-6 row">
                     <div class="table__request">
                          <div class="table__request-head">
                               <div class="table__request-title">
@@ -137,377 +138,30 @@ function Dashboard (){
                                    </button>
                               </div>
                          </div>
-                         
-                         <table class="table__request-table">
-                              <thead class="table__request-header">
-                                   <tr>
-                                        <th class="table__request-head-text">
-                                             <input type="checkbox" name="" id="" class="table__request-checkAll" />
-                                        </th>
-                                        <th class="table__request-head-text">
-                                             CUSTOMER
-                                        </th>
-                                        <th class="table__request-head-text">
-                                             COMPANY
-                                        </th>
-                                        <th class="table__request-head-text">
-                                             PROGRESS
-                                        </th>
-                                        <th class="table__request-head-text">
-                                             STATUS
-                                        </th>
-                                   </tr>
-                              </thead>
-                              <tbody class="table__request-body">
-                                   <tr class="table__request-body-row">
-                                        <td class="table__request-check">
-                                             <input type="checkbox" name="" id="" class="table__request-check-item" />
-                                        </td>
-                                        <td class="table__request-name">
-                                             <div class="table_-request-name-avt">
-                                                  <img src="./images/faces/face1.jpg" alt="" class="table__request-name-img" />
-                                             </div>
-                                             <div class="table__request-name-frame">
-                                                  <span class="table__request-name-text">
-                                                       Brandon Washington
-                                                  </span>
-                                                  <span class="table__request-name-des">
-                                                       Head Admin
-                                                  </span>
-                                             </div>
-                                             
-                                        </td>
-                                        <td class="table__request-company">
-                                             <span class="table__request-conpany-name">
-                                                  Company Name 1
+                    </div>
+                    <div class="table__request col-lg-6">
+                         <div class="col-lg-12 row">
+                              <div class="table__request-head">
+                                   <div class="table__request-title">
+                                        <span class="table__request-title-text">
+                                             Số Đơn Chờ Xác Nhận: 50
+                                        </span>
+                                   </div>
+                                   <div class="table__request-button">
+                                        <button class="table__request-button-btn">
+                                             <span class="table__request-btn-text">
+                                                  Chuyển tới Trang
                                              </span>
-                                             <span class="table__request-conpany-type">
-                                                  Company Type 1
-                                             </span>
-                                        </td>
-                                        <td class="table__request-progress">
-                                             <p class="table__request-progress-text">
-                                                  <span class="table__request-progress-percent">
-                                                       79%
-                                                  </span>
-                                                  <span class="table__request-progress-num">
-                                                       85/162
-                                                  </span>
-                                             </p>
-                                             <progress max="162" value="120" class="table__request-progress-img table__request-progress-img--success"></progress>
-                                        </td>
-                                        <td class="table__request-status">
-                                             <div class="table__request-status-text table__request-status-text--complete">
-                                                  Complete
-                                             </div>
-                                        </td>
-                                   </tr>
-                                   <tr class="table__request-body-row">
-                                        <td class="table__request-check">
-                                             <input type="checkbox" name="" id="" class="table__request-check-item" />
-                                        </td>
-                                        <td class="table__request-name">
-                                             <div class="table_-request-name-avt">
-                                                  <img src="./images/faces/face11.jpg" alt="" class="table__request-name-img" />
-                                             </div>
-                                             <div class="table__request-name-frame">
-                                                  <span class="table__request-name-text">
-                                                       Wayne Murphy
-                                                  </span>
-                                                  <span class="table__request-name-des">
-                                                       Head Admin
-                                                  </span>
-                                             </div>
-                                             
-                                        </td>
-                                        <td class="table__request-company">
-                                             <span class="table__request-conpany-name">
-                                                  Company Name 1
-                                             </span>
-                                             <span class="table__request-conpany-type">
-                                                  Company Type 1
-                                             </span>
-                                        </td>
-                                        <td class="table__request-progress">
-                                             <p class="table__request-progress-text">
-                                                  <span class="table__request-progress-percent">
-                                                       52%
-                                                  </span>
-                                                  <span class="table__request-progress-num">
-                                                       85/162
-                                                  </span>
-                                             </p>
-                                             <progress max="162" value="85" class="table__request-progress-img table__request-progress-img--progress"></progress>
-                                        </td>
-                                        <td class="table__request-status">
-                                             <div class="table__request-status-text table__request-status-text--progress">
-                                                  In Progress
-                                             </div>
-                                        </td>
-                                   </tr>
-                                   <tr class="table__request-body-row">
-                                        <td class="table__request-check">
-                                             <input type="checkbox" name="" id="" class="table__request-check-item" />
-                                        </td>
-                                        <td class="table__request-name">
-                                             <div class="table_-request-name-avt">
-                                                  <img src="./images/faces/face10.jpg" alt="" class="table__request-name-img" />
-                                             </div>
-                                             <div class="table__request-name-frame">
-                                                  <span class="table__request-name-text">
-                                                       Laura Brooks
-                                                  </span>
-                                                  <span class="table__request-name-des">
-                                                       Head Admin
-                                                  </span>
-                                             </div>
-                                             
-                                        </td>
-                                        <td class="table__request-company">
-                                             <span class="table__request-conpany-name">
-                                                  Company Name 1
-                                             </span>
-                                             <span class="table__request-conpany-type">
-                                                  Company Type 1
-                                             </span>
-                                        </td>
-                                        <td class="table__request-progress">
-                                             <p class="table__request-progress-text">
-                                                  <span class="table__request-progress-percent">
-                                                       32%
-                                                  </span>
-                                                  <span class="table__request-progress-num">
-                                                       40/162
-                                                  </span>
-                                             </p>
-                                             <progress max="162" value="40" class="table__request-progress-img table__request-progress-img--pending"></progress>
-                                        </td>
-                                        <td class="table__request-status">
-                                             <div class="table__request-status-text table__request-status-text--pending">
-                                                  Pending
-                                             </div>
-                                        </td>
-                                   </tr>
-                                   <tr class="table__request-body-row">
-                                        <td class="table__request-check">
-                                             <input type="checkbox" name="" id="" class="table__request-check-item" />
-                                        </td>
-                                        <td class="table__request-name">
-                                             <div class="table_-request-name-avt">
-                                                  <img src="./images/faces/face1.jpg" alt="" class="table__request-name-img" />
-                                             </div>
-                                             <div class="table__request-name-frame">
-                                                  <span class="table__request-name-text">
-                                                       Brandon Washington
-                                                  </span>
-                                                  <span class="table__request-name-des">
-                                                       Head Admin
-                                                  </span>
-                                             </div>
-                                             
-                                        </td>
-                                        <td class="table__request-company">
-                                             <span class="table__request-conpany-name">
-                                                  Company Name 1
-                                             </span>
-                                             <span class="table__request-conpany-type">
-                                                  Company Type 1
-                                             </span>
-                                        </td>
-                                        <td class="table__request-progress">
-                                             <p class="table__request-progress-text">
-                                                  <span class="table__request-progress-percent">
-                                                       79%
-                                                  </span>
-                                                  <span class="table__request-progress-num">
-                                                       85/162
-                                                  </span>
-                                             </p>
-                                             <progress max="162" value="120" class="table__request-progress-img table__request-progress-img--success"></progress>
-                                        </td>
-                                        <td class="table__request-status">
-                                             <div class="table__request-status-text table__request-status-text--complete">
-                                                  Complete
-                                             </div>
-                                        </td>
-                                   </tr>
-                                   <tr class="table__request-body-row">
-                                        <td class="table__request-check">
-                                             <input type="checkbox" name="" id="" class="table__request-check-item" />
-                                        </td>
-                                        <td class="table__request-name">
-                                             <div class="table_-request-name-avt">
-                                                  <img src="./images/faces/face11.jpg" alt="" class="table__request-name-img" />
-                                             </div>
-                                             <div class="table__request-name-frame">
-                                                  <span class="table__request-name-text">
-                                                       Wayne Murphy
-                                                  </span>
-                                                  <span class="table__request-name-des">
-                                                       Head Admin
-                                                  </span>
-                                             </div>
-                                             
-                                        </td>
-                                        <td class="table__request-company">
-                                             <span class="table__request-conpany-name">
-                                                  Company Name 1
-                                             </span>
-                                             <span class="table__request-conpany-type">
-                                                  Company Type 1
-                                             </span>
-                                        </td>
-                                        <td class="table__request-progress">
-                                             <p class="table__request-progress-text">
-                                                  <span class="table__request-progress-percent">
-                                                       52%
-                                                  </span>
-                                                  <span class="table__request-progress-num">
-                                                       85/162
-                                                  </span>
-                                             </p>
-                                             <progress max="162" value="85" class="table__request-progress-img table__request-progress-img--progress"></progress>
-                                        </td>
-                                        <td class="table__request-status">
-                                             <div class="table__request-status-text table__request-status-text--progress">
-                                                  In Progress
-                                             </div>
-                                        </td>
-                                   </tr>
-                                   <tr class="table__request-body-row">
-                                        <td class="table__request-check">
-                                             <input type="checkbox" name="" id="" class="table__request-check-item" />
-                                        </td>
-                                        <td class="table__request-name">
-                                             <div class="table_-request-name-avt">
-                                                  <img src="./images/faces/face10.jpg" alt="" class="table__request-name-img" />
-                                             </div>
-                                             <div class="table__request-name-frame">
-                                                  <span class="table__request-name-text">
-                                                       Laura Brooks
-                                                  </span>
-                                                  <span class="table__request-name-des">
-                                                       Head Admin
-                                                  </span>
-                                             </div>
-                                             
-                                        </td>
-                                        <td class="table__request-company">
-                                             <span class="table__request-conpany-name">
-                                                  Company Name 1
-                                             </span>
-                                             <span class="table__request-conpany-type">
-                                                  Company Type 1
-                                             </span>
-                                        </td>
-                                        <td class="table__request-progress">
-                                             <p class="table__request-progress-text">
-                                                  <span class="table__request-progress-percent">
-                                                       32%
-                                                  </span>
-                                                  <span class="table__request-progress-num">
-                                                       40/162
-                                                  </span>
-                                             </p>
-                                             <progress max="162" value="40" class="table__request-progress-img table__request-progress-img--pending"></progress>
-                                        </td>
-                                        <td class="table__request-status">
-                                             <div class="table__request-status-text table__request-status-text--pending">
-                                                  Pending
-                                             </div>
-                                        </td>
-                                   </tr>
-                              </tbody>
-                         </table>
+                                        </button>
+                                   </div>
+                              </div>
+                         </div>
                     </div>
                </div>
-               <div class="home__table__right">
-                    <div class="table__todo">
-                         <div class="table__todo-header">
-                              <div class="table__todo-title">
-                                   Todo List
-                              </div>
-                              <div class="table__todo-add">
-                                   <i class="fas fa-plus-circle"></i>
-                              </div>
-                         </div>
-                         <div class="table__todo-list">
-                              <div class="table__todo-item">
-                                   <div class="table__todo-item-check">
-                                        <input type="checkbox" name="" id="" class="table__todo-item-check-input" />
-                                   </div>
-                                   <div class="table__todo-item-main">
-                                        <div class="table__todo-item-text">
-                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nulla.
-                                        </div>
-                                        <div class="table__todo-item-status">
-                                             <span class="table__todo-item-time">
-                                                  25 March 2022
-                                             </span>
-                                             <div class="table__todo-item-status-text table__todo-item-status--pending">
-                                                  Due Tomorrow
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="table__todo-item">
-                                   <div class="table__todo-item-check">
-                                        <input type="checkbox" name="" id="" class="table__todo-item-check-input" />
-                                   </div>
-                                   <div class="table__todo-item-main">
-                                        <div class="table__todo-item-text">
-                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nulla.
-                                        </div>
-                                        <div class="table__todo-item-status">
-                                             <span class="table__todo-item-time">
-                                                  24 March 2022
-                                             </span>
-                                             <div class="table__todo-item-status-text table__todo-item-status--done">
-                                                  Done
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="table__todo-item">
-                                   <div class="table__todo-item-check">
-                                        <input type="checkbox" name="" id="" class="table__todo-item-check-input" />
-                                   </div>
-                                   <div class="table__todo-item-main">
-                                        <div class="table__todo-item-text">
-                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nulla.
-                                        </div>
-                                        <div class="table__todo-item-status">
-                                             <span class="table__todo-item-time">
-                                                  24 March 2022
-                                             </span>
-                                             <div class="table__todo-item-status-text table__todo-item-status--expire">
-                                                  Expired
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="table__todo-item">
-                                   <div class="table__todo-item-check">
-                                        <input type="checkbox" name="" id="" class="table__todo-item-check-input" />
-                                   </div>
-                                   <div class="table__todo-item-main">
-                                        <div class="table__todo-item-text">
-                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nulla.
-                                        </div>
-                                        <div class="table__todo-item-status">
-                                             <span class="table__todo-item-time">
-                                                  24 March 2022
-                                             </span>
-                                             <div class="table__todo-item-status-text table__todo-item-status--done">
-                                                  Done
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
+               
+               <div class="home__table__right col-lg-12">
                     <div class="table__top">
-                         <div class="table__top-title">
+                         <div class="table__top-title" style={{width:"500px"}}>
                               Top Performer
                          </div>
                          <div class="table__top-main">
@@ -587,6 +241,7 @@ function Dashboard (){
                               </div>
                          </div>
                     </div>
+               </div>
                </div>
           </div>
      </div>
