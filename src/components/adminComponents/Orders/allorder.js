@@ -143,7 +143,7 @@ function AllOders(){
               <option value="0">Chờ Xác Nhận</option>
               <option value="1">Đã Xác Nhận</option>
               <option value="2">Đang Vận Chuyển</option>
-              <option value="10">Đẫ Giao Hàng</option>
+              <option value="10">Đã Giao Hàng</option>
               <option value="100">Hoàn Thành</option>
               <option value="99">Hủy Đơn</option>
               <option value="50">Đã Hoàn Hàng</option>

@@ -142,7 +142,7 @@ useEffect(() => {
         <div className="main__title">
           <span className="main__title-text">Tất cả sản phẩm</span>
           <span className="main__title-des">
-            Hiện có {products.length} sản phẩm tại cửa hàng
+            Hiểm thị tất cả sản phẩm của cửa hàng
           </span>
         </div>
         <div className="datatable__location">

@@ -1,14 +1,16 @@
 import "../Styles/css/allCss.css"
+import "../Styles/image/hcv.png"
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import img2 from "../Styles/image/hcb.png"
+import img from "../Styles/image/hcv.png"
+import img3 from "../Styles/image/hcd.png"
 
 
 function Dashboard (){
-     const navigate = useNavigate();
-     const [orderStatus, setOrderStatus] = useState();
-
+     //total order
      const [month, setMonth] = useState(1);
      const [totalOrder, setTotalOrder] = useState("");
      const [cancelOrder, setCancelOrder] = useState("");
@@ -18,12 +20,18 @@ function Dashboard (){
      const [successOrder, setSuccessOrder] = useState("");
      const [pendingRefundOrder, setPendingRefundOrder] = useState("");
 
-
+     //total income
      const [totalIncome, setTotalIncome] = useState("");
      const [totalProfit, setTotalProfit] = useState("");
 
+     //top customer
+     const [topCustomer, setTopCustomer] = useState([]);
 
+     //low quantity product
+     const [imageProduct, setImageProduct] = useState([]);
+     const [lowQuantityProduct, setLowQuantityProduct] = useState([]);
 
+     //order count
      useEffect(() => {
           axios
           .get(`/summary/order_count?month_count=${month}`)
@@ -42,7 +50,7 @@ function Dashboard (){
               
           });
      }, [month]);
-
+     //total income
      useEffect(() => {
           axios
           .get(`/summary/total_income?month_count=${month}`)
@@ -55,7 +63,45 @@ function Dashboard (){
                console.log(error);
           });
      }, [month]);
+     //top 3 customẻ
+     useEffect(() => {
+          axios
+          .get(`/summary/top_customer`)
+          .then((response) => {
+               console.log(response.data);   
+               setTopCustomer(response.data.data);
+          })
+          .catch((error) => {
+               console.log(error);
+          });
+     }, []);
+     //low quantity product
+     useEffect(() => {
+          axios
+          .get(`/summary/low_quantity`)
+          .then((response) => {
+               console.log(response.data);
+               setLowQuantityProduct(response.data.data);
 
+               const imagePromises = response.data.data.map((product) =>
+                    axios.get(`/file/img/${product.img_url}`, {responseType: 'blob'})
+               );
+               Promise.all(imagePromises).then((responses) => {
+                    const imageUrls = responses.map((response) =>
+                    URL.createObjectURL(response.data)
+                    );
+                    setImageProduct((prevImageProduct) => [
+                    ...imageUrls,
+                    ]);
+               })
+               .catch((error) => {
+                    console.log(error);
+               });
+          })
+          .catch((error) => {
+               console.log(error);
+          });
+     }, []);
 
      const formatNumber = (number) => {
           if (number) {
@@ -211,24 +257,48 @@ function Dashboard (){
                          </div>
                     </div>
                     <div class="table__request">
-                         <div class="table__request-head">
+                         <div class="table__request-head mb-3">
                               <div class="table__request-title">
                                    <span class="table__request-title-text">
-                                        Pending Requests
+                                        Các sản phẩm có số lượng ít nhất trong cửa hàng
                                    </span>
-                                   <span class="table__request-title-des">
-                                        You have 50+ new requests
-                                   </span>
-                              </div>
-                              <div class="table__request-button">
-                                   <button class="table__request-button-btn">
-                                        <i class="fas fa-user-plus table__request-btn-icon"></i>
-                                        <span class="table__request-btn-text">
-                                             Add new member
-                                        </span>
-                                   </button>
                               </div>
                          </div>
+                         {lowQuantityProduct && lowQuantityProduct.map((product, index) => (
+                              <div class="product-list d-flex align-items-center justify-content-between mb-6 row">
+                                   <div class="form__category-des col-lg-2">
+                                   <label class="form__category-id-title">
+                                        Sản phẩm: <p style={{ visibility: 'hidden' }}></p>{product.name}
+                                   </label>
+                                   </div>
+                                   {imageProduct[index] && (
+                                   <div class="form__category-des col-lg-2">
+                                        <img src={imageProduct[index]} width="100px" alt={`Product Image ${index}`}>
+                                        </img>
+                                   </div>
+                                   )}
+                                   <div class="form__category-des col-lg-2">
+                                   <label class="form__category-id-title">
+                                        Giá:<p style={{ visibility: 'hidden' }}></p> {formatNumber(product.sale_price)} VNĐ
+                                   </label>
+                                   </div>
+                                   <div class="form__category-des col-lg-2">
+                                   <label class="form__category-id-title">
+                                        Số lượng: {product.quantity}
+                                   </label>
+                                   <label class="form__category-id-title">
+                                        Giảm giá: {product.is_sale === 99 ? "Không Giảm Giá" :  product.sale_percent + " %"}
+                                   </label>
+                                   </div>
+                                   <div class="form__category-des col-lg-2">
+                                        <button className="btn-edit">
+                                             <Link to={`/admin/product_details/${product.id}`} className="btn-text">
+                                                  Chi Tiết
+                                             </Link>
+                                        </button>
+                                   </div>
+                              </div>
+                         ))}
                     </div>
 
                </div>
@@ -236,83 +306,39 @@ function Dashboard (){
                <div class="home__table__right col-lg-12">
                     <div class="table__top">
                          <div class="table__top-title" style={{width:"500px"}}>
-                              Top Performer
+                              Top Chi Tiêu 
                          </div>
                          <div class="table__top-main">
-                              <div class="table__top-list">
+                              {topCustomer.map((customer, index) => (
+                              <div class="table__top-list" key={index}>
                                    <div class="table__top-item">
                                         <div class="table__top-avt">
-                                             <img src="./images/faces/face1.jpg" alt="" class="table__top-img" />
+                                             {customer.stt === 1 && (
+                                             <img src={img} alt="" class="table__top-img"/>
+                                             )}
+                                             {customer.stt === 2 && (
+                                                  <img src={img2} alt="" class="table__top-img"/>
+                                             )}
+                                             {customer.stt === 3 && (
+                                             <img src={img3} alt="" class="table__top-img"/>
+                                             )}
                                         </div>
                                         <div class="table__top-name">
                                              <p class="table__top-name-text">
-                                                  Brandon Washington
+                                                  {customer.name}
                                              </p>
                                              <p class="table__top-name-number">
-                                                  162543
+                                                  {formatNumber(customer.total_price)} VNĐ
                                              </p>
                                         </div>
                                         <div class="table__top-time">
                                              <span class="table__top-time-text">
-                                                  1h ago
-                                             </span>
-                                        </div>
-                                   </div>
-                                   <div class="table__top-item">
-                                        <div class="table__top-avt">
-                                             <img src="./images/faces/face14.jpg" alt="" class="table__top-img" />
-                                        </div>
-                                        <div class="table__top-name">
-                                             <p class="table__top-name-text">
-                                                  Matthew Bailey
-                                             </p>
-                                             <p class="table__top-name-number">
-                                                  152571
-                                             </p>
-                                        </div>
-                                        <div class="table__top-time">
-                                             <span class="table__top-time-text">
-                                                  1h ago
-                                             </span>
-                                        </div>
-                                   </div>
-                                   <div class="table__top-item">
-                                        <div class="table__top-avt">
-                                             <img src="./images/faces/face10.jpg" alt="" class="table__top-img" />
-                                        </div>
-                                        <div class="table__top-name">
-                                             <p class="table__top-name-text">
-                                                  Rafell John
-                                             </p>
-                                             <p class="table__top-name-number">
-                                                  132549
-                                             </p>
-                                        </div>
-                                        <div class="table__top-time">
-                                             <span class="table__top-time-text">
-                                                  1h ago
-                                             </span>
-                                        </div>
-                                   </div>
-                                   <div class="table__top-item">
-                                        <div class="table__top-avt">
-                                             <img src="./images/faces/face12.jpg" alt="" class="table__top-img" />
-                                        </div>
-                                        <div class="table__top-name">
-                                             <p class="table__top-name-text">
-                                                  Katherine Bitler
-                                             </p>
-                                             <p class="table__top-name-number">
-                                                  122743
-                                             </p>
-                                        </div>
-                                        <div class="table__top-time">
-                                             <span class="table__top-time-text">
-                                                  1h ago
+                                                  {customer.total_order} Đơn
                                              </span>
                                         </div>
                                    </div>
                               </div>
+                              ))}
                          </div>
                     </div>
                </div>
