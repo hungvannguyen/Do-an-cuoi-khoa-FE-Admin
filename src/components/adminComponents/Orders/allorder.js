@@ -1,7 +1,8 @@
 import  "../../../pages/admin/Styles/css/allCss.css";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+
 
 
 function AllOders(){
@@ -10,8 +11,13 @@ function AllOders(){
   const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
   const [currentPage, setCurrentPage] = useState();
   const [totalPages, setTotalPages] = useState();
-  const [orderStatus, setOrderStatus] = useState(111);
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const orderStatusFromUrl = queryParams.get('status');
+  
+  // Sử dụng hook useState để tạo biến orderStatus và setOrderStatus
+  const [orderStatus, setOrderStatus] = useState(orderStatusFromUrl || 111);
 
   const [orders, setOrders] = useState([]);
 

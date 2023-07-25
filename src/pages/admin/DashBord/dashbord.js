@@ -1,8 +1,76 @@
 import "../Styles/css/allCss.css"
-
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 function Dashboard (){
+     const navigate = useNavigate();
+     const [orderStatus, setOrderStatus] = useState();
+
+     const [month, setMonth] = useState(1);
+     const [totalOrder, setTotalOrder] = useState("");
+     const [cancelOrder, setCancelOrder] = useState("");
+     const [pendingOrder, setPendingOrder] = useState("");
+     const [comfirmOrder, setComfirmOrder] = useState("");
+     const [refundedOrder, setRefundedOrder] = useState("");
+     const [successOrder, setSuccessOrder] = useState("");
+     const [pendingRefundOrder, setPendingRefundOrder] = useState("");
+
+
+     const [totalIncome, setTotalIncome] = useState("");
+     const [totalProfit, setTotalProfit] = useState("");
+
+
+
+     useEffect(() => {
+          axios
+          .get(`/summary/order_count?month_count=${month}`)
+          .then((response) => {
+               console.log(response.data);
+               setTotalOrder(response.data.total_order);
+               setCancelOrder(response.data.cancel_order);
+               setPendingOrder(response.data.pending_order);
+               setComfirmOrder(response.data.comfirm_order);
+               setRefundedOrder(response.data.refunded_order);
+               setSuccessOrder(response.data.success_order);
+               setPendingRefundOrder(response.data.pending_refund_order);
+          })
+          .catch((error) => {
+               console.log(error);
+              
+          });
+     }, [month]);
+
+     useEffect(() => {
+          axios
+          .get(`/summary/total_income?month_count=${month}`)
+          .then((response) => {
+               console.log(response.data);
+               setTotalIncome(response.data.total_income);
+               setTotalProfit(response.data.total_profit);
+          })
+          .catch((error) => {
+               console.log(error);
+          });
+     }, [month]);
+
+
+     const formatNumber = (number) => {
+          if (number) {
+            return new Intl.NumberFormat("vi-VN").format(number);
+          }
+          return "";
+     };
+
+     const handlePendingOrderClick = () => {
+          window.location.href = "/admin/all_order?status=0";
+     };
+
+     const handlePendingRefundOrderClick = () => {
+          window.location.href = "/admin/all_order?status=49";
+     };
 
 
     return(
@@ -52,7 +120,7 @@ function Dashboard (){
                               Tổng Doanh Thu
                          </span>
                          <span class="home__statitics-item-number">
-                              32.53%
+                              {formatNumber(totalIncome)} VNĐ
                          </span>
                          <span class="home__statitics-item-change home__statitics-item-change--decrease">
                               -0.5%
@@ -63,7 +131,7 @@ function Dashboard (){
                               Tổng Lợi Nhuận
                          </span>
                          <span class="home__statitics-item-number">
-                              7,682
+                              {formatNumber(totalProfit)} VNĐ
                          </span>
                          <span class="home__statitics-item-change home__statitics-item-change--increase">
                               +1.1%
@@ -74,7 +142,7 @@ function Dashboard (){
                               Tổng Số Lượng Đơn Hàng
                          </span>
                          <span class="home__statitics-item-number">
-                              68.8
+                              {totalOrder}
                          </span>
                          <span class="home__statitics-item-change home__statitics-item-change--decrease">
                               -8.3%
@@ -85,7 +153,7 @@ function Dashboard (){
                               Số lượng Đơn Hàng Thành Công
                          </span>
                          <span class="home__statitics-item-number">
-                              5m:35s
+                              {successOrder}
                          </span>
                          <span class="home__statitics-item-change home__statitics-item-change--increase">
                               +1.2%
@@ -96,7 +164,7 @@ function Dashboard (){
                               Số Lượng Đơn Hàng Bị Hủy
                          </span>
                          <span class="home__statitics-item-number">
-                              68.8
+                              {cancelOrder}
                          </span>
                          <span class="home__statitics-item-change home__statitics-item-change--decrease">
                               -8.3%
@@ -107,7 +175,7 @@ function Dashboard (){
                               Số Lượng Đơn Bị Trả Lại
                          </span>
                          <span class="home__statitics-item-number">
-                              5m:35s
+                              {refundedOrder}
                          </span>
                          <span class="home__statitics-item-change home__statitics-item-change--increase">
                               +1.2%
@@ -119,6 +187,47 @@ function Dashboard (){
           <div class="home__table">
                <div class="row">
                <div class="home__table--left col-lg-6 row">
+                    <div class="table__request col-lg-5" style={{height:"120px"}}>
+                         <div class="col-lg-12 row">
+                              <div class="table__request-head col-lg-12 row">
+                                   <div class="table__request-title col-lg-12 mb-3">
+                                        <span class="table__request-title-text">
+                                             Số Đơn Chờ Xác Nhận: {pendingOrder}
+                                        </span>
+                                   </div>
+                                   <div class="table__request-button col-lg-12">
+                                        <button class="table__request-button-btn"
+                                             onClick={handlePendingOrderClick}
+                                        >
+                                             <span class="table__request-btn-text">
+                                                  Chuyển tới Trang
+                                             </span>
+                                        </button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    <div className="col-lg-1"  style={{height:"100px"}}></div>
+                    <div class="table__request col-lg-5"  style={{height:"120px"}}>
+                         <div class="col-lg-12 row">
+                              <div class="table__request-head col-lg-12 row">
+                                   <div class="table__request-title col-lg-12 mb-3">
+                                        <span class="table__request-title-text">
+                                             Số Đơn Hàng Chờ Hoàn Trả: {pendingRefundOrder}
+                                        </span>
+                                   </div>
+                                   <div class="table__request-button col-lg-12">
+                                        <button class="table__request-button-btn"
+                                             onClick={handlePendingRefundOrderClick}
+                                        >
+                                             <span class="table__request-btn-text">
+                                                  Chuyển tới Trang
+                                             </span>
+                                        </button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
                     <div class="table__request">
                          <div class="table__request-head">
                               <div class="table__request-title">
@@ -139,24 +248,7 @@ function Dashboard (){
                               </div>
                          </div>
                     </div>
-                    <div class="table__request col-lg-6">
-                         <div class="col-lg-12 row">
-                              <div class="table__request-head">
-                                   <div class="table__request-title">
-                                        <span class="table__request-title-text">
-                                             Số Đơn Chờ Xác Nhận: 50
-                                        </span>
-                                   </div>
-                                   <div class="table__request-button">
-                                        <button class="table__request-button-btn">
-                                             <span class="table__request-btn-text">
-                                                  Chuyển tới Trang
-                                             </span>
-                                        </button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
+
                </div>
                
                <div class="home__table__right col-lg-12">
