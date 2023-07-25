@@ -29,7 +29,7 @@ function ImportProduct() {
 
   const handleRemoveProduct = (index) => {
     const updatedProducts = [...products];
-    updatedProducts.splice(index, 1);
+    updatedProducts.pop(); // Xóa phần tử cuối cùng của mảng
     setProducts(updatedProducts);
   };
 

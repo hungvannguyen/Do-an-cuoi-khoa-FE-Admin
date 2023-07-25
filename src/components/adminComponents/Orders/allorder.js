@@ -12,6 +12,8 @@ function AllOders(){
   const [currentPage, setCurrentPage] = useState();
   const [totalPages, setTotalPages] = useState();
 
+  const [errorMessage, setErrorMessage] = useState(null)
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const orderStatusFromUrl = queryParams.get('status');
@@ -41,9 +43,12 @@ function AllOders(){
         console.log("P" + response.data.current_page);
         console.log(response.data);
         console.log(typeof response.data);
+
       })
       .catch((error) => {
         console.log(error);
+        setOrders([]); // Đặt orders về mảng rỗng để không hiển thị dữ liệu cũ
+    setErrorMessage("Không có dữ liệu"); // Có lỗi hoặc không kết nối đến API
       });
   }, [pages, orderStatus]);
 
@@ -124,6 +129,7 @@ function AllOders(){
             Hiển thị tất cả đơn hàng của khách hàng
           </span>
         </div>
+
         <div className="datatable__location">
           <div className="datatable__head">
             <div className="datatable__head-show">
@@ -133,7 +139,7 @@ function AllOders(){
               onChange={handleOrderStatusChange}
               className="form__sellect-sort me-3"
             >
-              <option value="111">All</option>
+              <option value="111">Tất Cả</option>
               <option value="0">Chờ Xác Nhận</option>
               <option value="1">Đã Xác Nhận</option>
               <option value="2">Đang Vận Chuyển</option>
@@ -166,6 +172,9 @@ function AllOders(){
                 </tr>
               </thead>
               <tbody className="table__body">
+                  {orders.length === 0 && (
+                    <div className="no-data-message">{errorMessage}</div>
+                  )} 
                 {orders.map((order) => (
                   <tr className="table__body-item">
                     <td className="table__body-data">{order.id}</td>

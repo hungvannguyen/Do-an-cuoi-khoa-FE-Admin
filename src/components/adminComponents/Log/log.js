@@ -7,7 +7,7 @@ function Log() {
   const [logs, setLogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
-  const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order is ascending
+  const [sortOrder, setSortOrder] = useState("desc"); // Default sorting order is ascending
   const [filterType, setFilterType] = useState([]);
   const [filterTarget, setFilterTarget] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
@@ -15,6 +15,8 @@ function Log() {
   const [userDetails, setUserDetails] = useState([]);
   const [userName, setUserName] = useState("");
   const [currentPageState, setCurrentPageState] = useState(1);
+
+  const [errorMessage, setErrorMessage] = useState(null)
 
       //authorized
       const user = sessionStorage.getItem("role_id");
@@ -44,6 +46,8 @@ function Log() {
     })
     .catch((error) => {
       console.log(error);
+      setLogs([]);
+      setErrorMessage("Không có dữ liệu");
     });
 };
 
@@ -186,7 +190,7 @@ useEffect(() => {
         <div className="datatable__head-search">
             {/* Filter options */}
             <div className="datatable__footer-filter">
-                <label htmlFor="filterType" className="form__sort-text">Filter Type:</label>
+                <label htmlFor="filterType" className="form__sort-text">Phương Thức:</label>
                 <select
                 id="filterType"
                 name="filterType"
@@ -194,12 +198,12 @@ useEffect(() => {
                 onChange={handleFilterChange}
                 className="form__sellect-sort me-3"
                 >
-                <option value="all">All</option>
+                <option value="all">Tất Cả</option>
                 <option value="create">Create</option>
                 <option value="delete">Delete</option>
                 <option value="update">Update</option>
                 </select>
-                <label htmlFor="filterTarget" className="form__sort-text" >Filter Target:</label>
+                <label htmlFor="filterTarget" className="form__sort-text" >Mục:</label>
                 <select
                 id="filterTarget"
                 name="filterTarget"
@@ -207,12 +211,12 @@ useEffect(() => {
                 onChange={handleFilterChange}
                 className="form__sellect-sort me-3"
                 >
-                <option value="all">All</option>
+                <option value="all">Tất Cả</option>
                 <option value="category">Category</option>
                 <option value="product">Product</option>
                 <option value="user">User</option>
                 </select>
-                <label htmlFor="filterStatus" className="form__sort-text" >Filter Status:</label>
+                <label htmlFor="filterStatus" className="form__sort-text" >Trạng Thái:</label>
                 <select
                 id="filterStatus"
                 name="filterStatus"
@@ -220,7 +224,7 @@ useEffect(() => {
                 onChange={handleFilterChange}
                 className="form__sellect-sort me-3"
                 >
-                <option value="all">All</option>
+                <option value="all">Tất Cả</option>
                 <option value="success">Success</option>
                 <option value="failed">Failed</option>
                 </select>
@@ -242,6 +246,9 @@ useEffect(() => {
               </tr>
             </thead>
             <tbody className="table__body">
+              {logs.length === 0 && (
+                <div className="no-data-message">{errorMessage}</div>
+              )}
               {logs.map((log) => {
                 return(
                 <tr className="table__body-item" key={log.id}>

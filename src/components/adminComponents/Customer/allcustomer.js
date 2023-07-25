@@ -120,6 +120,7 @@ function AllCustomer(){
                   <th className="table__head-item">Số Điện Thoại</th>
                   <th className="table__head-item">Tài Khoản</th>
                   <th className="table__head-item">Email</th>
+                  <th className="table__head-item">Số Đơn Hàng</th>
                   <th className="table__head-item">Hành Động</th>
                 </tr>
               </thead>
@@ -131,6 +132,7 @@ function AllCustomer(){
                   <td className="table__body-data">{customer.phone_number === null ? <span style={{ color: 'red' }}>Chưa Đặt</span> : customer.phone_number }</td>
                   <td className="table__body-data">{customer.account}</td>
                   <td className="table__body-data">{customer.email}</td>
+                  <td className="table__body-data">{customer.order_count}</td>
                   <td className="table__body-data">
                     <div className="d-flex justify-content-around align-items-center">
                     <button className="btn-edit">

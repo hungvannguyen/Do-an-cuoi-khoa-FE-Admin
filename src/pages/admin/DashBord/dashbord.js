@@ -122,9 +122,6 @@ function Dashboard (){
                          <span class="home__statitics-item-number">
                               {formatNumber(totalIncome)} VNĐ
                          </span>
-                         <span class="home__statitics-item-change home__statitics-item-change--decrease">
-                              -0.5%
-                         </span>
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
@@ -132,9 +129,6 @@ function Dashboard (){
                          </span>
                          <span class="home__statitics-item-number">
                               {formatNumber(totalProfit)} VNĐ
-                         </span>
-                         <span class="home__statitics-item-change home__statitics-item-change--increase">
-                              +1.1%
                          </span>
                     </li>
                     <li class="home__statitics-item">
@@ -144,9 +138,6 @@ function Dashboard (){
                          <span class="home__statitics-item-number">
                               {totalOrder}
                          </span>
-                         <span class="home__statitics-item-change home__statitics-item-change--decrease">
-                              -8.3%
-                         </span>
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
@@ -154,9 +145,6 @@ function Dashboard (){
                          </span>
                          <span class="home__statitics-item-number">
                               {successOrder}
-                         </span>
-                         <span class="home__statitics-item-change home__statitics-item-change--increase">
-                              +1.2%
                          </span>
                     </li>
                     <li class="home__statitics-item">
@@ -166,9 +154,6 @@ function Dashboard (){
                          <span class="home__statitics-item-number">
                               {cancelOrder}
                          </span>
-                         <span class="home__statitics-item-change home__statitics-item-change--decrease">
-                              -8.3%
-                         </span>
                     </li>
                     <li class="home__statitics-item">
                          <span class="home__statitics-title">
@@ -176,9 +161,6 @@ function Dashboard (){
                          </span>
                          <span class="home__statitics-item-number">
                               {refundedOrder}
-                         </span>
-                         <span class="home__statitics-item-change home__statitics-item-change--increase">
-                              +1.2%
                          </span>
                     </li>
                     

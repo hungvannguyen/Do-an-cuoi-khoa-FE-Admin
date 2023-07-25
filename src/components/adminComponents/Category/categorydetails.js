@@ -143,10 +143,10 @@ function CategoryDetails(){
 
             <div className="main__title">
                 <span className="main__title-text">
-                    Category Details
+                    Chi tiết Danh Mục
                 </span>
                 <span className="main__title-des">
-                    DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                    Chi tiết của mỗi danh mục
                 </span>
             </div>
             <div className="main__form">
@@ -157,7 +157,7 @@ function CategoryDetails(){
                     <label className="form__product-id-title">
                         Tên Danh Mục: <span>{initialCategoryName}</span>
                     </label>
-                    <input type="text" className="form__product-id-input " placeholder="Enter Category Name" 
+                    <input type="text" className="form__product-id-input " placeholder="Nhập vào tên Danh Mục" 
                         value={categoryName}
                         onChange={(e) => setCategoryName(e.target.value)}
                         
@@ -168,7 +168,7 @@ function CategoryDetails(){
                         Mô Tả : <span>{initiaCategoryDescription}</span>
                     </label>
 
-                    <input type="text" className="form__product-id-input" placeholder="Enter Category Description" 
+                    <input type="text" className="form__product-id-input" placeholder="Nhập vào mô tả Danh Mục" 
                         value={categoryDescription}
                         onChange={(e) => setCategoryDescription(e.target.value)}
                     />

@@ -373,3 +373,11 @@ input[type="file"] {
     cursor: not-allowed !important;
     color: #525252 !important;
 }
+
+.no-data-message{
+    font-size: 1.6rem;
+    color: #fc0000;
+    margin-top: 24px;
+    text-align: center;
+    width: 100%;
+}

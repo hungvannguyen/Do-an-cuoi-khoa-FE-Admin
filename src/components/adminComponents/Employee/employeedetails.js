@@ -19,6 +19,18 @@ function EmployeeDetails(){
      const [userRoleId, setUserRoleId] = useState("");
      const [isLock, setIsLock] = useState("");
 
+     //order_count
+     const [totalOrder, setTotalOrder] = useState("");
+     const [cancelOrder, setCancelOrder] = useState("");
+     const [successOrder, setSuccessOrder] = useState("");
+     const [pendingOrder, setPendingOrder] = useState("");
+     const [pendingRefundOrder, setPendingRefundOrder] = useState("");
+     const [refundedOrder, setRefundedOrder] = useState("");    
+     const [deliveredOrder, setDeliveredOrder] = useState("");
+     const [deliveringOrder, setDeliveringOrder] = useState("");
+     const [confirmOrder, setConfirmOrder] = useState("");
+
+
      //modal
      const [isModalOpen, setIsModalOpen] = useState(false);
      const [isModalOpen2, setIsModalOpen2] = useState(false);
@@ -101,6 +113,27 @@ function EmployeeDetails(){
                     console.log(error);
                });
           }, []);
+
+     //order_count
+     useEffect(() => {
+          axios
+          .get(`/summary/order/count?user_id=${user_id}`)
+          .then((response) => {
+               console.log(response.data);
+               setTotalOrder(response.data.total_order);
+               setCancelOrder(response.data.cancel_order);
+               setSuccessOrder(response.data.success_order);
+               setPendingOrder(response.data.pending_order);
+               setConfirmOrder(response.data.confirmed_order);
+               setDeliveringOrder(response.data.delivering_order);
+               setDeliveredOrder(response.data.delivered_order);
+               setPendingRefundOrder(response.data.pending_refund_order);
+               setRefundedOrder(response.data.refunded_order);
+          })
+          .catch((error) => {
+               console.log(error);
+          });
+     }, []);
 
      const handelUserName = (e) => {
           setUserName(e.target.value);
@@ -349,6 +382,38 @@ function EmployeeDetails(){
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                          Email: {userEmail}
+                    </label>
+               </div>
+               <div className="form__product-delete-id">
+                    <label className="form__product-delete-id-title d-flex flex-column">
+                         Thông số đơn hàng : {totalOrder === 0 && ("chưa có đơn hàng nào")} 
+                         {totalOrder !== 0 && (
+                          <span>Tổng số đơn hàng: {totalOrder}</span>
+                         )}
+                         {cancelOrder !== 0 && (
+                          <span>Số đơn đã hủy: {cancelOrder}</span>
+                         )}
+                         {pendingOrder !== 0 && (
+                          <span>Số đơn chờ xác nhận: {pendingOrder}</span>
+                         )}
+                         {confirmOrder !== 0 && (
+                          <span>Số đơn đã xác nhận: {confirmOrder}</span>
+                         )}
+                         {deliveringOrder !== 0 && (
+                          <span>Số đơn đang giao: {deliveringOrder}</span>
+                         )}
+                         {deliveredOrder !== 0 && (
+                          <span>Số đơn đã giao: {deliveredOrder}</span>
+                         )}
+                         {pendingRefundOrder !== 0 && (
+                          <span>Số đơn chờ hoàn hàng: {pendingRefundOrder}</span>
+                         )}
+                         {refundedOrder !== 0 && (
+                          <span>Số đơn đã hoàn hàng: {refundedOrder}</span>
+                         )}
+                          {successOrder !== 0 && (
+                          <span>Số đơn thành công: {successOrder}</span>
+                         )}
                     </label>
                </div>
                </div>
