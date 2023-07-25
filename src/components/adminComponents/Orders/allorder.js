@@ -209,7 +209,7 @@ function AllOders(){
                       {formatNumber(order.total_price)} VNĐ
                     </td>
                     <td className="table__body-data">{(() => {
-                      if(order.payment_status === 99){
+                      if(order.payment_status > 0){
                         return <span style={{ color: 'red' }}>Chưa Thanh Toán</span>;
                       }else if (order.payment_status === 0){
                         return <span style={{ color: 'green' }}>Đã Thanh Toán</span>;
