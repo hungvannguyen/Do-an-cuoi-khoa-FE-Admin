@@ -75,6 +75,22 @@ function Sidebar  () {
                     </Link>
                </div>
                <div className="features__item">
+                    <Link to="/admin/log" className="features__item-main">
+                         <i class="fa-solid fa-clock-rotate-left features__item-main-icon"></i>
+                         <span className="features__item-main-text">
+                              Lịch Sử Chỉnh Sửa
+                         </span>
+                    </Link>
+               </div>
+               <div className="features__item">
+                    <Link to="/admin/addproduct_log" className="features__item-main">
+                         <i class="fa-solid fa-box features__item-main-icon"></i>
+                         <span className="features__item-main-text">
+                              Lịch Sử Nhập Hàng
+                         </span>
+                    </Link>
+               </div>
+               <div className="features__item">
                     <div className="features__item-main"
                           onClick={() => toggleExpansion('features__item-category')}
                     >
@@ -223,22 +239,6 @@ function Sidebar  () {
                          </ul>
                     </div>
                     )}
-               </div>
-               <div className="features__item">
-                    <Link to="/admin/log" className="features__item-main">
-                         <i class="fa-solid fa-clock-rotate-left features__item-main-icon"></i>
-                         <span className="features__item-main-text">
-                              Lịch Sử Chỉnh Sửa
-                         </span>
-                    </Link>
-               </div>
-               <div className="features__item">
-                    <Link to="/admin/addproduct_log" className="features__item-main">
-                         <i class="fa-solid fa-box features__item-main-icon"></i>
-                         <span className="features__item-main-text">
-                              Lịch Sử Nhập Hàng
-                         </span>
-                    </Link>
                </div>
                <div className="features__item">
                <div className="features__item-main">

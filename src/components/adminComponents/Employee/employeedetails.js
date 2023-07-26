@@ -388,31 +388,31 @@ function EmployeeDetails(){
                     <label className="form__product-delete-id-title d-flex flex-column">
                          Thông số đơn hàng : {totalOrder === 0 && ("chưa có đơn hàng nào")} 
                          {totalOrder !== 0 && (
-                          <span>Tổng số đơn hàng: {totalOrder}</span>
+                          <span> - Tổng số đơn hàng: {totalOrder}</span>
                          )}
                          {cancelOrder !== 0 && (
-                          <span>Số đơn đã hủy: {cancelOrder}</span>
+                          <span> - Số đơn đã hủy: {cancelOrder}</span>
                          )}
                          {pendingOrder !== 0 && (
-                          <span>Số đơn chờ xác nhận: {pendingOrder}</span>
+                          <span> - Số đơn chờ xác nhận: {pendingOrder}</span>
                          )}
                          {confirmOrder !== 0 && (
-                          <span>Số đơn đã xác nhận: {confirmOrder}</span>
+                          <span> - Số đơn đã xác nhận: {confirmOrder}</span>
                          )}
                          {deliveringOrder !== 0 && (
-                          <span>Số đơn đang giao: {deliveringOrder}</span>
+                          <span> - Số đơn đang giao: {deliveringOrder}</span>
                          )}
                          {deliveredOrder !== 0 && (
-                          <span>Số đơn đã giao: {deliveredOrder}</span>
+                          <span> - Số đơn đã giao: {deliveredOrder}</span>
                          )}
                          {pendingRefundOrder !== 0 && (
-                          <span>Số đơn chờ hoàn hàng: {pendingRefundOrder}</span>
+                          <span> - Số đơn chờ hoàn hàng: {pendingRefundOrder}</span>
                          )}
                          {refundedOrder !== 0 && (
-                          <span>Số đơn đã hoàn hàng: {refundedOrder}</span>
+                          <span> - Số đơn đã hoàn hàng: {refundedOrder}</span>
                          )}
                           {successOrder !== 0 && (
-                          <span>Số đơn thành công: {successOrder}</span>
+                          <span> - Số đơn thành công: {successOrder}</span>
                          )}
                     </label>
                </div>
