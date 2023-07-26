@@ -434,7 +434,7 @@ function ProductDetails(){
                    Chi Tiết Sản Phẩm
              </span>
              <span className="main__title-des">
-                  DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                       Chi Tiết Sản Phẩm Theo ID
              </span>
         </div>
         <div className="main__form row">
@@ -449,7 +449,8 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Tên Sản Phẩm: <span>{crProductName}</span>
+                       Tên Sản Phẩm: 
+                       {/* <span>{crProductName}</span> */}
                     </label>
                     <input type="text" 
                          id="form__product-name-input" 
@@ -467,7 +468,8 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Mô Tả Sản Phẩm: <span>{crProductDescription}</span>
+                       Mô Tả Sản Phẩm: 
+                       {/* <span>{crProductDescription}</span> */}
                     </label>
                     <input type="text" 
                          id="form__product-quantity-input" 
@@ -483,6 +485,7 @@ function ProductDetails(){
                          </div>
                     )}
                </div>
+               {productQuantity !== 0 && (
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
                        Trạng Thái Sản Phẩm: <span>{crProductStatus === 1 ? "Đang bán" : "Không bán"}</span>
@@ -503,7 +506,7 @@ function ProductDetails(){
                          </div>
                     )}
                </div>
-               
+               )}
           </div>
           <div className="col-lg-4">
           <div className="form__product-price">
@@ -587,7 +590,7 @@ function ProductDetails(){
                </div>
                <div className="form__product-delete-id">
                     <label className="form__product-delete-id-title">
-                       Danh Mục <span>{crCategoryId}</span>
+                       Danh Mục: <span>{crCategoryId}</span>
                   </label>
                     <select value={categoryId} onChange={handleCategoryId} className="form__product-id-input">
                          <option value="">Choose Category</option>
@@ -608,7 +611,10 @@ function ProductDetails(){
                <label className="form__product-id-title">
                     Hình Ảnh Sản Phẩm
                </label>
-               <input type="file" onChange={handleImageUpload}/>
+               <label for="image" className="uploadimg_btn">
+                            Tải Ảnh Lên
+               </label>
+               <input type="file" onChange={handleImageUpload} id="image"/>
                <input type="text" value={imgFileName} onChange={handleProductImage} style={{display:"none"}} />
                {showCrProductImage && crProductImage && (
                     <img src={crProductImage} width="80%" alt="" />
@@ -646,7 +652,8 @@ function ProductDetails(){
                          />
                     </div>  
                </div> 
-               ))} 
+               ))}
+               {productQuantity !== 0 && (
                <div className="col-lg-12">
                <button className="form__category-btn form__input-btn"
                          onClick={handleSubmit}
@@ -654,6 +661,7 @@ function ProductDetails(){
                          Cập Nhật Số Lượng
                     </button>
                </div>
+               )}
           </div>
           <div className="form__category-check col-lg-12 d-flex">
                <div class="form__category-check me-3">

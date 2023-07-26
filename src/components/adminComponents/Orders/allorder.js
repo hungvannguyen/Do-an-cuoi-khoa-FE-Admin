@@ -195,7 +195,7 @@ function AllOders(){
                         } else if (order.status === 100) {
                           return <span style={{ color: '#00dd00' }}>Hoàn Thành</span>;
                         } else if (order.status === 99) {
-                          return <span style={{ color: 'red' }}>Hủy Đơn</span>;
+                          return <span style={{ color: 'red' }}>Đã Hủy Đơn</span>;
                         } else if( order.status === 50){
                           return <span style={{ color: '#af3a94' }}>Đã Hoàn Hàng</span>;
                         }else if ( order.status === 49){

@@ -1,6 +1,6 @@
 import "../Styles/css/allCss.css"
 import "../Styles/image/hcv.png"
-import { useState, useEffect } from "react";
+import { useState, useEffect,  } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,9 @@ import img3 from "../Styles/image/hcd.png"
 
 function Dashboard (){
      //total order
-     const [month, setMonth] = useState(1);
+     const [mode, setMode] = useState(0);
+     const [year, setYear] = useState(2023);
+     const [yearValue, setYearValue] = useState('');
      const [totalOrder, setTotalOrder] = useState("");
      const [cancelOrder, setCancelOrder] = useState("");
      const [pendingOrder, setPendingOrder] = useState("");
@@ -33,8 +35,13 @@ function Dashboard (){
 
      //order count
      useEffect(() => {
+          let apiEndpoint = `/summary/order_count?mode=${mode}`;
+          if (year !== null){
+               apiEndpoint += `&year=${year}`;
+          }
+
           axios
-          .get(`/summary/order_count?month_count=${month}`)
+          .get(apiEndpoint)
           .then((response) => {
                console.log(response.data);
                setTotalOrder(response.data.total_order);
@@ -49,11 +56,16 @@ function Dashboard (){
                console.log(error);
               
           });
-     }, [month]);
+     }, [mode, year]);
      //total income
      useEffect(() => {
+          let apiEndpoint = `/summary/total_income?mode=${mode}`;
+          if (year !== null){
+               apiEndpoint += `&year=${year}`;
+          }
+
           axios
-          .get(`/summary/total_income?month_count=${month}`)
+          .get(apiEndpoint)
           .then((response) => {
                console.log(response.data);
                setTotalIncome(response.data.total_income);
@@ -62,7 +74,7 @@ function Dashboard (){
           .catch((error) => {
                console.log(error);
           });
-     }, [month]);
+     }, [mode, year]);
      //top 3 customẻ
      useEffect(() => {
           axios
@@ -118,45 +130,56 @@ function Dashboard (){
           window.location.href = "/admin/all_order?status=49";
      };
 
+     const handleMountChange = (event) => {
+          const selectedMonth = event.target.value;
+          setMode(Number(selectedMonth));
+     };
+     const handleYearChange = (event) => {
+          const value = event.target.value;
+          setYearValue(value);
+          console.log(yearValue) // Store the temporary year value as the user types
+        };
+      
+        const handleYearSubmit = () => {
+          // When the user clicks the "Xác nhận" (Confirm) button,
+          // update the "year" state variable with the temporary year value.
+          setYear(yearValue === '0' || yearValue === '' ? null : parseInt(yearValue));
+          console.log('Năm mới được cập nhật:', year);
+        };
+      
+
 
     return(
         <div class="main">
-          <div class="home__features">
-               <div class="home__features-tabs">
-                    <ul class="home__features-tab-list">
-                         <li class="home__features-tab-list-item home__features-tab-list-item--line home__features-tab-list-item--selected">
-                              Overview
-                         </li>
-                         <li class="home__features-tab-list-item home__features-tab-list-item--line">
-                              Audiences
-                         </li>
-                         <li class="home__features-tab-list-item home__features-tab-list-item--line">
-                              Demographics
-                         </li>
-                         <li class="home__features-tab-list-item">
-                              More
-                         </li>
-                    </ul>
+          <div class="home__features d-flex justify-content-start">
+               <div class="home__features-tabs  ">
+               <span className="form__sort-text">Thông số theo tháng: </span>
+                    <select
+                    value={mode.toString()} // Convert to string to match option value type
+                    onChange={handleMountChange}
+                    className="form__sellect-sort me-3"
+                    >
+                    <option value="0">Tháng hiện tại</option>
+                    <option value="1">Quý 1</option>
+                    <option value="2">Quý 2</option>
+                    <option value="3">Quý 3</option>
+                    <option value="4">Quý 4</option>
+                    <option value="5">Năm</option>
+                    </select>
                </div>
-               <div class="home__features-community">
-                    <button class="home__features-btn">
-                         <i class="home__features-icon fas fa-share-alt"></i>
-                         <span class="home features-btn-text">
-                              Share
-                         </span>
-                    </button>
-                    <button class="home__features-btn">
-                         <i class="home__features-icon fas fa-print"></i>
-                         <span class="home features-btn-text">
-                              Print
-                         </span>
-                    </button>
-                    <button class="home__features-btn home__features-btn--bold">
-                         <i class="home__features-icon fas fa-file-export"></i>
-                         <span class="home features-btn-text">
-                              Export
-                         </span>
-                    </button>
+               <div class="home__features-order">
+                    <div class="home__features-order-item">
+                    <span className="form__sort-text">Tháng: </span>
+                    <select
+                    value={mode.toString()} // Convert to string to match option value type
+                    onChange={handleMountChange}
+                    className="form__sellect-sort me-3"
+                    >
+                    <option value="2023">năm 2023</option>
+                    <option value="5">Năm</option>
+                    </select>
+               </div>
+
                </div>
           </div>
           <div class="home__statitics">

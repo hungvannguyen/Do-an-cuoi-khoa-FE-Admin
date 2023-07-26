@@ -381,3 +381,14 @@ input[type="file"] {
     text-align: center;
     width: 100%;
 }
+
+.cancel_textarea{
+    width: 300px;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    outline: none;
+    padding: 12px;
+    font-size: 1.4rem;
+    resize: none;
+}

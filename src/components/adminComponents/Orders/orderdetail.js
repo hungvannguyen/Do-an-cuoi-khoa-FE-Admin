@@ -7,10 +7,8 @@ import ReactModal from 'react-modal';
 
 function OrderDetail() {
     const {order_id} = useParams();
-
     const [products, setProducts] = useState("");
     const [imageProduct, setImageProduct] = useState([]);
-
     //data order
     const [orderId, setOrderId] = useState("");
     const [orderTotalPrice, setOderTotalPrice] = useState("");
@@ -26,23 +24,18 @@ function OrderDetail() {
     const [orderPaymentStatus, setOrderPaymentStatus] = useState("");
     const [orderPaymentBankCode, setOrderPaymentBankCode] = useState("");
     const [orderDate, setOrderDate] = useState("");
-
+    const [orderCancelReason, setOrderCancelReason] = useState("");
     //update order status
     const [orderStatusUpdate, setOrderStatusUpdate] = useState("");
-
-
-
+    // cancel order
+    const [cancelReason, setCancelReason] = useState("");
     //modal
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isModalOpen2, setIsModalOpen2] = useState(false)
     
     const handleStatusChange = (e) => {
         setOrderStatusUpdate(e.target.value);
     };
-
-
-
     const formatNumber = (number) => {
         return number.toLocaleString("vi-VN");
       };
@@ -72,8 +65,7 @@ function OrderDetail() {
             setOrderPaymentStatus(response.data.payment_status);
             setOrderPaymentBankCode(response.data.bankCode);
             setOrderDate(response.data.insert_at);
-            
-
+            setOrderCancelReason(response.data.cancel_reason);
                 // Api get image product
                 const imagePromises = response.data.products.map((product) =>
                 axios.get(`/file/img/${product.img_url}`, { responseType: "blob" })
@@ -97,17 +89,7 @@ function OrderDetail() {
         });
     }, []);
 
-    const statusMapping = {
-        0: {color: "#8D8D8D", text: "Chờ Xác Nhận"},
-        1: {color: "#c69600", text: "Đã Xác Nhận"},
-        2: {color: "#00bcdd", text: "Đang Vận Chuyển"},
-        10: {color: "#001bc6", text: "Đã Giao Hàng"},
-        100: {color: "#00dd00", text: "Hoàn Thành"},
-        50: {color: "#af3a94", text: "Hoàn Hàng"},
-        99:{color: "red", text: "Hủy Đơn Hàng"},
-        49: {color: "#9b6432", text: "Yêu Cầu Hoàn Hàng"},
-    };
-    const statusInfo = statusMapping[orderStatus] || { color: "black", text: "" };
+
 
     //update order status
     const updateOrderStatus = () => {
@@ -153,6 +135,62 @@ function OrderDetail() {
         });
     };
 
+    const cancelOrder = () => {
+        axios
+        .delete(`/order/cancel?order_id=${order_id}&cancel_reason=${cancelReason}`,{
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+            },
+        })
+        .then((response) => {
+            console.log(response.data.data);
+            toast.success("Cập nhật đơn hàng thành công!",{
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+           });
+           const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+                window.location.href = "/admin/all_order";
+           }, 1500);
+        })
+        .catch((error) => {
+            console.log(error);
+            toast.error("Đã có lỗi xảy ra!",{
+                position: "bottom-right",
+                     autoClose: 2000,
+                     hideProgressBar: true,
+                     closeOnClick: true,
+                     pauseOnHover: true,
+                     draggable: true,
+                     progress: undefined,
+                     theme: "colored"
+           });
+           
+           const redirectInterval = setInterval(() => {
+                clearInterval(redirectInterval);
+           },1500);
+        });
+    };
+
+    const statusMapping = {
+        0: {color: "#8D8D8D", text: "Chờ Xác Nhận"},
+        1: {color: "#c69600", text: "Đã Xác Nhận"},
+        2: {color: "#00bcdd", text: "Đang Vận Chuyển"},
+        10: {color: "#001bc6", text: "Đã Giao Hàng"},
+        100: {color: "#00dd00", text: "Hoàn Thành"},
+        50: {color: "#af3a94", text: "Hoàn Hàng"},
+        99:{color: "red", text: "Hủy Đơn Hàng"},
+        49: {color: "#9b6432", text: "Yêu Cầu Hoàn Hàng"},
+    };
+    const statusInfo = statusMapping[orderStatus] || { color: "black", text: "" };
+
+
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -170,48 +208,12 @@ function OrderDetail() {
         setIsModalOpen2(false);
     }
 
-    const updatePaymentStatus = () => {
-        axios
-        .get(`/payment/update/cod?payment_id=${orderPaymentId}`,{
-            headers: {
-                Authorization: "Bearer " + sessionStorage.getItem("token"),
-            },
-        })
-        .then((response) => {
-            console.log(response.data.data);
-            toast.success("Cập nhật trạng thái thành công!",{
-                position: "bottom-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored"
-           });
-           const redirectInterval = setInterval(() => {
-                clearInterval(redirectInterval);
-                window.location.href = "/admin/all_order";
-           }, 1500);
-        })
-        .catch((error) => {
-            console.log(error);
-            toast.error("Có lỗi xảy ra!",{
-                position: "bottom-right",
-                     autoClose: 2000,
-                     hideProgressBar: true,
-                     closeOnClick: true,
-                     pauseOnHover: true,
-                     draggable: true,
-                     progress: undefined,
-                     theme: "colored"
-           });
-           
-           const redirectInterval = setInterval(() => {
-                clearInterval(redirectInterval);
-           },1500);
-        });
-    };
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setCancelReason(value);
+        console.log(cancelReason);
+      };
+
  
 
     return(
@@ -227,7 +229,7 @@ function OrderDetail() {
                 Chi Tiết Đơn Hàng
             </span>
             <span class="main__title-des">
-                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, <span>please visit the official Datatables documentation.</span>
+                Chi tiết đơn hàng của khách hàng
             </span>
         </div>
         <div class="main__form row">
@@ -248,9 +250,30 @@ function OrderDetail() {
                         Trạng thái: <span style={{color: statusInfo.color}}> {statusInfo.text}</span> 
                     </label>
                 </div>
+                {orderStatus === 99 && (
+                    <div class="form__category-des">
+                        <label for="form__category-des-input" class="form__category-des-title">
+                            Lý do hủy đơn:  {orderCancelReason}
+                        </label>
+                    </div>    
+                )}
+                {orderStatus === 49 && (
+                        <div class="form__category-des">
+                            <label for="form__category-des-input" class="form__category-des-title">
+                                Lý do hoàn hàng: {orderCancelReason}
+                            </label>
+                        </div>
+                )}
+                {orderStatus === 50 && (
+                        <div class="form__category-des">
+                            <label for="form__category-des-input" class="form__category-des-title">
+                                Lý do hoàn hàng: {orderCancelReason}
+                            </label>
+                        </div>
+                )}
                 <div class="form__category-des">
                     <label class="form__category-name-title">
-                        Tên người đặt hàng: {userName}
+                        Tên người nhận: {userName}
                     </label>
                 </div>
                 <div class="form__category-des">
@@ -376,8 +399,7 @@ function OrderDetail() {
                 {orderStatus === 0 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6" 
-                        value={99}
-                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
+                        onClick={ () => {openModal2();}}
                         >
                                 Hủy đơn
                         </button>
@@ -387,7 +409,7 @@ function OrderDetail() {
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6" 
                         value={50}
-                        onClick={(e) =>{ handleStatusChange(e); openModal();}}
+                         onClick={(e) =>{ handleStatusChange(e); openModal();}}
                         >
                                Đồng ý hoàn trả
                         </button>
@@ -423,10 +445,17 @@ function OrderDetail() {
                     }
                 }>
                 <h2 className="d-lex justify-content-center form__product-id-title text-center">
-                    Bạn có muốn cập nhật đơn hàng này?    
+                    Bạn có muốn xác nhận hủy đơn hàng này?    
                 </h2>
+                <div className="d-flex flex-column align-items-center justify-content-between">
+                    <span className="form__product-id-title me-3">
+                        Lý do hủy đơn hàng:
+                    </span>
+                    <textarea type="text" className="cancel_textarea"  value={cancelReason} onChange={handleChange}></textarea>
+                    {/* <p>Giá trị của biến cancelReason: {cancelReason}</p> */}
+                </div>
                 <div className="d-flex align-items-center justify-content-between">
-                    <button className="form__input-btn me-3" onClick={updatePaymentStatus}>
+                    <button className="form__input-btn me-3"  onClick={cancelOrder} >
                          Có
                     </button>
                     <button className="form__input-btn" style={{backgroundColor:"#4C72DE"}} onClick={closeModal2}>

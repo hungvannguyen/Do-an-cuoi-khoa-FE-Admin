@@ -15,11 +15,18 @@ function AllProducts(){
   const [sort, setSort] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
+  const [searchProduct, setSearchProduct] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
       
   useEffect(() => {
+    let apiEndpoint = `/product/all/?page=${pages}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`;
+    if (searchProduct !== "") {
+      apiEndpoint = `/product/admin/search?keyword=${searchProduct}&page=${pages}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`;
+    }
+
     axios
-      .get(`/product/all/?page=${pages}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`)
+      .get(apiEndpoint)
       .then((response) => {
         console.log(response.data);
         setProducts(response.data.data);
@@ -31,8 +38,10 @@ function AllProducts(){
       })
       .catch((error) => {
         console.log(error);
+        setProducts([]);
+        setErrorMessage("Không có dữ liệu");
       });
-  }, [pages, sort, minPrice, maxPrice]);
+  }, [pages, sort, minPrice, maxPrice, searchProduct]);
   const sortOptions = [
     { value: 0, label: "Tất cả" },
     { value: 1, label: "Giá tăng dần" },
@@ -180,7 +189,9 @@ useEffect(() => {
            </div>
             <div className="datatable__head-search">
               <span className="datatable__search-text">Search:</span>
-              <input type="text" className="datatable__search-input" />
+              <input type="text" className="datatable__search-input" 
+                  value={searchProduct}
+                  onChange={(e) => setSearchProduct(e.target.value)}/>
             </div>
           </div>
           <div className="datatable__table">
@@ -200,6 +211,9 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody className="table__body">
+                {products.length === 0 && (
+                   <div className="no-data-message">{errorMessage}</div>
+                )}
                 {products.map((product) => (
                 <tr className="table__body-item" key={product.id}>
                   <td className="table__body-data">{product.id}</td>
