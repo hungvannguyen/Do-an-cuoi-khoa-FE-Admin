@@ -30,6 +30,8 @@ import ResetPass from "../../components/adminComponents/Customer/resetpass";
 import ClientSetting from "../../components/adminComponents/Banner/client_setting"
 
 import Log from "../../components/adminComponents/Log/log";
+import AddLog from "../../components/adminComponents/Log/addproductlog";
+import AddLogDetail from "../../components/adminComponents/Log/prdlogdetail";
 
 
 
@@ -79,7 +81,8 @@ function Admin() {
 
             //Log
             <Route path="/admin/log" element={requireAuth(Log)} />
-
+            <Route path="/admin/addproduct_log" element={requireAuth(AddLog)} />
+            <Route path="/admin/addproduct_log/detail/:id" element={requireAuth(AddLogDetail)} />
         </Routes>
         <Footer />
         </div>

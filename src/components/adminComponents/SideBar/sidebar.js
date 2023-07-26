@@ -233,6 +233,14 @@ function Sidebar  () {
                     </Link>
                </div>
                <div className="features__item">
+                    <Link to="/admin/addproduct_log" className="features__item-main">
+                         <i class="fa-solid fa-box features__item-main-icon"></i>
+                         <span className="features__item-main-text">
+                              Lịch Sử Nhập Hàng
+                         </span>
+                    </Link>
+               </div>
+               <div className="features__item">
                <div className="features__item-main">
                     <i className="fa-solid fa-right-from-bracket features__item-main-icon"></i>
                          <span className="features__item-main-text" onClick={handleLogout}>

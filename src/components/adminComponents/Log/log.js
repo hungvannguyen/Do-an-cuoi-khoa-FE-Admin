@@ -5,6 +5,7 @@ import Authorized from "../Authorized/authorized"
 
 function Log() {
   const [logs, setLogs] = useState([]);
+  const [pages, setPages] = useState([1, 2, 3]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [sortOrder, setSortOrder] = useState("desc"); // Default sorting order is ascending
@@ -14,7 +15,7 @@ function Log() {
   const [logUser, setLogUser] = useState(null);
   const [userDetails, setUserDetails] = useState([]);
   const [userName, setUserName] = useState("");
-  const [currentPageState, setCurrentPageState] = useState(1);
+  const [rowPerPage, setRowPerPage] = useState(10);
 
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -23,9 +24,8 @@ function Log() {
       const allowedRoles = ["1",];
   
  // Function to handle API call with filters
- const callApiWithFilters = (page, rowPerPage, sort) => {
-  let apiEndpoint = `/log/all?sort=${sort}&page=${page}&row_per_page=${rowPerPage}`;
-
+ useEffect(() => {
+  let apiEndpoint = `/log/all?sort=${sortOrder}&page=${currentPage}&row_per_page=${rowPerPage}`;
   // Add optional filter parameters if they are provided
   if (filterType.length > 0 && !filterType.includes('all')) {
     apiEndpoint += `&type=${filterType.join(',')}`;
@@ -43,33 +43,37 @@ function Log() {
       console.log(response.data);
       setLogs(response.data.data);
       setTotalPages(response.data.total_page);
+      setCurrentPage(response.data.current_page);
+      setPages((prevPages) => {
+        const currentPageIndex = prevPages.indexOf(response.data.current_page);
+        if (currentPageIndex === -1) {
+          // Nếu trang hiện tại chưa có trong mảng, cần xoá trang đầu tiên trong mảng và thêm trang hiện tại vào cuối
+          prevPages.shift();
+          prevPages.push(response.data.current_page);
+        } else if (currentPageIndex === prevPages.length - 1) {
+          // Nếu trang hiện tại đã là trang cuối trong mảng, cần chuyển các trang lên 1 bậc
+          prevPages = prevPages.map((page) => page - 1);
+        } else {
+          // Nếu trang hiện tại không nằm ở đầu hoặc cuối mảng, cần di chuyển trang hiện tại và các trang bên phải lên 1 bậc
+          prevPages.splice(currentPageIndex, 1);
+          prevPages = [response.data.current_page - 1, response.data.current_page, response.data.current_page + 1];
+        }
+        return prevPages;
+      });
     })
     .catch((error) => {
       console.log(error);
       setLogs([]);
       setErrorMessage("Không có dữ liệu");
     });
-};
+},[sortOrder, currentPage, rowPerPage, filterType, filterTarget, filterStatus]);
 
 // Function to handle sorting by a given parameter
 const handleSort = (sortParam) => {
-  setCurrentPageState(1); // Reset current page to 1 when sorting changes
+  setCurrentPage(1); // Reset current page to 1 when sorting changes
   setSortOrder(sortParam);
 };
 
-// Function to handle previous page navigation
-const handlePreviousPage = () => {
-  if (currentPageState > 1) {
-    setCurrentPageState((prevPage) => prevPage - 1);
-  }
-};
-
-// Function to handle next page navigation
-const handleNextPage = () => {
-  if (currentPageState < totalPages) {
-    setCurrentPageState((prevPage) => prevPage + 1);
-  }
-};
 
 // Function to handle filter changes
 const handleFilterChange = (event) => {
@@ -91,67 +95,77 @@ const handleFilterChange = (event) => {
   }
 };
 
-// Function to render the pagination buttons with minimized page numbers
-const renderPagination = () => {
-  if (totalPages === 0) {
-    return null;
+const handleFirstPage = () => {
+  setCurrentPage(1);
+};
+
+const handleLastPage = () => {
+  setCurrentPage(totalPages);
+};
+
+const handlePreviousPage = () => {
+  if (currentPage > 1) {
+    setCurrentPage((prevPage) => prevPage - 1);
   }
+};
 
-  const paginationButtons = [];
-  const pageToShow = Math.min(totalPages, 12);
-
-  let startPage;
-  let endPage;
-
-  if (totalPages <= pageToShow) {
-    // Trường hợp totalPages nhỏ hơn hoặc bằng 12
-    startPage = 1;
-    endPage = totalPages;
-  } else {
-    // Trường hợp totalPages lớn hơn 12
-    if (currentPageState <= 6) {
-      // Trang hiện tại nằm ở đầu
-      startPage = 1;
-      endPage = pageToShow;
-    } else if (currentPageState + 5 >= totalPages) {
-      // Trang hiện tại nằm gần cuối
-      startPage = totalPages - pageToShow + 1;
-      endPage = totalPages;
-    } else {
-      // Trang hiện tại nằm ở giữa
-      startPage = currentPageState - 5;
-      endPage = currentPageState + 6;
-    }
+const handleNextPage = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage((prevPage) => prevPage + 1);
   }
+};
 
-    // Function to handle pagination changes
-    const handlePaginationChange = (page) => {
-      setCurrentPageState(page);
-    };
-
-  // Add pagination buttons for the first pages (1, 2, 3, ...)
-  for (let i = startPage; i <= endPage; i++) {
-    paginationButtons.push(
-      <li
-        key={i}
-        className={`datatable__footer-list-item ${
-          currentPageState === i ? 'active' : ''
-        }`}
-        onClick={() => handlePaginationChange(i)}
-      >
-        {i}
-      </li>
-    );
+const handlePageChange = (pageNumber) => {
+  if (pageNumber >= 1 && pageNumber <= totalPages) {
+    setCurrentPage(pageNumber);
   }
-
-  return paginationButtons;
 };
 
 
-// Effect to call API when currentPageState changes
-useEffect(() => {
-  callApiWithFilters(currentPageState, 8, sortOrder);
-}, [currentPageState, sortOrder, filterType, filterTarget, filterStatus]);
+// Hàm render phân trang
+const renderPagination = () => {
+  const prevPage = currentPage - 1;
+  const nextPage = currentPage + 1;
+  let pagesToRender = [currentPage];
+
+  if (totalPages > 1) {
+    if (currentPage === 1) {
+      pagesToRender = [currentPage, nextPage];
+    } else if (currentPage === totalPages) {
+      pagesToRender = [prevPage, currentPage];
+    } else {
+      pagesToRender = [prevPage, currentPage, nextPage];
+    }
+  }
+
+  return (
+    <>
+      <li className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`} onClick={handleFirstPage}>
+        Trang đầu
+      </li>
+      <li className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`} onClick={handlePreviousPage}>
+      <i class="fa-solid fa-angles-left features__item-main-icon"></i>
+      </li>
+      {pagesToRender.map((pageNumber) => (
+        <li
+          className={`datatable__footer-list-item ${currentPage === pageNumber ? 'active' : ''}`}
+          key={pageNumber}
+          onClick={() => handlePageChange(pageNumber)}
+        >
+          {pageNumber}
+        </li>
+      ))}
+      <li className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`} onClick={handleNextPage}>
+        <i class="fa-solid fa-angles-right features__item-main-icon"></i>
+      </li>
+      <li className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`} onClick={handleLastPage}>
+        Trang cuối
+      </li>
+    </>
+  );
+};
+
+
 
 
   return (
@@ -265,7 +279,7 @@ useEffect(() => {
             </tbody>
           </table>
         </div>
-      <div className="datatable__footer mt-30">
+        <div className="datatable__footer mt-30">
         <div className="datatable__footer-description">
           <span className="datatable__footer-description-text">
             Hiển thị trang {currentPage} trong tổng số {totalPages} trang
@@ -273,26 +287,9 @@ useEffect(() => {
         </div>
         <div className="datatable__footer-page">
           <ul className="datatable__footer-page-list">
-            <li
-              className={`datatable__footer-list-item ${
-                currentPage === 1 ? "disabled" : ""
-              }`}
-              onClick={handlePreviousPage}
-            >
-              Trang trước
-            </li>
             {renderPagination()}
-            <li
-              className={`datatable__footer-list-item ${
-                currentPage === totalPages ? "disabled" : ""
-              }`}
-              onClick={handleNextPage}
-            >
-              Trang sau
-            </li>
           </ul>
         </div>
-     
       </div>
       </div>
     </div>

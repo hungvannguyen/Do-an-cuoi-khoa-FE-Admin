@@ -19,6 +19,7 @@ body{
     height: 100%;
     top: 0;
     left: 0;
+    overflow: auto;
     /* border-right: 1px solid #ccc; */
     background-color: #F4F5F7;
     /* padding-right: 10px; */
@@ -33,6 +34,11 @@ body{
     align-items: center;
     
 }
+.sidebar::-webkit-scrollbar {
+    height: 50px;
+    width: 5px; /* Độ rộng thanh cuộn */
+  }
+  
 .sidebar__logo-img{
     width: 50%;
     margin-left: 42px;
@@ -372,6 +378,11 @@ input[type="file"] {
 .disabled{
     cursor: not-allowed !important;
     color: #525252 !important;
+}
+
+.active{
+    background-color: #4C72DE !important;
+    color: white !important;
 }
 
 .no-data-message{

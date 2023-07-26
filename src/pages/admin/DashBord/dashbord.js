@@ -119,7 +119,7 @@ function Dashboard (){
           if (number) {
             return new Intl.NumberFormat("vi-VN").format(number);
           }
-          return "";
+          return "0";
      };
 
      const handlePendingOrderClick = () => {
@@ -135,17 +135,9 @@ function Dashboard (){
           setMode(Number(selectedMonth));
      };
      const handleYearChange = (event) => {
-          const value = event.target.value;
-          setYearValue(value);
-          console.log(yearValue) // Store the temporary year value as the user types
-        };
-      
-        const handleYearSubmit = () => {
-          // When the user clicks the "Xác nhận" (Confirm) button,
-          // update the "year" state variable with the temporary year value.
-          setYear(yearValue === '0' || yearValue === '' ? null : parseInt(yearValue));
-          console.log('Năm mới được cập nhật:', year);
-        };
+          const selectedYear = event.target.value;
+          setYear(Number(selectedYear));
+     };
       
 
 
@@ -164,19 +156,20 @@ function Dashboard (){
                     <option value="2">Quý 2</option>
                     <option value="3">Quý 3</option>
                     <option value="4">Quý 4</option>
-                    <option value="5">Năm</option>
+                    <option value="5">Cả Năm</option>
                     </select>
                </div>
                <div class="home__features-order">
                     <div class="home__features-order-item">
-                    <span className="form__sort-text">Tháng: </span>
+                    <span className="form__sort-text">Năm: </span>
                     <select
-                    value={mode.toString()} // Convert to string to match option value type
-                    onChange={handleMountChange}
+                    value={year.toString()} // Convert to string to match option value type
+                    onChange={handleYearChange}
                     className="form__sellect-sort me-3"
                     >
-                    <option value="2023">năm 2023</option>
-                    <option value="5">Năm</option>
+                    <option value="2023">Năm 2023</option>
+                    <option value="2022">Năm 2022</option>
+                    <option value="2021">Năm 2021</option>
                     </select>
                </div>
 

@@ -6,10 +6,10 @@ import axios from "axios";
 
 
 function AllOders(){
-  const [pages, setPages] = useState(1);
   const [isNextPageEnabled, setNextPageEnabled] = useState(true);
   const [isPreviousPageEnabled, setPreviousPageEnabled] = useState(true);
-  const [currentPage, setCurrentPage] = useState();
+  const [pages, setPages] = useState([1, 2, 3]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
 
   const [errorMessage, setErrorMessage] = useState(null)
@@ -24,7 +24,7 @@ function AllOders(){
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    let apiEndpoint = `/order/admin/all?page=${pages}`;
+    let apiEndpoint = `/order/admin/all?page=${currentPage}`;
     if (orderStatus !== 111) {
       apiEndpoint += `&order_status=${orderStatus}`;
     }
@@ -43,6 +43,22 @@ function AllOders(){
         console.log("P" + response.data.current_page);
         console.log(response.data);
         console.log(typeof response.data);
+        setPages((prevPages) => {
+          const currentPageIndex = prevPages.indexOf(response.data.current_page);
+          if (currentPageIndex === -1) {
+            // Nếu trang hiện tại chưa có trong mảng, cần xoá trang đầu tiên trong mảng và thêm trang hiện tại vào cuối
+            prevPages.shift();
+            prevPages.push(response.data.current_page);
+          } else if (currentPageIndex === prevPages.length - 1) {
+            // Nếu trang hiện tại đã là trang cuối trong mảng, cần chuyển các trang lên 1 bậc
+            prevPages = prevPages.map((page) => page - 1);
+          } else {
+            // Nếu trang hiện tại không nằm ở đầu hoặc cuối mảng, cần di chuyển trang hiện tại và các trang bên phải lên 1 bậc
+            prevPages.splice(currentPageIndex, 1);
+            prevPages = [response.data.current_page - 1, response.data.current_page, response.data.current_page + 1];
+          }
+          return prevPages;
+        });
 
       })
       .catch((error) => {
@@ -50,66 +66,77 @@ function AllOders(){
         setOrders([]); // Đặt orders về mảng rỗng để không hiển thị dữ liệu cũ
     setErrorMessage("Không có dữ liệu"); // Có lỗi hoặc không kết nối đến API
       });
-  }, [pages, orderStatus]);
+  }, [currentPage, orderStatus]);
 
-    const handlePreviousPage = () => {
-      if (pages > 1) {
-        setCurrentPage(pages - 1);
-        setPages(pages - 1);
-      } 
-    };
-    
-    const handleNextPage = () => {
-      setCurrentPage(pages + 1);
-      setPages(pages + 1);
-      }
+  const handleFirstPage = () => {
+    setCurrentPage(1);
+  };
 
-    const handlePageChange = (page) => {
-      // setLoading(true);
-      setPages(page);
-      setCurrentPage(page);
-    };
+  const handleLastPage = () => {
+    setCurrentPage(totalPages);
+  };
 
-    useEffect(() => {
-      if (currentPage === totalPages) {
-        setNextPageEnabled(false);
-      } else {
-        setNextPageEnabled(true);
-      }
-    }, [currentPage, totalPages]);
-    
-    useEffect(() => {
-      if (currentPage === 1) {
-        setPreviousPageEnabled(false);
-      } else {
-        setPreviousPageEnabled(true);
-      }
-    }, [currentPage]);
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
   
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+  
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
-   // Hàm render phân trang
-    const renderPagination = () => {
-  const pageNumbers = [];
-
-  // Tạo một mảng chứa các số trang từ 1 đến totalPages
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-
-  return (
-    <>
-      {pageNumbers.map((pageNumber) => (
-        <li
-          className={`datatable__footer-list-item ${currentPage === pageNumber ? 'active' : ''}`}
-          key={pageNumber}
-          onClick={() => handlePageChange(pageNumber)}
-        >
-          {pageNumber}
+  
+  // Hàm render phân trang
+  const renderPagination = () => {
+    const prevPage = currentPage - 1;
+    const nextPage = currentPage + 1;
+    let pagesToRender = [currentPage];
+  
+    if (totalPages > 1) {
+      if (currentPage === 1) {
+        pagesToRender = [currentPage, nextPage];
+      } else if (currentPage === totalPages) {
+        pagesToRender = [prevPage, currentPage];
+      } else {
+        pagesToRender = [prevPage, currentPage, nextPage];
+      }
+    }
+  
+    return (
+      <>
+        <li className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`} onClick={handleFirstPage}>
+          Trang đầu
         </li>
-      ))}
-    </>
-  );
-    };
+        <li className={`datatable__footer-list-item ${currentPage === 1 ? 'disabled' : ''}`} onClick={handlePreviousPage}>
+        <i class="fa-solid fa-angles-left features__item-main-icon"></i>
+        </li>
+        {pagesToRender.map((pageNumber) => (
+          <li
+            className={`datatable__footer-list-item ${currentPage === pageNumber ? 'active' : ''}`}
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+          >
+            {pageNumber}
+          </li>
+        ))}
+        <li className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`} onClick={handleNextPage}>
+          <i class="fa-solid fa-angles-right features__item-main-icon"></i>
+        </li>
+        <li className={`datatable__footer-list-item ${currentPage === totalPages ? 'disabled' : ''}`} onClick={handleLastPage}>
+          Trang cuối
+        </li>
+      </>
+    );
+  };
 
       // Format number
     const formatNumber = (number) => {
@@ -133,26 +160,22 @@ function AllOders(){
         <div className="datatable__location">
           <div className="datatable__head">
             <div className="datatable__head-show">
-            <span className="form__sort-text">Trạng thái: </span>
-            <select
-              value={orderStatus.toString()} // Convert to string to match option value type
-              onChange={handleOrderStatusChange}
-              className="form__sellect-sort me-3"
-            >
-              <option value="111">Tất Cả</option>
-              <option value="0">Chờ Xác Nhận</option>
-              <option value="1">Đã Xác Nhận</option>
-              <option value="2">Đang Vận Chuyển</option>
-              <option value="10">Đã Giao Hàng</option>
-              <option value="100">Hoàn Thành</option>
-              <option value="99">Hủy Đơn</option>
-              <option value="50">Đã Hoàn Hàng</option>
-              <option value="49">Yêu Cầu Hoàn Hàng</option>
-            </select>
-            </div>
-            <div className="datatable__head-search">
-              <span className="datatable__search-text">Search:</span>
-              <input type="text" className="datatable__search-input" />
+              <span className="form__sort-text">Trạng thái: </span>
+              <select
+                value={orderStatus.toString()} // Convert to string to match option value type
+                onChange={handleOrderStatusChange}
+                className="form__sellect-sort me-3"
+              >
+                <option value="111">Tất Cả</option>
+                <option value="0">Chờ Xác Nhận</option>
+                <option value="1">Đã Xác Nhận</option>
+                <option value="2">Đang Vận Chuyển</option>
+                <option value="10">Đã Giao Hàng</option>
+                <option value="100">Hoàn Thành</option>
+                <option value="99">Hủy Đơn</option>
+                <option value="50">Đã Hoàn Hàng</option>
+                <option value="49">Yêu Cầu Hoàn Hàng</option>
+              </select>
             </div>
           </div>
           <div className="datatable__table">
@@ -163,7 +186,6 @@ function AllOders(){
                   <th className="table__head-item">Tên</th>
                   <th className="table__head-item">Số Điện Thoại</th>
                   <th className="table__head-item">Địa Chỉ</th>
-                
                   <th className="table__head-item">Trạng Thái</th>
                   <th className="table__head-item">Tổng Tiền</th>
                   <th className="table__head-item">Trạng Thái Giao Dịch</th>
@@ -250,29 +272,18 @@ function AllOders(){
             </table>
           </div>
 
-          <div className="datatable__footer">
-            <div className="datatable__footer-description">
-              <span className="datatable__footer-description-text">Hiển thị trang {currentPage} trong tổng số {totalPages} trang</span>
-            </div>
-            <div className="datatable__footer-page">
-
-              <ul className="datatable__footer-page-list">
-              <li
-                className={`datatable__footer-list-item ${currentPage === 1 || !isPreviousPageEnabled ? 'disabled' : ''}`}
-                onClick={isPreviousPageEnabled ? handlePreviousPage : null}
-              >
-                Trang trước
-              </li>
-              {renderPagination()}
-              <li
-                className={`datatable__footer-list-item ${currentPage === totalPages || !isNextPageEnabled ? 'disabled' : ''}`}
-                onClick={isNextPageEnabled ? handleNextPage : null}
-              >
-                Trang sau
-              </li>
-              </ul>
-            </div>
-          </div>
+          <div className="datatable__footer mt-30">
+        <div className="datatable__footer-description">
+          <span className="datatable__footer-description-text">
+            Hiển thị trang {currentPage} trong tổng số {totalPages} trang
+          </span>
+        </div>
+        <div className="datatable__footer-page">
+          <ul className="datatable__footer-page-list">
+            {renderPagination()}
+          </ul>
+        </div>
+      </div>
         </div>
       </div>
 
