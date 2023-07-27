@@ -22,6 +22,8 @@ function Dashboard (){
      const [successOrder, setSuccessOrder] = useState("");
      const [pendingRefundOrder, setPendingRefundOrder] = useState("");
 
+     const [errorMessage, setErrorMessage] = useState(null)
+
      //total income
      const [totalIncome, setTotalIncome] = useState("");
      const [totalProfit, setTotalProfit] = useState("");
@@ -106,6 +108,8 @@ function Dashboard (){
                })
                .catch((error) => {
                     console.log(error);
+                    setLowQuantityProduct([]);
+                    setErrorMessage("Không có dữ liệu");
                });
           })
           .catch((error) => {
@@ -291,6 +295,9 @@ function Dashboard (){
                                    </span>
                               </div>
                          </div>
+                         {lowQuantityProduct.length === 0 && (
+                               <div className="no-data-message">{errorMessage}</div>
+                         )}
                          {lowQuantityProduct && lowQuantityProduct.map((product, index) => (
                               <div class="product-list d-flex align-items-center justify-content-between mb-6 row">
                                    <div class="form__category-des col-lg-2">
