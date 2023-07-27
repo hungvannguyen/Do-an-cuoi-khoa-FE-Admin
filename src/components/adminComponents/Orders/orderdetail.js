@@ -174,6 +174,7 @@ function OrderDetail() {
            
            const redirectInterval = setInterval(() => {
                 clearInterval(redirectInterval);
+                window.location.href = `/admin/order_detail/${order_id}`;
            },1500);
         });
     };
