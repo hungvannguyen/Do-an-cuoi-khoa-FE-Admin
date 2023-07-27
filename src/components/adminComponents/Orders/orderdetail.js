@@ -129,9 +129,9 @@ function OrderDetail() {
                      theme: "colored"
            });
            
-           const redirectInterval = setInterval(() => {
-                clearInterval(redirectInterval);
-           },1500);
+           setInterval(() => {
+            window.location.reload();
+        },500);
         });
     };
 
@@ -171,11 +171,9 @@ function OrderDetail() {
                      progress: undefined,
                      theme: "colored"
            });
-           
-           const redirectInterval = setInterval(() => {
-                clearInterval(redirectInterval);
-                window.location.href = `/admin/order_detail/${order_id}`;
-           },1500);
+            setInterval(() => {
+                window.location.reload();
+           },500);
         });
     };
 
