@@ -234,7 +234,7 @@ useEffect(() => {
               </div>
            </div>
             <div className="datatable__head-search">
-              <span className="datatable__search-text">Tìm Kiếm:</span>
+              <span className="datatable__search-text">Tìm Kiếm: </span>
               <input type="text" className="datatable__search-input" 
                   value={searchProduct}
                   onChange={(e) => setSearchProduct(e.target.value)}/>
