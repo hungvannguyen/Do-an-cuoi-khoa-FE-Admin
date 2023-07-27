@@ -404,6 +404,15 @@ function OrderDetail() {
                         </button>
                     </div>
                 )}
+                {orderStatus === 1 && (
+                    <div class="form__category-check">
+                        <button class="form__category-btn form__input-btn me-6" 
+                        onClick={ () => {openModal2();}}
+                        >
+                                Hủy đơn
+                        </button>
+                    </div>
+                )}
                 {orderStatus === 49 && (
                     <div class="form__category-check">
                         <button class="form__category-btn form__input-btn me-6" 
