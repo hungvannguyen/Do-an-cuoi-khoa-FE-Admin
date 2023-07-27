@@ -204,7 +204,7 @@ useEffect(() => {
           <div className="datatable__head  mt-0">
             <div className="datatable__head-show d-flex align-items-center ">
               <div>
-              <span className="form__sort-text">Sort by: </span>
+              <span className="form__sort-text">Sắp xếp theo: </span>
               <select
                 value={sort.toString()} // Convert to string to match option value type
                 onChange={handleSortChange}
@@ -234,7 +234,7 @@ useEffect(() => {
               </div>
            </div>
             <div className="datatable__head-search">
-              <span className="datatable__search-text">Search:</span>
+              <span className="datatable__search-text">Tìm Kiếm:</span>
               <input type="text" className="datatable__search-input" 
                   value={searchProduct}
                   onChange={(e) => setSearchProduct(e.target.value)}/>
