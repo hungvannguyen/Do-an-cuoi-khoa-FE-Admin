@@ -46,11 +46,9 @@ function Dashboard (){
                console.log(response.data);
                setTotalOrder(response.data.total_order);
                setCancelOrder(response.data.cancel_order);
-               setPendingOrder(response.data.pending_order);
                setComfirmOrder(response.data.comfirm_order);
                setRefundedOrder(response.data.refunded_order);
                setSuccessOrder(response.data.success_order);
-               setPendingRefundOrder(response.data.pending_refund_order);
           })
           .catch((error) => {
                console.log(error);
@@ -109,6 +107,19 @@ function Dashboard (){
                .catch((error) => {
                     console.log(error);
                });
+          })
+          .catch((error) => {
+               console.log(error);
+          });
+     }, []);
+     //count pending order
+     useEffect(() => {
+          axios
+          .get(`/summary/order/count/pending`)
+          .then((response) => {
+               console.log(response.data);
+               setPendingOrder(response.data.pending_order);
+               setPendingRefundOrder(response.data.pending_refund_order);
           })
           .catch((error) => {
                console.log(error);
